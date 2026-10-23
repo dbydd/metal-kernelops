@@ -10,6 +10,7 @@ The first kernel is Mamba's selective scan, ported from the CUDA-only `mamba_ssm
 |---|---|---|
 | `metal_kernelops/scan.py` | Mamba selective scan (SSM), forward + analytic backward | working, bit-exact against the reference at `(1, 192, 65536)` |
 | `metal_kernelops/reference.py` | Pure PyTorch step loop | reference for alignment checks |
+| `metal_kernelops/accelerator.py` | MPS dispatch-key overlays: `take`, `channel_shuffle`, `put_` | working; each turns `NotImplementedError` into a native path |
 
 Measured on HSRMamba, same weights, real slices: full-model forward + backward dropped from 16.09 s to 1.01 s (15.9x). Loss difference 0.0, gradients non-zero for 288/288 parameters, relative error of the global gradient norm 9.79e-8.
 
@@ -40,6 +41,17 @@ out = selective_scan_fn(u, dt, A, B, C, D=None, z=None, delta_bias=None, delta_s
 
 Returns the scan output only. The last-state return value of the CUDA extension is not implemented here.
 
+To take over MPS kernels process-wide, opt in explicitly:
+
+```python
+from metal_kernelops import accelerator
+
+accelerator.install()   # raises if the running torch is not the checked version
+accelerator.coverage()  # {"aten::take": {"replaced_existing": False, "kernel": "_take", ...}}
+```
+
+Importing `accelerator` changes nothing. `install()` registers the overlays for the life of the process; there is no uninstall. Each row in `coverage()` names the operator, whether an MPS kernel already existed, and the function that replaced it.
+
 ## Implementation routes, cheapest to most aggressive
 
 `torch.mps.compile_shader(source: str)` compiles MSL at runtime. Concretely in torch 2.14.1 it takes a source string and nothing else: no compile options, no fast-math switch, no precompiled library handle. Each process pays the compile at first call, and each operator dispatch is a Python-level call.
@@ -55,7 +67,30 @@ The routes past it, in increasing order of effort and headroom:
 
 What this repository does: `compile_shader` first, because it is the only route that needs no build step and no Xcode project, and its measured speedup is already 15.9x. A precompiled metallib is the next step when shader compile time or dispatch overhead becomes measurable against kernel time.
 
-Two things this build cannot do: torch 2.14.1 on macOS ships no MPS codegen for `torch.compile` (`torch._inductor.codegen.mps` does not exist, `torch._inductor.config` has no MPS keys), so automatic fusion is not available; and `torch.mps` exposes no API to load an external metallib, so a precompiled route needs an extension module.
+One thing this build cannot do: `torch.mps` exposes no API to load an external metallib, so a precompiled route needs an extension module.
+
+### What `torch.compile` already does on MPS
+
+Inductor ships a Metal codegen here: `torch/_inductor/codegen/mps.py`, 1267 lines. Its own header calls it "an early prototype that shows that one can compile elementwise ops into a Metal shader". It is wired into device dispatch (`MetalScheduling` in `torch/_inductor/codegen/common.py:620`), compiles through `torch.mps.compile_shader` (`torch/_inductor/runtime/runtime_utils.py:214`), and has a C++ wrapper (`codegen/cpp_wrapper_mps.py`) plus a dedicated flex-attention template (`codegen/metal_flex_attention_template.py`, 1048 lines).
+
+Measured on torch 2.14.1, fp32, 1024x4096 matrices, 20 iterations after warmup:
+
+| Graph | eager ms | compiled ms | speedup |
+|---|---|---|---|
+| `(sin(a) + cos(b)) * 2 - tanh(a)` | 0.480 | 0.132 | 3.64x |
+| `relu(a * b + a)` | 0.283 | 0.160 | 1.77x |
+| `softmax(a, -1)` | 0.181 | 0.165 | 1.10x |
+| `amax(a, -1)` | 0.095 | 0.074 | 1.28x |
+| `layer_norm(a)` | 0.214 | 0.263 | 0.81x |
+| `sum(a, -1)` | 0.049 | 0.078 | 0.63x |
+| `a @ b.T` | 0.730 | 0.731 | 1.00x |
+| `conv2d` | 0.072 | 0.101 | 0.71x |
+
+Numerics hold: `sum` matches to a relative Frobenius error of 1.5e-7, `conv2d` and `softmax` bit-exactly.
+
+So the compiler already fuses pointwise chains, and that is where it wins. It generates no gemm or conv kernels: those stay extern aten calls, which is why their speedup is 1.00x and 0.71x. Reductions come out correct but not faster than the tuned MPS kernels.
+
+That defines this repository's work: overlays and kernels for operators the compiler cannot reach at all (the `NotImplementedError` list), fusions blocked by one unsupported operator, and scan-shaped work, which the SIMD scheduler has no parallel-scan support for. Rebuilding pointwise fusion would be duplicate work.
 
 ### The route that keeps model code untouched
 

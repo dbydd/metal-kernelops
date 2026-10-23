@@ -34,7 +34,7 @@ A private dispatch key is rejected: it changes the device name and breaks every 
 3. **The overlay is opt-in and auditable.** Importing the package must not change process behaviour. The accelerator is a separate import, and it exposes the table of ops it actually took over: operator name, previous kernel, new kernel, torch version it was checked against.
 4. **Pin and check the torch version.** Overlay registration depends on schemas. Verify at import that the running torch matches the version the overlays were validated on, and fail loudly when it does not.
 5. **Kernels are `compile_shader` first, precompiled `.metallib` second.** `torch.mps.compile_shader(source: str)` takes a source string and nothing else in 2.14.1; it needs no build step. Move to a precompiled metallib inside an extension when shader compile or dispatch overhead becomes measurable against kernel time, not before.
-6. **No promise of `torch.compile`.** This build has no MPS codegen: `torch._inductor.codegen.mps` does not exist and `torch._inductor.config` has no MPS keys. Fusion is manual, so an operator worth fusing gets one kernel that absorbs its neighbours.
+6. **Do not rebuild what Inductor already fuses.** This build does ship a Metal codegen: `torch/_inductor/codegen/mps.py`, 1267 lines, self-described as an early prototype for elementwise ops, wired in at `codegen/common.py:620` and compiled through `torch.mps.compile_shader`. Measured on 1024x4096 fp32: a pointwise chain is 3.64x faster compiled, softmax 1.10x, amax 1.28x, layer_norm 0.81x, matmul 1.00x, conv2d 0.71x. Pointwise fusion is therefore taken; work here targets operators that raise `NotImplementedError`, fusions blocked by one such operator, and scan-shaped work the SIMD scheduler cannot express.
 7. **Verification standard.** Real shapes, forward and backward, against `reference.py`: outputs finite and bit-exact where arithmetic allows, gradient coverage explained, relative error of the global gradient norm around 1e-7, optimizer step moves the weights. Slow-but-correct is not a pass. Do not measure only the kernel; measure the model step it belongs to.
 
 ## Current state
@@ -42,7 +42,7 @@ A private dispatch key is rejected: it changes the device name and breaks every 
 - `src/metal_kernelops/scan.py`: Mamba selective scan, 6 Metal kernels, analytic backward. Measured on HSRMamba: 16.09 s → 1.01 s per step, loss difference 0.0, 288/288 parameters with non-zero gradients, gradient-norm relative error 9.79e-8.
 - `not_implemented/`: the gap lists. 2199 aten overloads have no MPS kernel; 1230 base names; 126 with a CPU kernel and no MPS coverage; 118 after deduplication; 60 portable candidates, 54 CPU-backend-only.
 - `vendor/`: seven mpsops submodules, read-only.
-- No accelerator package yet. `__init__.py` exports the scan functions only.
+- `src/metal_kernelops/accelerator.py`: dispatch-key overlays for `take`, `channel_shuffle`, `put_`. All three raise `NotImplementedError` on MPS without the overlay; with it they run, and `take` is bit-exact against CPU including a 2-D index. `put_` is needed because `index_select`'s backward dispatches to it. `__init__.py` does not import the accelerator, so installation never changes process behaviour by accident.
 
 ## Writing
 
