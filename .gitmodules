@@ -1,0 +1,21 @@
+[submodule "vendor/mps-flash-attention"]
+	path = vendor/mps-flash-attention
+	url = https://github.com/mpsops/mps-flash-attention
+[submodule "vendor/mps-linear-attention"]
+	path = vendor/mps-linear-attention
+	url = https://github.com/mpsops/mps-linear-attention
+[submodule "vendor/mps-deform-conv"]
+	path = vendor/mps-deform-conv
+	url = https://github.com/mpsops/mps-deform-conv
+[submodule "vendor/mps-correlation"]
+	path = vendor/mps-correlation
+	url = https://github.com/mpsops/mps-correlation
+[submodule "vendor/mps-conv3d"]
+	path = vendor/mps-conv3d
+	url = https://github.com/mpsops/mps-conv3d
+[submodule "vendor/mps-carafe"]
+	path = vendor/mps-carafe
+	url = https://github.com/mpsops/mps-carafe
+[submodule "vendor/mps-bitsandbytes"]
+	path = vendor/mps-bitsandbytes
+	url = https://github.com/mpsops/mps-bitsandbytes
