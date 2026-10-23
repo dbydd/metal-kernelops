@@ -57,6 +57,32 @@ What this repository does: `compile_shader` first, because it is the only route 
 
 Two things this build cannot do: torch 2.14.1 on macOS ships no MPS codegen for `torch.compile` (`torch._inductor.codegen.mps` does not exist, `torch._inductor.config` has no MPS keys), so automatic fusion is not available; and `torch.mps` exposes no API to load an external metallib, so a precompiled route needs an extension module.
 
+### The route that keeps model code untouched
+
+The three routes above all assume the model calls a function this package provides. The most aggressive option that still runs ordinary PyTorch is the opposite: register kernels on the MPS dispatch key itself, so `model.to("mps")` picks them up with no code change at all.
+
+That works from Python. A fragment library over `aten` may register a kernel for `MPS`, and it may also replace a kernel that already exists:
+
+```python
+from torch.library import Library
+
+lib = Library("aten", "FRAGMENT")
+lib.impl("take", take_mps, "MPS")        # take has no MPS kernel today
+lib.impl("cumsum", cumsum_mps, "MPS")    # replaces the existing one
+```
+
+Verified on torch 2.14.1: the second line replaces the registered MPS kernel and only emits a one-time `UserWarning`; the same call on a CPU tensor still reaches the built-in kernel; gradients flow because the overlay body is written in aten ops that MPS already supports.
+
+Shape of the accelerator, most aggressive first:
+
+| Layer | Coverage | Notes |
+|---|---|---|
+| Overlay kernels for every candidate in `not_implemented/portable_candidates.txt`, written on top of `compile_shader` or a precompiled metallib | the 60 candidates plus any existing MPS kernel worth replacing | Process-global. Changes behaviour for every model in the process, so it must be an explicit import, not a side effect of installing the package |
+| Decomposition registrations for ops that can be expressed in supported ops | most of the remaining 118 | No speed promise, but removes the CPU round trip and the hard error |
+| `TorchDispatchMode` catch-all for the long tail | everything else | A Python frame per op, tens of microseconds. Last resort, useful to find what a model touches |
+
+Limits worth stating in advance: the overlay is bound to a torch version and breaks loudly on schema changes; it cannot restore what has no kernel-level expression on Metal at all, such as the quantization stack and the oneDNN paths listed in `not_implemented/backend_specific.txt`; and `torch.compile` will not fuse any of it, because this build has no MPS codegen. Coverage has to be auditable, so the accelerator must expose the table of ops it actually took over.
+
 ## Vendored community implementations
 
 These are git submodules under `vendor/`, kept read-only. Two rules: check whether an implementation already exists before writing one, and do not duplicate what a submodule covers.
