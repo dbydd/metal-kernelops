@@ -1,0 +1,533 @@
+{
+ "accuracy": {
+  "batch-of-zero": {
+   "forward_max_abs_error": 0.0,
+   "forward_relative_error": 0.0,
+   "gradient_relative_error": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "dt": 0.0,
+    "u": 0.0
+   },
+   "merge": "sum",
+   "shape": [
+    0,
+    4,
+    1,
+    3,
+    3,
+    3
+   ]
+  },
+  "five-states": {
+   "forward_max_abs_error": 1.6689300537109375e-06,
+   "forward_relative_error": 1.355542646046201e-07,
+   "gradient_relative_error": {
+    "A": 3.801437978850865e-07,
+    "B": 1.3246150612708725e-07,
+    "C": 1.2090694266820562e-07,
+    "dt": 1.8223948414944396e-07,
+    "u": 1.617399993953237e-07
+   },
+   "merge": "sum",
+   "shape": [
+    1,
+    6,
+    2,
+    5,
+    13,
+    3
+   ]
+  },
+  "forward-backward (1, 3, 3, 2, 5, 7)": {
+   "forward_max_abs_error": 9.5367431640625e-07,
+   "forward_relative_error": 2.0558592689764732e-07,
+   "gradient_relative_error": {
+    "A": 3.9442422871444994e-07,
+    "B": 1.8430177299500905e-07,
+    "C": 1.9134625442175395e-07,
+    "dt": 2.338773534523228e-07,
+    "u": 2.2951843579863043e-07
+   },
+   "merge": "sum",
+   "shape": [
+    1,
+    3,
+    3,
+    2,
+    5,
+    7
+   ]
+  },
+  "forward-backward (2, 16, 1, 8, 8, 8)": {
+   "forward_max_abs_error": 6.67572021484375e-06,
+   "forward_relative_error": 2.5589089217643474e-07,
+   "gradient_relative_error": {
+    "A": 7.074764025471847e-07,
+    "B": 2.3168687467448828e-07,
+    "C": 2.509925485965118e-07,
+    "dt": 2.5328069161932574e-07,
+    "u": 2.4160639343046913e-07
+   },
+   "merge": "sum",
+   "shape": [
+    2,
+    16,
+    1,
+    8,
+    8,
+    8
+   ]
+  },
+  "forward-backward (2, 8, 2, 4, 6, 5)": {
+   "forward_max_abs_error": 2.384185791015625e-06,
+   "forward_relative_error": 1.5765436741393007e-07,
+   "gradient_relative_error": {
+    "A": 2.774045722998571e-07,
+    "B": 1.7137559298115594e-07,
+    "C": 1.7129740247157803e-07,
+    "dt": 1.7681762447913708e-07,
+    "u": 1.7137276584351895e-07
+   },
+   "merge": "sum",
+   "shape": [
+    2,
+    8,
+    2,
+    4,
+    6,
+    5
+   ]
+  },
+  "mean-merge": {
+   "forward_max_abs_error": 4.76837158203125e-07,
+   "forward_relative_error": 1.6001913318720662e-07,
+   "gradient_relative_error": {
+    "A": 1.6352878171255046e-07,
+    "B": 7.917349859967596e-08,
+    "C": 1.2974954349621622e-07,
+    "dt": 8.486060270489547e-08,
+    "u": 8.240688501487572e-08
+   },
+   "merge": "mean",
+   "shape": [
+    1,
+    4,
+    1,
+    3,
+    4,
+    5
+   ]
+  },
+  "no-channels": {
+   "forward_max_abs_error": 0.0,
+   "forward_relative_error": 0.0,
+   "gradient_relative_error": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "dt": 0.0,
+    "u": 0.0
+   },
+   "merge": "sum",
+   "shape": [
+    2,
+    0,
+    0,
+    4,
+    3,
+    3
+   ]
+  },
+  "no-states": {
+   "forward_max_abs_error": 0.0,
+   "forward_relative_error": 0.0,
+   "gradient_relative_error": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "dt": 0.0,
+    "u": 0.0
+   },
+   "merge": "sum",
+   "shape": [
+    1,
+    4,
+    1,
+    0,
+    3,
+    3
+   ]
+  },
+  "one-channel": {
+   "forward_max_abs_error": 1.1920928955078125e-07,
+   "forward_relative_error": 4.526704469199386e-08,
+   "gradient_relative_error": {
+    "A": 1.9410259506732675e-07,
+    "B": 1.225039199852296e-07,
+    "C": 8.433416096187184e-08,
+    "dt": 8.347737907660198e-08,
+    "u": 3.92769135213114e-08
+   },
+   "merge": "sum",
+   "shape": [
+    1,
+    1,
+    1,
+    3,
+    3,
+    3
+   ]
+  },
+  "per-channel-groups": {
+   "forward_max_abs_error": 9.5367431640625e-07,
+   "forward_relative_error": 9.438755959786224e-08,
+   "gradient_relative_error": {
+    "A": 2.9132481212423435e-07,
+    "B": 1.0134574321834845e-07,
+    "C": 1.1910018642906207e-07,
+    "dt": 1.1289138033068737e-07,
+    "u": 7.970067717282859e-08
+   },
+   "merge": "sum",
+   "shape": [
+    1,
+    4,
+    4,
+    3,
+    3,
+    5
+   ]
+  },
+  "single-column": {
+   "forward_max_abs_error": 4.76837158203125e-07,
+   "forward_relative_error": 1.0554649786211981e-07,
+   "gradient_relative_error": {
+    "A": 2.7170423482992043e-07,
+    "B": 2.718995801222911e-07,
+    "C": 6.923162197689061e-08,
+    "dt": 1.7335799913180037e-07,
+    "u": 1.647203424012112e-07
+   },
+   "merge": "sum",
+   "shape": [
+    1,
+    4,
+    1,
+    3,
+    7,
+    1
+   ]
+  },
+  "single-pixel": {
+   "forward_max_abs_error": 1.1920928955078125e-07,
+   "forward_relative_error": 2.5411950589816454e-08,
+   "gradient_relative_error": {
+    "A": 0.0,
+    "B": 1.658045383355015e-08,
+    "C": 0.0,
+    "dt": 1.0517364117674933e-09,
+    "u": 4.913655766769595e-08
+   },
+   "merge": "sum",
+   "shape": [
+    1,
+    4,
+    1,
+    3,
+    1,
+    1
+   ]
+  },
+  "single-row": {
+   "forward_max_abs_error": 1.1920928955078125e-07,
+   "forward_relative_error": 4.809620079455388e-08,
+   "gradient_relative_error": {
+    "A": 1.326596411571623e-07,
+    "B": 9.070867331788392e-08,
+    "C": 7.851406678168783e-08,
+    "dt": 1.0779212886521725e-07,
+    "u": 5.184332758301962e-08
+   },
+   "merge": "sum",
+   "shape": [
+    1,
+    4,
+    1,
+    3,
+    1,
+    7
+   ]
+  },
+  "sixteen-states": {
+   "forward_max_abs_error": 5.9604644775390625e-06,
+   "forward_relative_error": 3.0508622095831803e-07,
+   "gradient_relative_error": {
+    "A": 9.082981819781611e-07,
+    "B": 2.7283617242801976e-07,
+    "C": 2.9844469399872034e-07,
+    "dt": 2.7958921110155404e-07,
+    "u": 2.9149277919958314e-07
+   },
+   "merge": "sum",
+   "shape": [
+    1,
+    8,
+    1,
+    16,
+    9,
+    11
+   ]
+  },
+  "thirty-two-states": {
+   "forward_max_abs_error": 5.7220458984375e-06,
+   "forward_relative_error": 1.6204493588841704e-07,
+   "gradient_relative_error": {
+    "A": 4.119203703041195e-07,
+    "B": 1.6708919960597444e-07,
+    "C": 1.6074725314317964e-07,
+    "dt": 1.8850820973550904e-07,
+    "u": 1.926056342350248e-07
+   },
+   "merge": "sum",
+   "shape": [
+    1,
+    4,
+    2,
+    32,
+    5,
+    7
+   ]
+  },
+  "zero-height": {
+   "forward_max_abs_error": 0.0,
+   "forward_relative_error": 0.0,
+   "gradient_relative_error": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "dt": 0.0,
+    "u": 0.0
+   },
+   "merge": "sum",
+   "shape": [
+    1,
+    4,
+    1,
+    3,
+    0,
+    5
+   ]
+  },
+  "zero-width": {
+   "forward_max_abs_error": 0.0,
+   "forward_relative_error": 0.0,
+   "gradient_relative_error": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "dt": 0.0,
+    "u": 0.0
+   },
+   "merge": "sum",
+   "shape": [
+    1,
+    4,
+    1,
+    3,
+    5,
+    0
+   ]
+  }
+ },
+ "box_load": {
+  "cpus": 18,
+  "load_average_1m": 5.06,
+  "note": "the box runs many other jobs; every candidate in a comparison is timed inside the same round and the minimum over rounds is reported"
+ },
+ "checks": 146,
+ "device": "mps",
+ "failures": [],
+ "notes": [
+  "ss2d_scan runs one Metal kernel that walks all four paths over the (height, width) grid, one state per lane and 32/states channels per warp, so no permuted copy of u, dt, B or C is built. Each path writes its own accumulator slice at the pixel it stands on and one pass adds the four slices, which replaces the old merge permutation.",
+  "Five launches forward: transpose B and C to state-minor, chunk summaries, the chunk prefix chain, the scan, the merge. At 1x96x56x56 the whole forward moves 4 MB, so the launches, not the arithmetic, set the time: a same-shape copy measured in the same round costs about as much as the forward's slowest stage.",
+  "Path 0 is row-major (h*W + w), path 1 is column-major (w*H + h), and paths 2 and 3 are their reverses. Merging inverts each permutation and adds in VMamba's cross_merge order: (path 0 + path 2) + (path 1 + path 3).",
+  "Merge mean multiplies the summed paths by 0.25, which is exact in binary.",
+  "The backward reuses metal_kernelops.scan's reverse_summaries, reverse_boundaries and gradients on the stacked layout, because dB and dC reduce over the channels of a group and that layout is what exposes them. It still pays the four stacking copies; only its permutation and merge are fused, into merge_paths.",
+  "exp2(delta * A * log2e) against exp(delta * A): the two land within run-to-run noise of each other and their outputs agree to the digits recorded, because Metal's exp is built on the hardware exponential. exp is kept, so the forward and the reused backward spell the transcendental the same way.",
+  "states must be at most 32 because each state owns a lane; a wider state axis is rejected rather than silently truncated. The sixteen- and thirty-two-state cases above exist to hold that line.",
+  "The fused path is float32 on MPS only; the reference runs any dtype.",
+  "Gradient tolerance is 1e-4 because the kernel reduces over states in a different order than torch does; on a four-element map a float32 reference is itself about 1e-5 from a float64 evaluation, while every realistic shape lands within 1e-7.",
+  "The machine is shared with dozens of concurrent jobs and absolute times swing several-fold between sweeps; the JSON holds one run. Comparing the fused path against the previously shipped stacked implementation in the same interleaved batch gave 2.61x forward at 1x96x56x56, 2.43x at 2x64x32x32, 3.47x at 8x32x16x16 and 2.82x at 3x16x7x9, with the backward at 1.13x, 1.23x, 1.06x and 0.95x."
+ ],
+ "reference": "metal_kernelops.cv.path_scan.ss2d_scan_reference, a step-by-step scan over four index-arithmetic permutations, itself checked against central differences in float64 and against metal_kernelops.reference.selective_scan",
+ "timing_protocol": "21 rounds of 4 synchronized iterations per candidate after 6 warmup, all candidates of one comparison interleaved inside each round, per-candidate minimum reported. The four-scan baseline materializes each path and calls selective_scan once per path; the copy floor is a same-shape device-to-device copy measured in the same rounds, which is the launch-bound ceiling at these sizes",
+ "timings": {
+  "b1_d96_56x56": {
+   "backward_speedup_over_four_scans": 1.232,
+   "copy_floor_gigabytes_per_second": 63.99,
+   "copy_floor_ms": 0.0376,
+   "forward_gigabytes_per_second": 13.71,
+   "forward_megabytes": 4.014,
+   "forward_speedup_over_four_scans": 2.477,
+   "four_scan_backward_ms": 1.5097,
+   "four_scan_forward_ms": 0.7254,
+   "fused_backward_ms": 1.2257,
+   "fused_forward_ms": 0.2929,
+   "pixels": 3136,
+   "shape": [
+    1,
+    96,
+    1,
+    16,
+    56,
+    56
+   ]
+  },
+  "b2_d64_32x32": {
+   "backward_speedup_over_cpu_reference": 719.048,
+   "backward_speedup_over_four_scans": 1.278,
+   "copy_floor_gigabytes_per_second": 27.95,
+   "copy_floor_ms": 0.0375,
+   "cpu_reference_backward_median_ms": 561.8456,
+   "cpu_reference_backward_ms": 557.1123,
+   "forward_gigabytes_per_second": 10.73,
+   "forward_megabytes": 1.835,
+   "forward_speedup_over_four_scans": 2.831,
+   "four_scan_backward_ms": 0.99,
+   "four_scan_forward_ms": 0.4842,
+   "fused_backward_ms": 0.7748,
+   "fused_forward_ms": 0.171,
+   "pixels": 1024,
+   "shape": [
+    2,
+    64,
+    1,
+    16,
+    32,
+    32
+   ]
+  },
+  "b3_d16_7x9_g4": {
+   "backward_speedup_over_cpu_reference": 24.294,
+   "backward_speedup_over_four_scans": 1.611,
+   "copy_floor_gigabytes_per_second": 0.76,
+   "copy_floor_ms": 0.0318,
+   "cpu_reference_backward_median_ms": 9.34,
+   "cpu_reference_backward_ms": 9.0477,
+   "forward_gigabytes_per_second": 1.07,
+   "forward_megabytes": 0.085,
+   "forward_speedup_over_four_scans": 4.9,
+   "four_scan_backward_ms": 0.5999,
+   "four_scan_forward_ms": 0.3891,
+   "fused_backward_ms": 0.3724,
+   "fused_forward_ms": 0.0794,
+   "pixels": 63,
+   "shape": [
+    3,
+    16,
+    4,
+    8,
+    7,
+    9
+   ]
+  },
+  "b8_d32_16x16": {
+   "backward_speedup_over_cpu_reference": 241.557,
+   "backward_speedup_over_four_scans": 1.344,
+   "copy_floor_gigabytes_per_second": 18.56,
+   "copy_floor_ms": 0.0283,
+   "cpu_reference_backward_median_ms": 142.0332,
+   "cpu_reference_backward_ms": 138.788,
+   "forward_gigabytes_per_second": 8.89,
+   "forward_megabytes": 1.049,
+   "forward_speedup_over_four_scans": 3.51,
+   "four_scan_backward_ms": 0.7721,
+   "four_scan_forward_ms": 0.4139,
+   "fused_backward_ms": 0.5746,
+   "fused_forward_ms": 0.1179,
+   "pixels": 256,
+   "shape": [
+    8,
+    32,
+    1,
+    16,
+    16,
+    16
+   ]
+  }
+ },
+ "torch": "2.14.1",
+ "transcendental": {
+  "b1_d96_56x56": {
+   "accuracy": {
+    "exp": {
+     "max_abs_error": 1.52587890625e-05,
+     "relative_error": 3.516406594004262e-07
+    },
+    "exp2": {
+     "max_abs_error": 1.52587890625e-05,
+     "relative_error": 3.513260815439305e-07
+    }
+   },
+   "exp2_ms": 0.2782,
+   "exp2_over_exp": 0.943,
+   "exp_ms": 0.2949,
+   "shape": [
+    1,
+    96,
+    1,
+    16,
+    56,
+    56
+   ]
+  },
+  "b2_d64_32x32": {
+   "accuracy": {
+    "exp": {
+     "max_abs_error": 1.71661376953125e-05,
+     "relative_error": 3.524044349645098e-07
+    },
+    "exp2": {
+     "max_abs_error": 1.71661376953125e-05,
+     "relative_error": 3.5209103289308254e-07
+    }
+   },
+   "exp2_ms": 0.1672,
+   "exp2_over_exp": 0.939,
+   "exp_ms": 0.1779,
+   "shape": [
+    2,
+    64,
+    1,
+    16,
+    32,
+    32
+   ]
+  },
+  "small": {
+   "accuracy": {
+    "exp": {
+     "max_abs_error": 4.76837158203125e-06,
+     "relative_error": 1.956081759991025e-07
+    },
+    "exp2": {
+     "max_abs_error": 4.76837158203125e-06,
+     "relative_error": 1.956081759991025e-07
+    }
+   },
+   "exp2_ms": 0.0748,
+   "exp2_over_exp": 1.004,
+   "exp_ms": 0.0745,
+   "shape": [
+    1,
+    8,
+    1,
+    16,
+    5,
+    7
+   ]
+  }
+ }
+}

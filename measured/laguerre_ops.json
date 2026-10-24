@@ -1,0 +1,418 @@
+{
+  "operator": "aten::special_laguerre_polynomial_l",
+  "overloads": [
+    "special_laguerre_polynomial_l",
+    "special_laguerre_polynomial_l.out",
+    "special_laguerre_polynomial_l.x_scalar",
+    "special_laguerre_polynomial_l.x_scalar_out",
+    "special_laguerre_polynomial_l.n_scalar",
+    "special_laguerre_polynomial_l.n_scalar_out"
+  ],
+  "torch": "2.14.1",
+  "device": "mps",
+  "chip": "Apple M5 Max",
+  "max_degree": 16777216,
+  "kernel": {
+    "lanes": 4,
+    "reciprocal_table": 4096,
+    "group_size": 256
+  },
+  "optimizations": {
+    "vectorization": "four elements per thread through float4/half4/bfloat4 loads and stores, with a scalar tail and a scalar fallback when the buffers are not vector-aligned",
+    "low_degree": "degree 0 writes 1.0 without reading x, since the result cannot depend on it; the uniform scalar degree is resolved once per thread",
+    "high_degree": "the recurrence divides by a tabulated correctly rounded reciprocal plus one fma correction (Markstein), replacing the hardware divide with three full-rate operations that round identically",
+    "ilp": "four independent recurrence chains per thread, so the divide latency of one lane overlaps the arithmetic of the other three"
+  },
+  "exactness": {
+    "float32": "bit-identical to the CPU kernel for every finite input and degree tested",
+    "float16_bfloat16": "CPU has no kernel; float32 recurrence stored at the promoted dtype",
+    "deviations": [
+      "non-finite degree: CPU is undefined behaviour and hangs, MPS maps nan to 0, -inf to 0, +inf to the degree cap",
+      "degree >= 16777216: MPS returns nan instead of looping; only visible for x > 0, where L_n(x) stays bounded instead of overflowing"
+    ]
+  },
+  "method": "timings are the fastest of 10 interleaved rounds of 15 queued calls, each round followed by torch.mps.synchronize(); other processes share this GPU, so the best round isolates this kernel from their interference. The copy and fill floors are torch ops on one reused buffer, i.e. the fastest anything touching those bytes can run; mps_moved_GB_per_s counts the bytes the kernel actually moves, which is count*4 rather than count*8 at degree 0",
+  "gpu_load_during_measurement": {
+    "active_leases": 0,
+    "tasks": []
+  },
+  "dispatch": {
+    "mps_dispatch_us": 4.16,
+    "torch_elementwise_us": 1.39
+  },
+  "timings": [
+    {
+      "count": 65536,
+      "degree": 0,
+      "mps_ms": 0.01879,
+      "cpu_ms": 0.02555,
+      "cpu_reps": 20,
+      "speedup": 1.36,
+      "mps_GB_per_s": 27.9,
+      "mps_bytes_moved": 262144,
+      "mps_moved_GB_per_s": 13.9,
+      "vs_copy_floor": 0.54
+    },
+    {
+      "count": 65536,
+      "degree": 1,
+      "mps_ms": 0.01579,
+      "cpu_ms": 0.02907,
+      "cpu_reps": 20,
+      "speedup": 1.84,
+      "mps_GB_per_s": 33.2,
+      "mps_bytes_moved": 524288,
+      "mps_moved_GB_per_s": 33.2,
+      "vs_copy_floor": 0.64
+    },
+    {
+      "count": 65536,
+      "degree": 2,
+      "mps_ms": 0.01546,
+      "cpu_ms": 0.04427,
+      "cpu_reps": 20,
+      "speedup": 2.86,
+      "mps_GB_per_s": 33.9,
+      "mps_bytes_moved": 524288,
+      "mps_moved_GB_per_s": 33.9,
+      "vs_copy_floor": 0.65
+    },
+    {
+      "count": 65536,
+      "degree": 4,
+      "mps_ms": 0.01602,
+      "cpu_ms": 0.0731,
+      "cpu_reps": 20,
+      "speedup": 4.56,
+      "mps_GB_per_s": 32.7,
+      "mps_bytes_moved": 524288,
+      "mps_moved_GB_per_s": 32.7,
+      "vs_copy_floor": 0.63
+    },
+    {
+      "count": 65536,
+      "degree": 8,
+      "mps_ms": 0.01707,
+      "cpu_ms": 0.1257,
+      "cpu_reps": 20,
+      "speedup": 7.36,
+      "mps_GB_per_s": 30.7,
+      "mps_bytes_moved": 524288,
+      "mps_moved_GB_per_s": 30.7,
+      "vs_copy_floor": 0.59
+    },
+    {
+      "count": 65536,
+      "degree": 32,
+      "mps_ms": 0.02162,
+      "cpu_ms": 0.79275,
+      "cpu_reps": 20,
+      "speedup": 36.67,
+      "mps_GB_per_s": 24.3,
+      "mps_bytes_moved": 524288,
+      "mps_moved_GB_per_s": 24.3,
+      "vs_copy_floor": 0.47
+    },
+    {
+      "count": 65536,
+      "degree": 128,
+      "mps_ms": 0.04049,
+      "cpu_ms": 6.92635,
+      "cpu_reps": 20,
+      "speedup": 171.04,
+      "mps_GB_per_s": 12.9,
+      "mps_bytes_moved": 524288,
+      "mps_moved_GB_per_s": 12.9,
+      "vs_copy_floor": 0.25,
+      "mps_copy_ms": 0.01201,
+      "floor_copy_ms": 0.01012,
+      "floor_fill_ms": 0.01034,
+      "floor_copy_GB_per_s": 51.8,
+      "floor_fill_GB_per_s": 25.3,
+      "mps_torch_loop_ms": {
+        "4": 0.05662,
+        "32": 0.44759
+      }
+    },
+    {
+      "count": 1048576,
+      "degree": 0,
+      "mps_ms": 0.01421,
+      "cpu_ms": 0.09842,
+      "cpu_reps": 20,
+      "speedup": 6.93,
+      "mps_GB_per_s": 590.4,
+      "mps_bytes_moved": 4194304,
+      "mps_moved_GB_per_s": 295.2,
+      "vs_copy_floor": 0.92
+    },
+    {
+      "count": 1048576,
+      "degree": 1,
+      "mps_ms": 0.0191,
+      "cpu_ms": 0.11527,
+      "cpu_reps": 20,
+      "speedup": 6.04,
+      "mps_GB_per_s": 439.2,
+      "mps_bytes_moved": 8388608,
+      "mps_moved_GB_per_s": 439.2,
+      "vs_copy_floor": 0.69
+    },
+    {
+      "count": 1048576,
+      "degree": 2,
+      "mps_ms": 0.02288,
+      "cpu_ms": 0.19239,
+      "cpu_reps": 20,
+      "speedup": 8.41,
+      "mps_GB_per_s": 366.6,
+      "mps_bytes_moved": 8388608,
+      "mps_moved_GB_per_s": 366.6,
+      "vs_copy_floor": 0.57
+    },
+    {
+      "count": 1048576,
+      "degree": 4,
+      "mps_ms": 0.02508,
+      "cpu_ms": 0.39705,
+      "cpu_reps": 20,
+      "speedup": 15.83,
+      "mps_GB_per_s": 334.4,
+      "mps_bytes_moved": 8388608,
+      "mps_moved_GB_per_s": 334.4,
+      "vs_copy_floor": 0.52
+    },
+    {
+      "count": 1048576,
+      "degree": 8,
+      "mps_ms": 0.0332,
+      "cpu_ms": 0.77489,
+      "cpu_reps": 20,
+      "speedup": 23.34,
+      "mps_GB_per_s": 252.7,
+      "mps_bytes_moved": 8388608,
+      "mps_moved_GB_per_s": 252.7,
+      "vs_copy_floor": 0.4
+    },
+    {
+      "count": 1048576,
+      "degree": 32,
+      "mps_ms": 0.07984,
+      "cpu_ms": 4.69099,
+      "cpu_reps": 20,
+      "speedup": 58.75,
+      "mps_GB_per_s": 105.1,
+      "mps_bytes_moved": 8388608,
+      "mps_moved_GB_per_s": 105.1,
+      "vs_copy_floor": 0.16
+    },
+    {
+      "count": 1048576,
+      "degree": 128,
+      "mps_ms": 0.26199,
+      "cpu_ms": 37.15216,
+      "cpu_reps": 5,
+      "speedup": 141.81,
+      "mps_GB_per_s": 32.0,
+      "mps_bytes_moved": 8388608,
+      "mps_moved_GB_per_s": 32.0,
+      "vs_copy_floor": 0.05,
+      "mps_copy_ms": 0.01446,
+      "floor_copy_ms": 0.01312,
+      "floor_fill_ms": 0.01515,
+      "floor_copy_GB_per_s": 639.4,
+      "floor_fill_GB_per_s": 276.9,
+      "mps_torch_loop_ms": {
+        "4": 0.19305,
+        "32": 1.90209
+      }
+    },
+    {
+      "count": 4194304,
+      "degree": 0,
+      "mps_ms": 0.03082,
+      "cpu_ms": 0.3661,
+      "cpu_reps": 20,
+      "speedup": 11.88,
+      "mps_GB_per_s": 1088.8,
+      "mps_bytes_moved": 16777216,
+      "mps_moved_GB_per_s": 544.4,
+      "vs_copy_floor": 1.43
+    },
+    {
+      "count": 4194304,
+      "degree": 1,
+      "mps_ms": 0.04906,
+      "cpu_ms": 0.48671,
+      "cpu_reps": 20,
+      "speedup": 9.92,
+      "mps_GB_per_s": 684.0,
+      "mps_bytes_moved": 33554432,
+      "mps_moved_GB_per_s": 684.0,
+      "vs_copy_floor": 0.9
+    },
+    {
+      "count": 4194304,
+      "degree": 2,
+      "mps_ms": 0.04951,
+      "cpu_ms": 0.77079,
+      "cpu_reps": 20,
+      "speedup": 15.57,
+      "mps_GB_per_s": 677.8,
+      "mps_bytes_moved": 33554432,
+      "mps_moved_GB_per_s": 677.8,
+      "vs_copy_floor": 0.89
+    },
+    {
+      "count": 4194304,
+      "degree": 4,
+      "mps_ms": 0.06034,
+      "cpu_ms": 1.42846,
+      "cpu_reps": 20,
+      "speedup": 23.67,
+      "mps_GB_per_s": 556.1,
+      "mps_bytes_moved": 33554432,
+      "mps_moved_GB_per_s": 556.1,
+      "vs_copy_floor": 0.73
+    },
+    {
+      "count": 4194304,
+      "degree": 8,
+      "mps_ms": 0.08782,
+      "cpu_ms": 2.96244,
+      "cpu_reps": 20,
+      "speedup": 33.73,
+      "mps_GB_per_s": 382.1,
+      "mps_bytes_moved": 33554432,
+      "mps_moved_GB_per_s": 382.1,
+      "vs_copy_floor": 0.5
+    },
+    {
+      "count": 4194304,
+      "degree": 32,
+      "mps_ms": 0.26804,
+      "cpu_ms": 18.14938,
+      "cpu_reps": 10,
+      "speedup": 67.71,
+      "mps_GB_per_s": 125.2,
+      "mps_bytes_moved": 33554432,
+      "mps_moved_GB_per_s": 125.2,
+      "vs_copy_floor": 0.16
+    },
+    {
+      "count": 4194304,
+      "degree": 128,
+      "mps_ms": 0.99442,
+      "cpu_ms": 151.47306,
+      "cpu_reps": 3,
+      "speedup": 152.32,
+      "mps_GB_per_s": 33.7,
+      "mps_bytes_moved": 33554432,
+      "mps_moved_GB_per_s": 33.7,
+      "vs_copy_floor": 0.04,
+      "mps_copy_ms": 0.04168,
+      "floor_copy_ms": 0.04399,
+      "floor_fill_ms": 0.02758,
+      "floor_copy_GB_per_s": 762.8,
+      "floor_fill_GB_per_s": 608.2,
+      "mps_torch_loop_ms": {
+        "4": 0.98789,
+        "32": 9.40335
+      }
+    },
+    {
+      "count": 16777216,
+      "degree": 0,
+      "mps_ms": 0.11036,
+      "cpu_ms": 1.54174,
+      "cpu_reps": 20,
+      "speedup": 13.97,
+      "mps_GB_per_s": 1216.2,
+      "mps_bytes_moved": 67108864,
+      "mps_moved_GB_per_s": 608.1,
+      "vs_copy_floor": 2.41
+    },
+    {
+      "count": 16777216,
+      "degree": 1,
+      "mps_ms": 0.26309,
+      "cpu_ms": 1.86082,
+      "cpu_reps": 20,
+      "speedup": 7.07,
+      "mps_GB_per_s": 510.2,
+      "mps_bytes_moved": 134217728,
+      "mps_moved_GB_per_s": 510.2,
+      "vs_copy_floor": 1.01
+    },
+    {
+      "count": 16777216,
+      "degree": 2,
+      "mps_ms": 0.27031,
+      "cpu_ms": 3.18124,
+      "cpu_reps": 20,
+      "speedup": 11.77,
+      "mps_GB_per_s": 496.5,
+      "mps_bytes_moved": 134217728,
+      "mps_moved_GB_per_s": 496.5,
+      "vs_copy_floor": 0.98
+    },
+    {
+      "count": 16777216,
+      "degree": 4,
+      "mps_ms": 0.27107,
+      "cpu_ms": 5.85516,
+      "cpu_reps": 20,
+      "speedup": 21.6,
+      "mps_GB_per_s": 495.1,
+      "mps_bytes_moved": 134217728,
+      "mps_moved_GB_per_s": 495.1,
+      "vs_copy_floor": 0.98
+    },
+    {
+      "count": 16777216,
+      "degree": 8,
+      "mps_ms": 0.30161,
+      "cpu_ms": 11.80182,
+      "cpu_reps": 16,
+      "speedup": 39.13,
+      "mps_GB_per_s": 445.0,
+      "mps_bytes_moved": 134217728,
+      "mps_moved_GB_per_s": 445.0,
+      "vs_copy_floor": 0.88
+    },
+    {
+      "count": 16777216,
+      "degree": 32,
+      "mps_ms": 0.99759,
+      "cpu_ms": 72.7665,
+      "cpu_reps": 3,
+      "speedup": 72.94,
+      "mps_GB_per_s": 134.5,
+      "mps_bytes_moved": 134217728,
+      "mps_moved_GB_per_s": 134.5,
+      "vs_copy_floor": 0.27
+    },
+    {
+      "count": 16777216,
+      "degree": 128,
+      "mps_ms": 3.87907,
+      "cpu_ms": 595.78914,
+      "cpu_reps": 3,
+      "speedup": 153.59,
+      "mps_GB_per_s": 34.6,
+      "mps_bytes_moved": 134217728,
+      "mps_moved_GB_per_s": 34.6,
+      "vs_copy_floor": 0.07,
+      "mps_copy_ms": 0.26181,
+      "floor_copy_ms": 0.26612,
+      "floor_fill_ms": 0.09852,
+      "floor_copy_GB_per_s": 504.4,
+      "floor_fill_GB_per_s": 681.2,
+      "mps_torch_loop_ms": {
+        "4": 5.03247,
+        "32": 47.08361
+      }
+    }
+  ],
+  "failures": []
+}

@@ -1,0 +1,1924 @@
+{
+  "module": "src/metal_kernelops/distance_ops.py",
+  "torch": "2.14.1",
+  "python": "3.11.17",
+  "machine": "Darwin-27.0.0-arm64",
+  "device": "mps",
+  "measured_at": "2026-10-24T06:57:47Z",
+  "overlays": [
+    "_pdist_forward",
+    "_pdist_backward"
+  ],
+  "mps_kernel_before_install": {
+    "aten::_pdist_forward": false,
+    "aten::_pdist_backward": false
+  },
+  "mps_kernel_after_install": {
+    "aten::_pdist_forward": true,
+    "aten::_pdist_backward": true
+  },
+  "checks": {
+    "no shader compiled by importing the module": true,
+    "both ops lack an MPS kernel before install": true,
+    "both ops have an MPS kernel after install": true,
+    "forward (1, 4) p=0.0": true,
+    "forward (1, 4) p=0.5": true,
+    "forward (1, 4) p=1.0": true,
+    "forward (1, 4) p=1.5": true,
+    "forward (1, 4) p=2.0": true,
+    "forward (1, 4) p=3.0": true,
+    "forward (1, 4) p=5.0": true,
+    "forward (1, 4) p=inf": true,
+    "forward (2, 3) p=0.0": true,
+    "forward (2, 3) p=0.5": true,
+    "forward (2, 3) p=1.0": true,
+    "forward (2, 3) p=1.5": true,
+    "forward (2, 3) p=2.0": true,
+    "forward (2, 3) p=3.0": true,
+    "forward (2, 3) p=5.0": true,
+    "forward (2, 3) p=inf": true,
+    "forward (3, 1) p=0.0": true,
+    "forward (3, 1) p=0.5": true,
+    "forward (3, 1) p=1.0": true,
+    "forward (3, 1) p=1.5": true,
+    "forward (3, 1) p=2.0": true,
+    "forward (3, 1) p=3.0": true,
+    "forward (3, 1) p=5.0": true,
+    "forward (3, 1) p=inf": true,
+    "forward (5, 3) p=0.0": true,
+    "forward (5, 3) p=0.5": true,
+    "forward (5, 3) p=1.0": true,
+    "forward (5, 3) p=1.5": true,
+    "forward (5, 3) p=2.0": true,
+    "forward (5, 3) p=3.0": true,
+    "forward (5, 3) p=5.0": true,
+    "forward (5, 3) p=inf": true,
+    "forward (7, 64) p=0.0": true,
+    "forward (7, 64) p=0.5": true,
+    "forward (7, 64) p=1.0": true,
+    "forward (7, 64) p=1.5": true,
+    "forward (7, 64) p=2.0": true,
+    "forward (7, 64) p=3.0": true,
+    "forward (7, 64) p=5.0": true,
+    "forward (7, 64) p=inf": true,
+    "forward (64, 32) p=0.0": true,
+    "forward (64, 32) p=0.5": true,
+    "forward (64, 32) p=1.0": true,
+    "forward (64, 32) p=1.5": true,
+    "forward (64, 32) p=2.0": true,
+    "forward (64, 32) p=3.0": true,
+    "forward (64, 32) p=5.0": true,
+    "forward (64, 32) p=inf": true,
+    "forward (129, 63) p=0.0": true,
+    "forward (129, 63) p=0.5": true,
+    "forward (129, 63) p=1.0": true,
+    "forward (129, 63) p=1.5": true,
+    "forward (129, 63) p=2.0": true,
+    "forward (129, 63) p=3.0": true,
+    "forward (129, 63) p=5.0": true,
+    "forward (129, 63) p=inf": true,
+    "forward (257, 67) p=0.0": true,
+    "forward (257, 67) p=0.5": true,
+    "forward (257, 67) p=1.0": true,
+    "forward (257, 67) p=1.5": true,
+    "forward (257, 67) p=2.0": true,
+    "forward (257, 67) p=3.0": true,
+    "forward (257, 67) p=5.0": true,
+    "forward (257, 67) p=inf": true,
+    "forward (256, 68) p=0.0": true,
+    "forward (256, 68) p=0.5": true,
+    "forward (256, 68) p=1.0": true,
+    "forward (256, 68) p=1.5": true,
+    "forward (256, 68) p=2.0": true,
+    "forward (256, 68) p=3.0": true,
+    "forward (256, 68) p=5.0": true,
+    "forward (256, 68) p=inf": true,
+    "forward (1000, 16) p=0.0": true,
+    "forward (1000, 16) p=0.5": true,
+    "forward (1000, 16) p=1.0": true,
+    "forward (1000, 16) p=1.5": true,
+    "forward (1000, 16) p=2.0": true,
+    "forward (1000, 16) p=3.0": true,
+    "forward (1000, 16) p=5.0": true,
+    "forward (1000, 16) p=inf": true,
+    "forward (64, 1024) p=0.0": true,
+    "forward (64, 1024) p=0.5": true,
+    "forward (64, 1024) p=1.0": true,
+    "forward (64, 1024) p=1.5": true,
+    "forward (64, 1024) p=2.0": true,
+    "forward (64, 1024) p=3.0": true,
+    "forward (64, 1024) p=5.0": true,
+    "forward (64, 1024) p=inf": true,
+    "forward (513, 17) p=0.0": true,
+    "forward (513, 17) p=0.5": true,
+    "forward (513, 17) p=1.0": true,
+    "forward (513, 17) p=1.5": true,
+    "forward (513, 17) p=2.0": true,
+    "forward (513, 17) p=3.0": true,
+    "forward (513, 17) p=5.0": true,
+    "forward (513, 17) p=inf": true,
+    "forward (2048, 96) p=0.0": true,
+    "forward (2048, 96) p=0.5": true,
+    "forward (2048, 96) p=1.0": true,
+    "forward (2048, 96) p=1.5": true,
+    "forward (2048, 96) p=2.0": true,
+    "forward (2048, 96) p=3.0": true,
+    "forward (2048, 96) p=5.0": true,
+    "forward (2048, 96) p=inf": true,
+    "forward (2304, 132) p=0.0": true,
+    "forward (2304, 132) p=0.5": true,
+    "forward (2304, 132) p=1.0": true,
+    "forward (2304, 132) p=1.5": true,
+    "forward (2304, 132) p=2.0": true,
+    "forward (2304, 132) p=3.0": true,
+    "forward (2304, 132) p=5.0": true,
+    "forward (2304, 132) p=inf": true,
+    "forward (3, 0) p=0.0": true,
+    "forward (3, 0) p=0.5": true,
+    "forward (3, 0) p=1.0": true,
+    "forward (3, 0) p=1.5": true,
+    "forward (3, 0) p=2.0": true,
+    "forward (3, 0) p=3.0": true,
+    "forward (3, 0) p=5.0": true,
+    "forward (3, 0) p=inf": true,
+    "forward (0, 3) p=0.0": true,
+    "forward (0, 3) p=0.5": true,
+    "forward (0, 3) p=1.0": true,
+    "forward (0, 3) p=1.5": true,
+    "forward (0, 3) p=2.0": true,
+    "forward (0, 3) p=3.0": true,
+    "forward (0, 3) p=5.0": true,
+    "forward (0, 3) p=inf": true,
+    "pair map n=8192 p=0 exact": true,
+    "pair map n=1000 p=1.0": true,
+    "pair map n=1000 p=2.0": true,
+    "pair map n=1000 p=3.0": true,
+    "pair map n=1000 p=inf": true,
+    "spec duplicate rows p=0.0": true,
+    "spec zero coordinate p=0.0": true,
+    "spec inf ties p=0.0": true,
+    "spec nan input p=0.0": true,
+    "spec inf input p=0.0": true,
+    "spec duplicate rows p=0.5": true,
+    "spec zero coordinate p=0.5": true,
+    "spec inf ties p=0.5": true,
+    "spec nan input p=0.5": true,
+    "spec inf input p=0.5": true,
+    "spec duplicate rows p=1.0": true,
+    "spec zero coordinate p=1.0": true,
+    "spec inf ties p=1.0": true,
+    "spec nan input p=1.0": true,
+    "spec inf input p=1.0": true,
+    "spec duplicate rows p=1.5": true,
+    "spec zero coordinate p=1.5": true,
+    "spec inf ties p=1.5": true,
+    "spec nan input p=1.5": true,
+    "spec inf input p=1.5": true,
+    "spec duplicate rows p=2.0": true,
+    "spec zero coordinate p=2.0": true,
+    "spec inf ties p=2.0": true,
+    "spec nan input p=2.0": true,
+    "spec inf input p=2.0": true,
+    "spec duplicate rows p=3.0": true,
+    "spec zero coordinate p=3.0": true,
+    "spec inf ties p=3.0": true,
+    "spec nan input p=3.0": true,
+    "spec inf input p=3.0": true,
+    "spec duplicate rows p=5.0": true,
+    "spec zero coordinate p=5.0": true,
+    "spec inf ties p=5.0": true,
+    "spec nan input p=5.0": true,
+    "spec inf input p=5.0": true,
+    "spec duplicate rows p=inf": true,
+    "spec zero coordinate p=inf": true,
+    "spec inf ties p=inf": true,
+    "spec nan input p=inf": true,
+    "spec inf input p=inf": true,
+    "spec signed zero p=0.0": true,
+    "empty (0, 4)": true,
+    "empty (3, 0)": true,
+    "empty (0, 0)": true,
+    "empty (1, 0)": true,
+    "empty (1, 5)": true,
+    "d=0 p=0.0 zeros": true,
+    "d=0 p=0.5 zeros": true,
+    "d=0 p=1.0 zeros": true,
+    "d=0 p=1.5 zeros": true,
+    "d=0 p=2.0 zeros": true,
+    "d=0 p=3.0 zeros": true,
+    "d=0 p=5.0 zeros": true,
+    "d=0 p=inf zeros": true,
+    "n=1 gradient zeros": true,
+    "dtype torch.float16 raises like CPU": true,
+    "dtype torch.bfloat16 raises like CPU": true,
+    "int input rejected": true,
+    "1D input rejected": true,
+    "negative p rejected by pdist": true,
+    "strided input through pdist": true,
+    "direct aten accepts strided input": true,
+    "aten forward p=-1.0": true,
+    "aten forward p=-0.5": true,
+    "aten forward p=-inf": true,
+    "aten forward p=nan": true,
+    "aten backward p=-1.0": true,
+    "aten backward p=-inf": true,
+    "aten backward p=nan": true,
+    "aten forward d=0 p=-1.0": true,
+    "aten forward d=0 p=-inf": true,
+    "aten forward d=0 p=nan": true,
+    "aten forward d=0 p=0.0": true,
+    "short grad rejected": true,
+    "gradient (5, 3) p=0.0": true,
+    "gradient (5, 3) p=0.5": true,
+    "gradient (5, 3) p=1.0": true,
+    "gradient (5, 3) p=1.5": true,
+    "gradient (5, 3) p=2.0": true,
+    "gradient (5, 3) p=3.0": true,
+    "gradient (5, 3) p=5.0": true,
+    "gradient (5, 3) p=inf": true,
+    "gradient (64, 32) p=0.0": true,
+    "gradient (64, 32) p=0.5": true,
+    "gradient (64, 32) p=1.0": true,
+    "gradient (64, 32) p=1.5": true,
+    "gradient (64, 32) p=2.0": true,
+    "gradient (64, 32) p=3.0": true,
+    "gradient (64, 32) p=5.0": true,
+    "gradient (64, 32) p=inf": true,
+    "gradient (129, 17) p=0.0": true,
+    "gradient (129, 17) p=0.5": true,
+    "gradient (129, 17) p=1.0": true,
+    "gradient (129, 17) p=1.5": true,
+    "gradient (129, 17) p=2.0": true,
+    "gradient (129, 17) p=3.0": true,
+    "gradient (129, 17) p=5.0": true,
+    "gradient (129, 17) p=inf": true,
+    "gradient (256, 68) p=0.0": true,
+    "gradient (256, 68) p=0.5": true,
+    "gradient (256, 68) p=1.0": true,
+    "gradient (256, 68) p=1.5": true,
+    "gradient (256, 68) p=2.0": true,
+    "gradient (256, 68) p=3.0": true,
+    "gradient (256, 68) p=5.0": true,
+    "gradient (256, 68) p=inf": true,
+    "gradient (1000, 16) p=0.0": true,
+    "gradient (1000, 16) p=0.5": true,
+    "gradient (1000, 16) p=1.0": true,
+    "gradient (1000, 16) p=1.5": true,
+    "gradient (1000, 16) p=2.0": true,
+    "gradient (1000, 16) p=3.0": true,
+    "gradient (1000, 16) p=5.0": true,
+    "gradient (1000, 16) p=inf": true,
+    "gradient (7, 1024) p=0.0": true,
+    "gradient (7, 1024) p=0.5": true,
+    "gradient (7, 1024) p=1.0": true,
+    "gradient (7, 1024) p=1.5": true,
+    "gradient (7, 1024) p=2.0": true,
+    "gradient (7, 1024) p=3.0": true,
+    "gradient (7, 1024) p=5.0": true,
+    "gradient (7, 1024) p=inf": true,
+    "gradient (8, 0) p=0.0": true,
+    "gradient (8, 0) p=0.5": true,
+    "gradient (8, 0) p=1.0": true,
+    "gradient (8, 0) p=1.5": true,
+    "gradient (8, 0) p=2.0": true,
+    "gradient (8, 0) p=3.0": true,
+    "gradient (8, 0) p=5.0": true,
+    "gradient (8, 0) p=inf": true,
+    "gradient (2048, 96) p=0.0": true,
+    "gradient (2048, 96) p=0.5": true,
+    "gradient (2048, 96) p=1.0": true,
+    "gradient (2048, 96) p=1.5": true,
+    "gradient (2048, 96) p=2.0": true,
+    "gradient (2048, 96) p=3.0": true,
+    "gradient (2048, 96) p=5.0": true,
+    "gradient (2048, 96) p=inf": true,
+    "gradient duplicate rows p=0.0": true,
+    "gradient duplicate rows p=0.5": true,
+    "gradient duplicate rows p=1.0": true,
+    "gradient duplicate rows p=1.5": true,
+    "gradient duplicate rows p=2.0": true,
+    "gradient duplicate rows p=3.0": true,
+    "gradient duplicate rows p=5.0": true,
+    "gradient duplicate rows p=inf": true,
+    "gradient inf ties": true,
+    "gradient zero component p=0.5": true,
+    "gradient zero component p=1.0": true,
+    "gradient zero component p=1.5": true,
+    "gradient strided incoming": true,
+    "gradient foreign pdist p=1.0": true,
+    "gradient foreign pdist p=2.0": true,
+    "gradient foreign pdist p=3.0": true,
+    "gradient foreign pdist p=inf": true,
+    "second derivative": true,
+    "optimizer step moves weights": true,
+    "loss decreases": true,
+    "weights follow the CPU run": true,
+    "float64 (257, 67) p=2.0": true,
+    "float64 (257, 67) p=1.0": true,
+    "float64 (64, 4096) p=2.0": true,
+    "float64 (64, 4096) p=1.0": true,
+    "float64 (16, 65536) p=2.0": true,
+    "gradient vs float64": true,
+    "forward keeps memory at the output size 1024x128": true,
+    "forward keeps memory at the output size 8192x32": true
+  },
+  "correctness": {
+    "forward": {
+      "cases": 128,
+      "worst_forward_rel": 2.6589368249834974e-07,
+      "bit_exact": 41
+    },
+    "worst_gradient_rel": 9.46693016984883e-07,
+    "spec_vectors": [
+      {
+        "case": "duplicate rows",
+        "p": "0.0",
+        "forward_rel": 0.0,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          0.0,
+          2.0,
+          2.0
+        ]
+      },
+      {
+        "case": "zero coordinate",
+        "p": "0.0",
+        "forward_rel": 0.0,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          1.0,
+          2.0,
+          2.0
+        ]
+      },
+      {
+        "case": "inf ties",
+        "p": "0.0",
+        "forward_rel": 0.0,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          3.0,
+          3.0,
+          2.0
+        ]
+      },
+      {
+        "case": "nan input",
+        "p": "0.0",
+        "forward_rel": null,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          null,
+          null,
+          1.0
+        ]
+      },
+      {
+        "case": "inf input",
+        "p": "0.0",
+        "forward_rel": 0.0,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          1.0,
+          2.0,
+          2.0
+        ]
+      },
+      {
+        "case": "duplicate rows",
+        "p": "0.5",
+        "forward_rel": 6.847073355435687e-08,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          0.0,
+          13.928204536437988,
+          13.928204536437988
+        ]
+      },
+      {
+        "case": "zero coordinate",
+        "p": "0.5",
+        "forward_rel": 4.5313999126327666e-08,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          1.0,
+          15.745965957641602,
+          13.928204536437988
+        ]
+      },
+      {
+        "case": "inf ties",
+        "p": "0.5",
+        "forward_rel": 1.7480323074455122e-07,
+        "backward_rel": 1.7633047944173476e-07,
+        "nan_pattern_equal": true,
+        "forward": [
+          14.656856536865234,
+          14.656856536865234,
+          11.656855583190918
+        ]
+      },
+      {
+        "case": "nan input",
+        "p": "0.5",
+        "forward_rel": null,
+        "backward_rel": null,
+        "nan_pattern_equal": true,
+        "forward": [
+          null,
+          null,
+          1.0
+        ]
+      },
+      {
+        "case": "inf input",
+        "p": "0.5",
+        "forward_rel": null,
+        "backward_rel": null,
+        "nan_pattern_equal": true,
+        "forward": [
+          null,
+          4.0,
+          null
+        ]
+      },
+      {
+        "case": "duplicate rows",
+        "p": "1.0",
+        "forward_rel": 0.0,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          0.0,
+          7.0,
+          7.0
+        ]
+      },
+      {
+        "case": "zero coordinate",
+        "p": "1.0",
+        "forward_rel": 0.0,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          1.0,
+          8.0,
+          7.0
+        ]
+      },
+      {
+        "case": "inf ties",
+        "p": "1.0",
+        "forward_rel": 0.0,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          5.0,
+          5.0,
+          6.0
+        ]
+      },
+      {
+        "case": "nan input",
+        "p": "1.0",
+        "forward_rel": null,
+        "backward_rel": null,
+        "nan_pattern_equal": true,
+        "forward": [
+          null,
+          null,
+          1.0
+        ]
+      },
+      {
+        "case": "inf input",
+        "p": "1.0",
+        "forward_rel": null,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          null,
+          2.0,
+          null
+        ]
+      },
+      {
+        "case": "duplicate rows",
+        "p": "1.5",
+        "forward_rel": 1.7077930267565913e-07,
+        "backward_rel": 1.5057694623642556e-07,
+        "nan_pattern_equal": true,
+        "forward": [
+          0.0,
+          5.5842509269714355,
+          5.5842509269714355
+        ]
+      },
+      {
+        "case": "zero coordinate",
+        "p": "1.5",
+        "forward_rel": 1.5702604403393555e-07,
+        "backward_rel": 1.0388438041871031e-07,
+        "nan_pattern_equal": true,
+        "forward": [
+          1.0,
+          6.448825836181641,
+          5.5842509269714355
+        ]
+      },
+      {
+        "case": "inf ties",
+        "p": "1.5",
+        "forward_rel": 8.342792915517033e-08,
+        "backward_rel": 6.54357656463266e-08,
+        "nan_pattern_equal": true,
+        "forward": [
+          3.5387189388275146,
+          3.5387189388275146,
+          4.894522190093994
+        ]
+      },
+      {
+        "case": "nan input",
+        "p": "1.5",
+        "forward_rel": null,
+        "backward_rel": null,
+        "nan_pattern_equal": true,
+        "forward": [
+          null,
+          null,
+          1.0
+        ]
+      },
+      {
+        "case": "inf input",
+        "p": "1.5",
+        "forward_rel": null,
+        "backward_rel": null,
+        "nan_pattern_equal": true,
+        "forward": [
+          null,
+          1.587401032447815,
+          null
+        ]
+      },
+      {
+        "case": "duplicate rows",
+        "p": "2.0",
+        "forward_rel": 0.0,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          0.0,
+          5.0,
+          5.0
+        ]
+      },
+      {
+        "case": "zero coordinate",
+        "p": "2.0",
+        "forward_rel": 0.0,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          1.0,
+          5.830951690673828,
+          5.0
+        ]
+      },
+      {
+        "case": "inf ties",
+        "p": "2.0",
+        "forward_rel": 0.0,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          3.0,
+          3.0,
+          4.4721360206604
+        ]
+      },
+      {
+        "case": "nan input",
+        "p": "2.0",
+        "forward_rel": null,
+        "backward_rel": null,
+        "nan_pattern_equal": true,
+        "forward": [
+          null,
+          null,
+          1.0
+        ]
+      },
+      {
+        "case": "inf input",
+        "p": "2.0",
+        "forward_rel": null,
+        "backward_rel": null,
+        "nan_pattern_equal": true,
+        "forward": [
+          null,
+          1.4142135381698608,
+          null
+        ]
+      },
+      {
+        "case": "duplicate rows",
+        "p": "3.0",
+        "forward_rel": 0.0,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          0.0,
+          4.497941493988037,
+          4.497941493988037
+        ]
+      },
+      {
+        "case": "zero coordinate",
+        "p": "3.0",
+        "forward_rel": 6.762936809543441e-08,
+        "backward_rel": 1.2925023087043833e-07,
+        "nan_pattern_equal": true,
+        "forward": [
+          1.0,
+          5.336803913116455,
+          4.497941493988037
+        ]
+      },
+      {
+        "case": "inf ties",
+        "p": "3.0",
+        "forward_rel": 0.0,
+        "backward_rel": 5.453535057741053e-08,
+        "nan_pattern_equal": true,
+        "forward": [
+          2.571281671524048,
+          2.571281671524048,
+          4.160167694091797
+        ]
+      },
+      {
+        "case": "nan input",
+        "p": "3.0",
+        "forward_rel": null,
+        "backward_rel": null,
+        "nan_pattern_equal": true,
+        "forward": [
+          null,
+          null,
+          1.0
+        ]
+      },
+      {
+        "case": "inf input",
+        "p": "3.0",
+        "forward_rel": null,
+        "backward_rel": null,
+        "nan_pattern_equal": true,
+        "forward": [
+          null,
+          1.2599210739135742,
+          null
+        ]
+      },
+      {
+        "case": "duplicate rows",
+        "p": "5.0",
+        "forward_rel": 1.1423910473098406e-07,
+        "backward_rel": 5.757104696284133e-07,
+        "nan_pattern_equal": true,
+        "forward": [
+          0.0,
+          4.174027919769287,
+          4.174027919769287
+        ]
+      },
+      {
+        "case": "zero coordinate",
+        "p": "5.0",
+        "forward_rel": 7.173713863217155e-08,
+        "backward_rel": 3.0254870252380795e-07,
+        "nan_pattern_equal": true,
+        "forward": [
+          1.0,
+          5.075448513031006,
+          4.174027919769287
+        ]
+      },
+      {
+        "case": "inf ties",
+        "p": "5.0",
+        "forward_rel": 1.127683592774322e-07,
+        "backward_rel": 4.5153839177322654e-07,
+        "nan_pattern_equal": true,
+        "forward": [
+          2.3045318126678467,
+          2.3045318126678467,
+          4.024693489074707
+        ]
+      },
+      {
+        "case": "nan input",
+        "p": "5.0",
+        "forward_rel": null,
+        "backward_rel": null,
+        "nan_pattern_equal": true,
+        "forward": [
+          null,
+          null,
+          1.0
+        ]
+      },
+      {
+        "case": "inf input",
+        "p": "5.0",
+        "forward_rel": null,
+        "backward_rel": null,
+        "nan_pattern_equal": true,
+        "forward": [
+          null,
+          1.148698329925537,
+          null
+        ]
+      },
+      {
+        "case": "duplicate rows",
+        "p": "inf",
+        "forward_rel": 0.0,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          0.0,
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "case": "zero coordinate",
+        "p": "inf",
+        "forward_rel": 0.0,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          1.0,
+          5.0,
+          4.0
+        ]
+      },
+      {
+        "case": "inf ties",
+        "p": "inf",
+        "forward_rel": 0.0,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          2.0,
+          2.0,
+          4.0
+        ]
+      },
+      {
+        "case": "nan input",
+        "p": "inf",
+        "forward_rel": null,
+        "backward_rel": null,
+        "nan_pattern_equal": true,
+        "forward": [
+          null,
+          null,
+          1.0
+        ]
+      },
+      {
+        "case": "inf input",
+        "p": "inf",
+        "forward_rel": null,
+        "backward_rel": null,
+        "nan_pattern_equal": true,
+        "forward": [
+          null,
+          1.0,
+          null
+        ]
+      },
+      {
+        "case": "signed zero",
+        "p": "0.0",
+        "forward_rel": 0.0,
+        "backward_rel": 0.0,
+        "nan_pattern_equal": true,
+        "forward": [
+          0.0
+        ]
+      }
+    ],
+    "float64": [
+      {
+        "shape": [
+          257,
+          67
+        ],
+        "p": "2.0",
+        "cpu_vs_float64": 4.1822463673761215e-08,
+        "mps_vs_float64": 7.040562851904447e-08,
+        "mps_vs_cpu": 7.538354176838636e-08
+      },
+      {
+        "shape": [
+          257,
+          67
+        ],
+        "p": "1.0",
+        "cpu_vs_float64": 5.828222772893059e-08,
+        "mps_vs_float64": 1.289217700891953e-07,
+        "mps_vs_cpu": 1.388216747080592e-07
+      },
+      {
+        "shape": [
+          64,
+          4096
+        ],
+        "p": "2.0",
+        "cpu_vs_float64": 1.1618257909292567e-07,
+        "mps_vs_float64": 3.757887631499084e-08,
+        "mps_vs_cpu": 1.1818108203545194e-07
+      },
+      {
+        "shape": [
+          64,
+          4096
+        ],
+        "p": "1.0",
+        "cpu_vs_float64": 2.489287744212514e-07,
+        "mps_vs_float64": 5.983790806001114e-08,
+        "mps_vs_cpu": 2.531722163685236e-07
+      },
+      {
+        "shape": [
+          16,
+          65536
+        ],
+        "p": "2.0",
+        "cpu_vs_float64": 6.092167800234525e-07,
+        "mps_vs_float64": 4.6184604905121844e-08,
+        "mps_vs_cpu": 6.107711877309235e-07
+      }
+    ],
+    "memory": [
+      {
+        "shape": [
+          1024,
+          128
+        ],
+        "used_bytes": 2097152,
+        "output_bytes": 2095104,
+        "n_times_n_times_d_bytes": 536870912
+      },
+      {
+        "shape": [
+          8192,
+          32
+        ],
+        "used_bytes": 134217728,
+        "output_bytes": 134201344,
+        "n_times_n_times_d_bytes": 8589934592
+      }
+    ]
+  },
+  "failed": [],
+  "timing": {
+    "overhead": {
+      "shape": [
+        2,
+        3
+      ],
+      "note": "fixed per-call cost: autograd bookkeeping, argument packing, kernel dispatch",
+      "mps_us": {
+        "median": 76.78,
+        "min": 23.52
+      },
+      "cpu_us": {
+        "median": 1.04,
+        "min": 0.96
+      }
+    },
+    "rows": [
+      {
+        "shape": [
+          256,
+          64
+        ],
+        "p": "0.0",
+        "mps_forward_us": {
+          "median": 139.38,
+          "min": 90.17
+        },
+        "mps_backward_us": {
+          "median": 141.58,
+          "min": 84.69
+        },
+        "mps_forward_backward_us": {
+          "median": 664.91,
+          "min": 326.96
+        },
+        "forward_gbs": 186.8,
+        "backward_gbs": null,
+        "copy_floor_gbs": 180.9,
+        "forward_pairs_per_ms": 0.36,
+        "backward_pairs_per_ms": null,
+        "cpu_forward_us": {
+          "median": 86.5,
+          "min": 85.21
+        },
+        "cpu_backward_us": {
+          "median": 119.38,
+          "min": 103.38
+        },
+        "cpu_forward_backward_us": {
+          "median": 148.5,
+          "min": 142.42
+        },
+        "forward_speedup_min": 0.95,
+        "backward_speedup_min": 1.22,
+        "forward_backward_speedup_min": 0.44
+      },
+      {
+        "shape": [
+          256,
+          64
+        ],
+        "p": "1.0",
+        "mps_forward_us": {
+          "median": 105.16,
+          "min": 81.9
+        },
+        "mps_backward_us": {
+          "median": 169.27,
+          "min": 118.71
+        },
+        "mps_forward_backward_us": {
+          "median": 609.89,
+          "min": 252.0
+        },
+        "forward_gbs": 205.7,
+        "backward_gbs": 145.2,
+        "copy_floor_gbs": 199.9,
+        "forward_pairs_per_ms": 0.4,
+        "backward_pairs_per_ms": 0.27,
+        "cpu_forward_us": {
+          "median": 84.04,
+          "min": 83.25
+        },
+        "cpu_backward_us": {
+          "median": 614.04,
+          "min": 599.42
+        },
+        "cpu_forward_backward_us": {
+          "median": 686.83,
+          "min": 662.33
+        },
+        "forward_speedup_min": 1.02,
+        "backward_speedup_min": 5.05,
+        "forward_backward_speedup_min": 2.63
+      },
+      {
+        "shape": [
+          256,
+          64
+        ],
+        "p": "2.0",
+        "mps_forward_us": {
+          "median": 131.62,
+          "min": 89.75
+        },
+        "mps_backward_us": {
+          "median": 203.44,
+          "min": 137.71
+        },
+        "mps_forward_backward_us": {
+          "median": 705.41,
+          "min": 214.63
+        },
+        "forward_gbs": 187.7,
+        "backward_gbs": 125.1,
+        "copy_floor_gbs": 167.1,
+        "forward_pairs_per_ms": 0.36,
+        "backward_pairs_per_ms": 0.24,
+        "cpu_forward_us": {
+          "median": 89.54,
+          "min": 86.17
+        },
+        "cpu_backward_us": {
+          "median": 1051.58,
+          "min": 947.29
+        },
+        "cpu_forward_backward_us": {
+          "median": 723.58,
+          "min": 674.33
+        },
+        "forward_speedup_min": 0.96,
+        "backward_speedup_min": 6.88,
+        "forward_backward_speedup_min": 3.14
+      },
+      {
+        "shape": [
+          256,
+          64
+        ],
+        "p": "3.0",
+        "mps_forward_us": {
+          "median": 233.72,
+          "min": 155.31
+        },
+        "mps_backward_us": {
+          "median": 541.48,
+          "min": 453.17
+        },
+        "mps_forward_backward_us": {
+          "median": 1186.79,
+          "min": 687.13
+        },
+        "forward_gbs": 108.4,
+        "backward_gbs": 38.0,
+        "copy_floor_gbs": 180.9,
+        "forward_pairs_per_ms": 0.21,
+        "backward_pairs_per_ms": 0.07,
+        "cpu_forward_us": {
+          "median": 1709.88,
+          "min": 1706.92
+        },
+        "cpu_backward_us": {
+          "median": 6042.04,
+          "min": 5802.17
+        },
+        "cpu_forward_backward_us": {
+          "median": 7340.42,
+          "min": 6925.17
+        },
+        "forward_speedup_min": 10.99,
+        "backward_speedup_min": 12.8,
+        "forward_backward_speedup_min": 10.08
+      },
+      {
+        "shape": [
+          256,
+          64
+        ],
+        "p": "inf",
+        "mps_forward_us": {
+          "median": 114.02,
+          "min": 77.25
+        },
+        "mps_backward_us": {
+          "median": 169.58,
+          "min": 113.08
+        },
+        "mps_forward_backward_us": {
+          "median": 396.08,
+          "min": 195.37
+        },
+        "forward_gbs": 218.0,
+        "backward_gbs": 152.4,
+        "copy_floor_gbs": 195.9,
+        "forward_pairs_per_ms": 0.42,
+        "backward_pairs_per_ms": 0.29,
+        "cpu_forward_us": {
+          "median": 94.21,
+          "min": 93.08
+        },
+        "cpu_backward_us": {
+          "median": 588.42,
+          "min": 584.88
+        },
+        "cpu_forward_backward_us": {
+          "median": 801.88,
+          "min": 573.17
+        },
+        "forward_speedup_min": 1.2,
+        "backward_speedup_min": 5.17,
+        "forward_backward_speedup_min": 2.93
+      },
+      {
+        "shape": [
+          1024,
+          128
+        ],
+        "p": "0.0",
+        "mps_forward_us": {
+          "median": 469.46,
+          "min": 311.29
+        },
+        "mps_backward_us": {
+          "median": 136.1,
+          "min": 86.5
+        },
+        "mps_forward_backward_us": {
+          "median": 675.46,
+          "min": 495.63
+        },
+        "forward_gbs": 1729.7,
+        "backward_gbs": null,
+        "copy_floor_gbs": 490.1,
+        "forward_pairs_per_ms": 1.68,
+        "backward_pairs_per_ms": null,
+        "cpu_forward_us": {
+          "median": 1391.12,
+          "min": 1308.04
+        },
+        "cpu_backward_us": {
+          "median": 1610.25,
+          "min": 1594.25
+        },
+        "cpu_forward_backward_us": {
+          "median": 2058.96,
+          "min": 1909.17
+        },
+        "forward_speedup_min": 4.2,
+        "backward_speedup_min": 18.43,
+        "forward_backward_speedup_min": 3.85
+      },
+      {
+        "shape": [
+          1024,
+          128
+        ],
+        "p": "1.0",
+        "mps_forward_us": {
+          "median": 494.22,
+          "min": 293.31
+        },
+        "mps_backward_us": {
+          "median": 410.16,
+          "min": 272.38
+        },
+        "mps_forward_backward_us": {
+          "median": 954.37,
+          "min": 765.27
+        },
+        "forward_gbs": 1835.7,
+        "backward_gbs": 1999.9,
+        "copy_floor_gbs": 488.5,
+        "forward_pairs_per_ms": 1.79,
+        "backward_pairs_per_ms": 1.92,
+        "cpu_forward_us": {
+          "median": 834.29,
+          "min": 824.75
+        },
+        "cpu_backward_us": {
+          "median": 7814.67,
+          "min": 7334.96
+        },
+        "cpu_forward_backward_us": {
+          "median": 9493.96,
+          "min": 8797.5
+        },
+        "forward_speedup_min": 2.81,
+        "backward_speedup_min": 26.93,
+        "forward_backward_speedup_min": 11.5
+      },
+      {
+        "shape": [
+          1024,
+          128
+        ],
+        "p": "2.0",
+        "mps_forward_us": {
+          "median": 481.36,
+          "min": 333.65
+        },
+        "mps_backward_us": {
+          "median": 538.71,
+          "min": 359.65
+        },
+        "mps_forward_backward_us": {
+          "median": 1026.09,
+          "min": 748.56
+        },
+        "forward_gbs": 1613.8,
+        "backward_gbs": 1514.6,
+        "copy_floor_gbs": 490.4,
+        "forward_pairs_per_ms": 1.57,
+        "backward_pairs_per_ms": 1.46,
+        "cpu_forward_us": {
+          "median": 862.13,
+          "min": 857.29
+        },
+        "cpu_backward_us": {
+          "median": 13129.04,
+          "min": 12863.04
+        },
+        "cpu_forward_backward_us": {
+          "median": 13364.92,
+          "min": 12442.33
+        },
+        "forward_speedup_min": 2.57,
+        "backward_speedup_min": 35.77,
+        "forward_backward_speedup_min": 16.62
+      },
+      {
+        "shape": [
+          1024,
+          128
+        ],
+        "p": "3.0",
+        "mps_forward_us": {
+          "median": 1511.28,
+          "min": 1394.17
+        },
+        "mps_backward_us": {
+          "median": 2421.69,
+          "min": 2310.31
+        },
+        "mps_forward_backward_us": {
+          "median": 4138.52,
+          "min": 3670.1
+        },
+        "forward_gbs": 386.2,
+        "backward_gbs": 235.8,
+        "copy_floor_gbs": 498.2,
+        "forward_pairs_per_ms": 0.38,
+        "backward_pairs_per_ms": 0.23,
+        "cpu_forward_us": {
+          "median": 57292.29,
+          "min": 56985.21
+        },
+        "cpu_backward_us": {
+          "median": 185182.96,
+          "min": 184789.79
+        },
+        "cpu_forward_backward_us": {
+          "median": 188483.75,
+          "min": 185861.58
+        },
+        "forward_speedup_min": 40.87,
+        "backward_speedup_min": 79.98,
+        "forward_backward_speedup_min": 50.64
+      },
+      {
+        "shape": [
+          1024,
+          128
+        ],
+        "p": "inf",
+        "mps_forward_us": {
+          "median": 582.85,
+          "min": 357.67
+        },
+        "mps_backward_us": {
+          "median": 799.83,
+          "min": 370.0
+        },
+        "mps_forward_backward_us": {
+          "median": 1078.05,
+          "min": 872.4
+        },
+        "forward_gbs": 1505.4,
+        "backward_gbs": 1472.2,
+        "copy_floor_gbs": 474.5,
+        "forward_pairs_per_ms": 1.46,
+        "backward_pairs_per_ms": 1.42,
+        "cpu_forward_us": {
+          "median": 796.46,
+          "min": 791.25
+        },
+        "cpu_backward_us": {
+          "median": 7377.88,
+          "min": 7088.83
+        },
+        "cpu_forward_backward_us": {
+          "median": 9989.13,
+          "min": 9104.54
+        },
+        "forward_speedup_min": 2.21,
+        "backward_speedup_min": 19.16,
+        "forward_backward_speedup_min": 10.44
+      },
+      {
+        "shape": [
+          2048,
+          96
+        ],
+        "p": "0.0",
+        "mps_forward_us": {
+          "median": 618.43,
+          "min": 583.58
+        },
+        "mps_backward_us": {
+          "median": 111.21,
+          "min": 77.02
+        },
+        "mps_forward_backward_us": {
+          "median": 998.99,
+          "min": 686.25
+        },
+        "forward_gbs": 2772.9,
+        "backward_gbs": null,
+        "copy_floor_gbs": 522.8,
+        "forward_pairs_per_ms": 3.59,
+        "backward_pairs_per_ms": null,
+        "cpu_forward_us": {
+          "median": 3029.62,
+          "min": 2860.96
+        },
+        "cpu_backward_us": {
+          "median": 3589.75,
+          "min": 3375.38
+        },
+        "cpu_forward_backward_us": {
+          "median": 4414.42,
+          "min": 4027.42
+        },
+        "forward_speedup_min": 4.9,
+        "backward_speedup_min": 43.82,
+        "forward_backward_speedup_min": 5.87
+      },
+      {
+        "shape": [
+          2048,
+          96
+        ],
+        "p": "1.0",
+        "mps_forward_us": {
+          "median": 719.99,
+          "min": 489.0
+        },
+        "mps_backward_us": {
+          "median": 882.66,
+          "min": 627.9
+        },
+        "mps_forward_backward_us": {
+          "median": 1652.52,
+          "min": 1232.63
+        },
+        "forward_gbs": 3309.2,
+        "backward_gbs": 2617.3,
+        "copy_floor_gbs": 519.0,
+        "forward_pairs_per_ms": 4.29,
+        "backward_pairs_per_ms": 3.34,
+        "cpu_forward_us": {
+          "median": 2627.08,
+          "min": 2595.46
+        },
+        "cpu_backward_us": {
+          "median": 13739.33,
+          "min": 13571.12
+        },
+        "cpu_forward_backward_us": {
+          "median": 15606.75,
+          "min": 13952.21
+        },
+        "forward_speedup_min": 5.31,
+        "backward_speedup_min": 21.61,
+        "forward_backward_speedup_min": 11.32
+      },
+      {
+        "shape": [
+          2048,
+          96
+        ],
+        "p": "2.0",
+        "mps_forward_us": {
+          "median": 665.7,
+          "min": 606.08
+        },
+        "mps_backward_us": {
+          "median": 900.08,
+          "min": 825.44
+        },
+        "mps_forward_backward_us": {
+          "median": 1736.77,
+          "min": 1530.9
+        },
+        "forward_gbs": 2669.9,
+        "backward_gbs": 1990.9,
+        "copy_floor_gbs": 528.4,
+        "forward_pairs_per_ms": 3.46,
+        "backward_pairs_per_ms": 2.54,
+        "cpu_forward_us": {
+          "median": 2735.88,
+          "min": 2722.29
+        },
+        "cpu_backward_us": {
+          "median": 17150.71,
+          "min": 15049.54
+        },
+        "cpu_forward_backward_us": {
+          "median": 16769.5,
+          "min": 15003.88
+        },
+        "forward_speedup_min": 4.49,
+        "backward_speedup_min": 18.23,
+        "forward_backward_speedup_min": 9.8
+      },
+      {
+        "shape": [
+          2048,
+          96
+        ],
+        "p": "3.0",
+        "mps_forward_us": {
+          "median": 5467.41,
+          "min": 5287.44
+        },
+        "mps_backward_us": {
+          "median": 6202.1,
+          "min": 5971.19
+        },
+        "mps_forward_backward_us": {
+          "median": 12048.69,
+          "min": 11544.92
+        },
+        "forward_gbs": 306.0,
+        "backward_gbs": 275.2,
+        "copy_floor_gbs": 523.8,
+        "forward_pairs_per_ms": 0.4,
+        "backward_pairs_per_ms": 0.35,
+        "cpu_forward_us": {
+          "median": 175160.88,
+          "min": 174455.08
+        },
+        "cpu_backward_us": {
+          "median": 543413.25,
+          "min": 537009.29
+        },
+        "cpu_forward_backward_us": {
+          "median": 540569.0,
+          "min": 536622.63
+        },
+        "forward_speedup_min": 32.99,
+        "backward_speedup_min": 89.93,
+        "forward_backward_speedup_min": 46.48
+      },
+      {
+        "shape": [
+          2048,
+          96
+        ],
+        "p": "inf",
+        "mps_forward_us": {
+          "median": 565.45,
+          "min": 530.92
+        },
+        "mps_backward_us": {
+          "median": 995.2,
+          "min": 916.96
+        },
+        "mps_forward_backward_us": {
+          "median": 1774.75,
+          "min": 1471.85
+        },
+        "forward_gbs": 3048.0,
+        "backward_gbs": 1792.2,
+        "copy_floor_gbs": 530.8,
+        "forward_pairs_per_ms": 3.95,
+        "backward_pairs_per_ms": 2.29,
+        "cpu_forward_us": {
+          "median": 2734.63,
+          "min": 2721.75
+        },
+        "cpu_backward_us": {
+          "median": 15129.08,
+          "min": 14786.58
+        },
+        "cpu_forward_backward_us": {
+          "median": 15574.12,
+          "min": 14663.58
+        },
+        "forward_speedup_min": 5.13,
+        "backward_speedup_min": 16.13,
+        "forward_backward_speedup_min": 9.96
+      },
+      {
+        "shape": [
+          4096,
+          32
+        ],
+        "p": "0.0",
+        "mps_forward_us": {
+          "median": 560.95,
+          "min": 531.35
+        },
+        "mps_backward_us": {
+          "median": 110.86,
+          "min": 95.92
+        },
+        "mps_forward_backward_us": {
+          "median": 932.37,
+          "min": 870.52
+        },
+        "forward_gbs": 4103.7,
+        "backward_gbs": null,
+        "copy_floor_gbs": 534.1,
+        "forward_pairs_per_ms": 15.78,
+        "backward_pairs_per_ms": null,
+        "cpu_forward_us": {
+          "median": 3668.33,
+          "min": 3617.42
+        },
+        "cpu_backward_us": {
+          "median": 4323.71,
+          "min": 4112.58
+        },
+        "cpu_forward_backward_us": {
+          "median": 5420.62,
+          "min": 5033.0
+        },
+        "forward_speedup_min": 6.81,
+        "backward_speedup_min": 42.88,
+        "forward_backward_speedup_min": 5.78
+      },
+      {
+        "shape": [
+          4096,
+          32
+        ],
+        "p": "1.0",
+        "mps_forward_us": {
+          "median": 520.64,
+          "min": 488.19
+        },
+        "mps_backward_us": {
+          "median": 845.26,
+          "min": 823.27
+        },
+        "mps_forward_backward_us": {
+          "median": 1663.06,
+          "min": 1265.42
+        },
+        "forward_gbs": 4466.5,
+        "backward_gbs": 2770.8,
+        "copy_floor_gbs": 533.7,
+        "forward_pairs_per_ms": 17.18,
+        "backward_pairs_per_ms": 10.19,
+        "cpu_forward_us": {
+          "median": 3516.42,
+          "min": 3503.12
+        },
+        "cpu_backward_us": {
+          "median": 75340.63,
+          "min": 73671.37
+        },
+        "cpu_forward_backward_us": {
+          "median": 73864.58,
+          "min": 72027.42
+        },
+        "forward_speedup_min": 7.18,
+        "backward_speedup_min": 89.49,
+        "forward_backward_speedup_min": 56.92
+      },
+      {
+        "shape": [
+          4096,
+          32
+        ],
+        "p": "2.0",
+        "mps_forward_us": {
+          "median": 529.2,
+          "min": 504.88
+        },
+        "mps_backward_us": {
+          "median": 1372.6,
+          "min": 1148.92
+        },
+        "mps_forward_backward_us": {
+          "median": 1987.6,
+          "min": 1574.98
+        },
+        "forward_gbs": 4318.9,
+        "backward_gbs": 1985.5,
+        "copy_floor_gbs": 530.3,
+        "forward_pairs_per_ms": 16.61,
+        "backward_pairs_per_ms": 7.3,
+        "cpu_forward_us": {
+          "median": 4212.17,
+          "min": 3903.33
+        },
+        "cpu_backward_us": {
+          "median": 76605.79,
+          "min": 76099.75
+        },
+        "cpu_forward_backward_us": {
+          "median": 75312.75,
+          "min": 74750.83
+        },
+        "forward_speedup_min": 7.73,
+        "backward_speedup_min": 66.24,
+        "forward_backward_speedup_min": 47.46
+      },
+      {
+        "shape": [
+          4096,
+          32
+        ],
+        "p": "3.0",
+        "mps_forward_us": {
+          "median": 4085.57,
+          "min": 3944.96
+        },
+        "mps_backward_us": {
+          "median": 9113.9,
+          "min": 8938.62
+        },
+        "mps_forward_backward_us": {
+          "median": 13635.41,
+          "min": 13307.87
+        },
+        "forward_gbs": 552.7,
+        "backward_gbs": 255.2,
+        "copy_floor_gbs": 531.7,
+        "forward_pairs_per_ms": 2.13,
+        "backward_pairs_per_ms": 0.94,
+        "cpu_forward_us": {
+          "median": 253200.08,
+          "min": 251791.54
+        },
+        "cpu_backward_us": {
+          "median": 952026.79,
+          "min": 934688.79
+        },
+        "cpu_forward_backward_us": {
+          "median": 937968.0,
+          "min": 933250.71
+        },
+        "forward_speedup_min": 63.83,
+        "backward_speedup_min": 104.57,
+        "forward_backward_speedup_min": 70.13
+      },
+      {
+        "shape": [
+          4096,
+          32
+        ],
+        "p": "inf",
+        "mps_forward_us": {
+          "median": 518.42,
+          "min": 497.48
+        },
+        "mps_backward_us": {
+          "median": 1321.96,
+          "min": 1249.94
+        },
+        "mps_forward_backward_us": {
+          "median": 1959.75,
+          "min": 1780.12
+        },
+        "forward_gbs": 4383.1,
+        "backward_gbs": 1825.0,
+        "copy_floor_gbs": 526.8,
+        "forward_pairs_per_ms": 16.86,
+        "backward_pairs_per_ms": 6.71,
+        "cpu_forward_us": {
+          "median": 3956.46,
+          "min": 3791.71
+        },
+        "cpu_backward_us": {
+          "median": 71929.58,
+          "min": 68176.25
+        },
+        "cpu_forward_backward_us": {
+          "median": 71053.0,
+          "min": 70910.25
+        },
+        "forward_speedup_min": 7.62,
+        "backward_speedup_min": 54.54,
+        "forward_backward_speedup_min": 39.83
+      },
+      {
+        "shape": [
+          4096,
+          256
+        ],
+        "p": "0.0",
+        "mps_forward_us": {
+          "median": 2427.1,
+          "min": 2216.9
+        },
+        "mps_backward_us": {
+          "median": 161.93,
+          "min": 90.96
+        },
+        "mps_forward_backward_us": {
+          "median": 2781.82,
+          "min": 2477.25
+        },
+        "forward_gbs": 7762.8,
+        "backward_gbs": null,
+        "copy_floor_gbs": 534.7,
+        "forward_pairs_per_ms": 3.78,
+        "backward_pairs_per_ms": null,
+        "cpu_forward_us": {
+          "median": 41735.25,
+          "min": 40546.42
+        },
+        "cpu_backward_us": {
+          "median": 40515.96,
+          "min": 39325.83
+        },
+        "cpu_forward_backward_us": {
+          "median": 39234.96,
+          "min": 37761.5
+        },
+        "forward_speedup_min": 18.29,
+        "backward_speedup_min": 432.35,
+        "forward_backward_speedup_min": 15.24
+      },
+      {
+        "shape": [
+          4096,
+          256
+        ],
+        "p": "1.0",
+        "mps_forward_us": {
+          "median": 1722.83,
+          "min": 1635.96
+        },
+        "mps_backward_us": {
+          "median": 5881.67,
+          "min": 5487.87
+        },
+        "mps_forward_backward_us": {
+          "median": 7344.0,
+          "min": 6979.94
+        },
+        "forward_gbs": 10519.4,
+        "backward_gbs": 3154.2,
+        "copy_floor_gbs": 535.9,
+        "forward_pairs_per_ms": 5.13,
+        "backward_pairs_per_ms": 1.53,
+        "cpu_forward_us": {
+          "median": 35198.0,
+          "min": 34356.5
+        },
+        "cpu_backward_us": {
+          "median": 396608.71,
+          "min": 394511.21
+        },
+        "cpu_forward_backward_us": {
+          "median": 406834.96,
+          "min": 391111.88
+        },
+        "forward_speedup_min": 21.0,
+        "backward_speedup_min": 71.89,
+        "forward_backward_speedup_min": 56.03
+      },
+      {
+        "shape": [
+          4096,
+          256
+        ],
+        "p": "2.0",
+        "mps_forward_us": {
+          "median": 2324.91,
+          "min": 2116.06
+        },
+        "mps_backward_us": {
+          "median": 6832.27,
+          "min": 6623.08
+        },
+        "mps_forward_backward_us": {
+          "median": 8940.3,
+          "min": 8568.06
+        },
+        "forward_gbs": 8132.7,
+        "backward_gbs": 2613.6,
+        "copy_floor_gbs": 532.5,
+        "forward_pairs_per_ms": 3.96,
+        "backward_pairs_per_ms": 1.27,
+        "cpu_forward_us": {
+          "median": 42171.63,
+          "min": 39809.75
+        },
+        "cpu_backward_us": {
+          "median": 534407.58,
+          "min": 531470.63
+        },
+        "cpu_forward_backward_us": {
+          "median": 518036.29,
+          "min": 502044.96
+        },
+        "forward_speedup_min": 18.81,
+        "backward_speedup_min": 80.25,
+        "forward_backward_speedup_min": 58.59
+      },
+      {
+        "shape": [
+          4096,
+          256
+        ],
+        "p": "3.0",
+        "mps_forward_us": {
+          "median": 36341.23,
+          "min": 35750.98
+        },
+        "mps_backward_us": {
+          "median": 50202.69,
+          "min": 49214.96
+        },
+        "mps_forward_backward_us": {
+          "median": 86683.75,
+          "min": 85544.29
+        },
+        "forward_gbs": 481.4,
+        "backward_gbs": 351.7,
+        "copy_floor_gbs": 524.6,
+        "forward_pairs_per_ms": 0.23,
+        "backward_pairs_per_ms": 0.17,
+        "cpu_forward_us": {
+          "median": 1758069.63,
+          "min": 1750802.63
+        },
+        "cpu_backward_us": {
+          "median": 5702024.58,
+          "min": 5659224.58
+        },
+        "cpu_forward_backward_us": {
+          "median": 6132284.25,
+          "min": 5977521.92
+        },
+        "forward_speedup_min": 48.97,
+        "backward_speedup_min": 114.99,
+        "forward_backward_speedup_min": 69.88
+      },
+      {
+        "shape": [
+          4096,
+          256
+        ],
+        "p": "inf",
+        "mps_forward_us": {
+          "median": 3564.09,
+          "min": 2079.58
+        },
+        "mps_backward_us": {
+          "median": 12455.49,
+          "min": 7457.25
+        },
+        "mps_forward_backward_us": {
+          "median": 16829.96,
+          "min": 9340.58
+        },
+        "forward_gbs": 8275.3,
+        "backward_gbs": 2321.2,
+        "copy_floor_gbs": 548.4,
+        "forward_pairs_per_ms": 4.03,
+        "backward_pairs_per_ms": 1.12,
+        "cpu_forward_us": {
+          "median": 27880.58,
+          "min": 27171.04
+        },
+        "cpu_backward_us": {
+          "median": 347413.37,
+          "min": 345846.37
+        },
+        "cpu_forward_backward_us": {
+          "median": 461732.67,
+          "min": 440022.58
+        },
+        "forward_speedup_min": 13.07,
+        "backward_speedup_min": 46.38,
+        "forward_backward_speedup_min": 47.11
+      }
+    ],
+    "note": "forward_gbs and backward_gbs count the stream the naive mapping reads: both rows of every pair (forward) and every partner row plus that pair's grad and dist, once per destination row (backward). Both exceed copy_floor_gbs several-fold because the input is small enough to be served from cache, and the tiled forward moves far less than the stream figure implies. copy_floor_gbs is a copy of the same size on the same batch, so it is the device bandwidth the box was delivering at that moment."
+  },
+  "model_step": {
+    "cpu": {
+      "initial_loss": 22.021446228027344,
+      "weights_moved": true,
+      "median_ms": 2.018,
+      "min_ms": 1.992
+    },
+    "mps": {
+      "initial_loss": 22.020498275756836,
+      "weights_moved": true,
+      "median_ms": 0.911,
+      "min_ms": 0.776
+    },
+    "speedup": 2.22,
+    "loss_matches_cpu": true,
+    "weight_drift_vs_cpu": 0.0005402565002441406
+  },
+  "notes": [
+    "ATen selects pdist branches in a different order forward and backward: the forward tests isinf before the general formula, the backward tests p < 2 first, so p == -inf is a maximum forward and the p < 2 quotient backward. pdist rejects negative p, so a direct aten call is the only way in.",
+    "d == 0 returns zeros on both sides because ATen fills the packed vector; the kernel is not launched.",
+    "_pdist_backward requires n*(n-1)/2 values in grad_output and pdist; ATen reads out of bounds here, so the overlay raises instead.",
+    "A strided input to the aten ops is copied rather than rejected; public pdist makes the input contiguous first, so only a direct aten call differs.",
+    "float32 only: ATen's pdist kernels raise NotImplementedError for half and bfloat16 and MPS has no float64, so the dtype contract matches the CPU backend.",
+    "NaN and infinity propagate through the same branch as ATen: a NaN difference poisons p == 0, p == inf (the maximum is taken on the IEEE bit pattern) and every general p, and it poisons the p == 1 and p == inf gradients through sign(diff) even where the mask is zero.",
+    "Forward differences against CPU are float32 rounding behind a pairwise simd_sum; against float64 the MPS kernel is the closer of the two at large d.",
+    "Timing runs under a tier-1 lease on a box where a couple of dozen other probes share the GPU, so absolute times swing by several times between sweeps. Every candidate in a row - forward, backward, autograd step, and a copy of the same size - is timed round-robin inside the same batch, and the minima are compared: a minimum is a launch that did not have to wait, and comparing minima from the same batch is the only comparison that holds while the box is loaded. copy_floor_gbs states what the device was actually delivering in that batch.",
+    "The forward's tiled path applies when d is a multiple of 4, a row fits in eight float4 per lane, there are at least TILE_MIN_ROWS rows, and p is not in the general branch; the backward always runs its hoisted, four-way-unrolled sweep. Measured within single batches at 4096x256, the backward went 23.3 ms to 9.4 ms at p == 2 (2.5x), 17.2 to 7.3 at p == inf (2.4x) and 95.0 to 50.3 at p == 3 (1.9x), and the forward 6.19 to 3.84 ms at p == 2 (1.6x) and 3.75 to 2.08 at p == inf (1.8x).",
+    "A 2x3 forward is pure fixed cost - autograd bookkeeping, argument packing, dispatch - and measured 72 us on MPS against 0.8 us on the CPU kernel. Inputs below a few hundred rows are dispatch-bound and the CPU kernel wins on wall time there.",
+    "The kernels win once there is work to amortise the launch: at 4096x256 the forward is 15x the CPU kernel and the backward 69x at p == 2, and the general branch (p == 3), where the CPU spends four pow calls per element, is 51x forward and 122x backward. The spread across p is how much arithmetic each pair's term costs.",
+    "Forward allocation equals the packed output exactly (2 MiB at 1024x128, 128 MiB at 8192x32) against 0.5 GiB and 8 GiB for an n x n x d difference tensor; the 8192-row case runs inside the tier-1 2 GB lease, which 8 GiB would not."
+  ]
+}

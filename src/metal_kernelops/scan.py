@@ -156,8 +156,9 @@ kernel void reverse_boundaries(
     float running = 0.0f;
     for (int k = int(chunks) - 1; k >= 0; --k) {
         uint p = (row * chunks + k) * states + n;
-        running = adjoints[p] + decays[p] * running;
+        float next = adjoints[p] + decays[p] * running;
         adjoints[p] = running;
+        running = next;
     }
 }
 

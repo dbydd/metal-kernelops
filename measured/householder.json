@@ -1,0 +1,595 @@
+{
+  "module": "metal_kernelops.householder_ops",
+  "operators": [
+    "aten::ormqr",
+    "aten::ormqr.out",
+    "aten::linalg_householder_product"
+  ],
+  "torch": "2.14.1",
+  "device": "mps",
+  "machine": "arm64 macOS-27.0.1-arm64-arm-64bit",
+  "measured": "2026-10-24",
+  "note": "This machine was shared with other agents while measuring. Each figure is the best of five batches of 20 warm runs, but single rows still move by up to 2x between runs. mps_ms includes the commit and wakeup of an idle stream; mps_queued_ms is the marginal cost with the queue kept busy, which is what a model step pays.",
+  "method": "best of five batches of 20 warm runs, torch.mps.synchronize() around each MPS run; cpu is torch.ormqr on cpu tensors with no transfer; cpu_fallback_with_transfers_ms is the PYTORCH_ENABLE_MPS_FALLBACK path: move both operands to cpu, run, move the result back; native_mps_ms for householder_product is one warm call to the built-in MPS kernel, timed before the overlay is installed",
+  "tolerance": {
+    "atol": 5e-05,
+    "rtol": 5e-05
+  },
+  "checks": [
+    {
+      "check": "import compiles no shader",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "ormqr raises on MPS before install",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "unbatched left/right x transpose x nrhs",
+      "pass": true,
+      "detail": "96 cases, max abs error 4.29e-06"
+    },
+    {
+      "check": "batched (2,3) left transpose=False",
+      "pass": true,
+      "detail": "max abs error 9.54e-07"
+    },
+    {
+      "check": "batched (2,3) right transpose=False",
+      "pass": true,
+      "detail": "max abs error 1.67e-06"
+    },
+    {
+      "check": "batched (2,3) left transpose=True",
+      "pass": true,
+      "detail": "max abs error 1.37e-06"
+    },
+    {
+      "check": "batched (2,3) right transpose=True",
+      "pass": true,
+      "detail": "max abs error 1.19e-06"
+    },
+    {
+      "check": "non-contiguous other",
+      "pass": true,
+      "detail": "max abs error 7.15e-07"
+    },
+    {
+      "check": "mps geqrf -> mps ormqr",
+      "pass": true,
+      "detail": "max abs error 2.15e-06"
+    },
+    {
+      "check": "m=4096 left=True kernel path",
+      "pass": true,
+      "detail": "max abs error 2.12e-06"
+    },
+    {
+      "check": "m=4096 left=False kernel path",
+      "pass": true,
+      "detail": "max abs error 5.60e-06"
+    },
+    {
+      "check": "m=4200 left=True kernel path",
+      "pass": true,
+      "detail": "max abs error 1.49e-06"
+    },
+    {
+      "check": "m=4200 left=False kernel path",
+      "pass": true,
+      "detail": "max abs error 7.87e-06"
+    },
+    {
+      "check": "out= writes the provided tensor",
+      "pass": true,
+      "detail": "max abs error 5.36e-07"
+    },
+    {
+      "check": "gradient flows on MPS",
+      "pass": true,
+      "detail": "max abs error 5.66e-07"
+    },
+    {
+      "check": "left=False shape check",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "tau length check",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "ormqr_mps direct call",
+      "pass": true,
+      "detail": "max abs error 4.77e-07"
+    },
+    {
+      "check": "householder_product shapes and k <= n",
+      "pass": true,
+      "detail": "8 cases, max abs error 3.58e-07"
+    },
+    {
+      "check": "householder_product batched (2,3) k<n",
+      "pass": true,
+      "detail": "max abs error 1.38e-07"
+    },
+    {
+      "check": "householder_product gradient on MPS",
+      "pass": true,
+      "detail": "max abs error 4.53e-06"
+    },
+    {
+      "check": "householder_product m>=n check",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "orgqr composite reaches the overlay",
+      "pass": true,
+      "detail": "max abs error 1.79e-07"
+    }
+  ],
+  "ormqr": [
+    {
+      "m": 256,
+      "n": 256,
+      "nrhs": 1,
+      "left": true,
+      "cpu_ms": 0.0542,
+      "mps_ms": 0.2189,
+      "mps_queued_ms": 0.0928,
+      "cpu_fallback_with_transfers_ms": 0.6326,
+      "speedup_vs_cpu_fallback": 2.89,
+      "mps_vs_cpu_compute": 0.25,
+      "mps_queued_vs_cpu_compute": 0.58
+    },
+    {
+      "m": 256,
+      "n": 256,
+      "nrhs": 1,
+      "left": false,
+      "cpu_ms": 0.0542,
+      "mps_ms": 0.2442,
+      "mps_queued_ms": 0.1131,
+      "cpu_fallback_with_transfers_ms": 0.5805,
+      "speedup_vs_cpu_fallback": 2.38,
+      "mps_vs_cpu_compute": 0.22,
+      "mps_queued_vs_cpu_compute": 0.48
+    },
+    {
+      "m": 256,
+      "n": 256,
+      "nrhs": 8,
+      "left": true,
+      "cpu_ms": 0.0635,
+      "mps_ms": 0.2059,
+      "mps_queued_ms": 0.0931,
+      "cpu_fallback_with_transfers_ms": 0.5982,
+      "speedup_vs_cpu_fallback": 2.9,
+      "mps_vs_cpu_compute": 0.31,
+      "mps_queued_vs_cpu_compute": 0.68
+    },
+    {
+      "m": 256,
+      "n": 256,
+      "nrhs": 8,
+      "left": false,
+      "cpu_ms": 0.0658,
+      "mps_ms": 0.2533,
+      "mps_queued_ms": 0.1059,
+      "cpu_fallback_with_transfers_ms": 0.5773,
+      "speedup_vs_cpu_fallback": 2.28,
+      "mps_vs_cpu_compute": 0.26,
+      "mps_queued_vs_cpu_compute": 0.62
+    },
+    {
+      "m": 256,
+      "n": 256,
+      "nrhs": 64,
+      "left": true,
+      "cpu_ms": 0.1095,
+      "mps_ms": 0.2052,
+      "mps_queued_ms": 0.0891,
+      "cpu_fallback_with_transfers_ms": 0.6418,
+      "speedup_vs_cpu_fallback": 3.13,
+      "mps_vs_cpu_compute": 0.53,
+      "mps_queued_vs_cpu_compute": 1.23
+    },
+    {
+      "m": 256,
+      "n": 256,
+      "nrhs": 64,
+      "left": false,
+      "cpu_ms": 0.105,
+      "mps_ms": 0.2325,
+      "mps_queued_ms": 0.1073,
+      "cpu_fallback_with_transfers_ms": 0.6339,
+      "speedup_vs_cpu_fallback": 2.73,
+      "mps_vs_cpu_compute": 0.45,
+      "mps_queued_vs_cpu_compute": 0.98
+    },
+    {
+      "m": 512,
+      "n": 512,
+      "nrhs": 1,
+      "left": true,
+      "cpu_ms": 0.1651,
+      "mps_ms": 0.2527,
+      "mps_queued_ms": 0.1355,
+      "cpu_fallback_with_transfers_ms": 0.6567,
+      "speedup_vs_cpu_fallback": 2.6,
+      "mps_vs_cpu_compute": 0.65,
+      "mps_queued_vs_cpu_compute": 1.22
+    },
+    {
+      "m": 512,
+      "n": 512,
+      "nrhs": 1,
+      "left": false,
+      "cpu_ms": 0.1562,
+      "mps_ms": 0.2785,
+      "mps_queued_ms": 0.168,
+      "cpu_fallback_with_transfers_ms": 0.673,
+      "speedup_vs_cpu_fallback": 2.42,
+      "mps_vs_cpu_compute": 0.56,
+      "mps_queued_vs_cpu_compute": 0.93
+    },
+    {
+      "m": 512,
+      "n": 512,
+      "nrhs": 8,
+      "left": true,
+      "cpu_ms": 0.188,
+      "mps_ms": 0.2533,
+      "mps_queued_ms": 0.1389,
+      "cpu_fallback_with_transfers_ms": 0.7125,
+      "speedup_vs_cpu_fallback": 2.81,
+      "mps_vs_cpu_compute": 0.74,
+      "mps_queued_vs_cpu_compute": 1.35
+    },
+    {
+      "m": 512,
+      "n": 512,
+      "nrhs": 8,
+      "left": false,
+      "cpu_ms": 0.1919,
+      "mps_ms": 0.2816,
+      "mps_queued_ms": 0.1701,
+      "cpu_fallback_with_transfers_ms": 0.7247,
+      "speedup_vs_cpu_fallback": 2.57,
+      "mps_vs_cpu_compute": 0.68,
+      "mps_queued_vs_cpu_compute": 1.13
+    },
+    {
+      "m": 512,
+      "n": 512,
+      "nrhs": 64,
+      "left": true,
+      "cpu_ms": 0.3315,
+      "mps_ms": 0.2552,
+      "mps_queued_ms": 0.1487,
+      "cpu_fallback_with_transfers_ms": 0.8944,
+      "speedup_vs_cpu_fallback": 3.5,
+      "mps_vs_cpu_compute": 1.3,
+      "mps_queued_vs_cpu_compute": 2.23
+    },
+    {
+      "m": 512,
+      "n": 512,
+      "nrhs": 64,
+      "left": false,
+      "cpu_ms": 0.2758,
+      "mps_ms": 0.2962,
+      "mps_queued_ms": 0.1777,
+      "cpu_fallback_with_transfers_ms": 0.8724,
+      "speedup_vs_cpu_fallback": 2.95,
+      "mps_vs_cpu_compute": 0.93,
+      "mps_queued_vs_cpu_compute": 1.55
+    },
+    {
+      "m": 1024,
+      "n": 1024,
+      "nrhs": 1,
+      "left": true,
+      "cpu_ms": 0.5017,
+      "mps_ms": 0.4219,
+      "mps_queued_ms": 0.3109,
+      "cpu_fallback_with_transfers_ms": 1.1288,
+      "speedup_vs_cpu_fallback": 2.68,
+      "mps_vs_cpu_compute": 1.19,
+      "mps_queued_vs_cpu_compute": 1.61
+    },
+    {
+      "m": 1024,
+      "n": 1024,
+      "nrhs": 1,
+      "left": false,
+      "cpu_ms": 0.4989,
+      "mps_ms": 0.486,
+      "mps_queued_ms": 0.3597,
+      "cpu_fallback_with_transfers_ms": 1.129,
+      "speedup_vs_cpu_fallback": 2.32,
+      "mps_vs_cpu_compute": 1.03,
+      "mps_queued_vs_cpu_compute": 1.39
+    },
+    {
+      "m": 1024,
+      "n": 1024,
+      "nrhs": 8,
+      "left": true,
+      "cpu_ms": 0.5931,
+      "mps_ms": 0.4354,
+      "mps_queued_ms": 0.3072,
+      "cpu_fallback_with_transfers_ms": 1.2062,
+      "speedup_vs_cpu_fallback": 2.77,
+      "mps_vs_cpu_compute": 1.36,
+      "mps_queued_vs_cpu_compute": 1.93
+    },
+    {
+      "m": 1024,
+      "n": 1024,
+      "nrhs": 8,
+      "left": false,
+      "cpu_ms": 0.5935,
+      "mps_ms": 0.4984,
+      "mps_queued_ms": 0.3724,
+      "cpu_fallback_with_transfers_ms": 1.232,
+      "speedup_vs_cpu_fallback": 2.47,
+      "mps_vs_cpu_compute": 1.19,
+      "mps_queued_vs_cpu_compute": 1.59
+    },
+    {
+      "m": 1024,
+      "n": 1024,
+      "nrhs": 64,
+      "left": true,
+      "cpu_ms": 1.0686,
+      "mps_ms": 0.5249,
+      "mps_queued_ms": 0.4075,
+      "cpu_fallback_with_transfers_ms": 1.6964,
+      "speedup_vs_cpu_fallback": 3.23,
+      "mps_vs_cpu_compute": 2.04,
+      "mps_queued_vs_cpu_compute": 2.62
+    },
+    {
+      "m": 1024,
+      "n": 1024,
+      "nrhs": 64,
+      "left": false,
+      "cpu_ms": 0.7981,
+      "mps_ms": 0.6477,
+      "mps_queued_ms": 0.4638,
+      "cpu_fallback_with_transfers_ms": 1.4363,
+      "speedup_vs_cpu_fallback": 2.22,
+      "mps_vs_cpu_compute": 1.23,
+      "mps_queued_vs_cpu_compute": 1.72
+    },
+    {
+      "m": 1024,
+      "n": 256,
+      "nrhs": 1,
+      "left": true,
+      "cpu_ms": 0.1792,
+      "mps_ms": 0.2547,
+      "mps_queued_ms": 0.1308,
+      "cpu_fallback_with_transfers_ms": 0.7436,
+      "speedup_vs_cpu_fallback": 2.92,
+      "mps_vs_cpu_compute": 0.7,
+      "mps_queued_vs_cpu_compute": 1.37
+    },
+    {
+      "m": 1024,
+      "n": 256,
+      "nrhs": 1,
+      "left": false,
+      "cpu_ms": 0.1808,
+      "mps_ms": 0.2582,
+      "mps_queued_ms": 0.1398,
+      "cpu_fallback_with_transfers_ms": 0.763,
+      "speedup_vs_cpu_fallback": 2.95,
+      "mps_vs_cpu_compute": 0.7,
+      "mps_queued_vs_cpu_compute": 1.29
+    },
+    {
+      "m": 1024,
+      "n": 256,
+      "nrhs": 8,
+      "left": true,
+      "cpu_ms": 0.2209,
+      "mps_ms": 0.255,
+      "mps_queued_ms": 0.1293,
+      "cpu_fallback_with_transfers_ms": 0.773,
+      "speedup_vs_cpu_fallback": 3.03,
+      "mps_vs_cpu_compute": 0.87,
+      "mps_queued_vs_cpu_compute": 1.71
+    },
+    {
+      "m": 1024,
+      "n": 256,
+      "nrhs": 8,
+      "left": false,
+      "cpu_ms": 0.2204,
+      "mps_ms": 0.2604,
+      "mps_queued_ms": 0.1443,
+      "cpu_fallback_with_transfers_ms": 0.7695,
+      "speedup_vs_cpu_fallback": 2.96,
+      "mps_vs_cpu_compute": 0.85,
+      "mps_queued_vs_cpu_compute": 1.53
+    },
+    {
+      "m": 1024,
+      "n": 256,
+      "nrhs": 64,
+      "left": true,
+      "cpu_ms": 0.3915,
+      "mps_ms": 0.2878,
+      "mps_queued_ms": 0.1702,
+      "cpu_fallback_with_transfers_ms": 0.9425,
+      "speedup_vs_cpu_fallback": 3.27,
+      "mps_vs_cpu_compute": 1.36,
+      "mps_queued_vs_cpu_compute": 2.3
+    },
+    {
+      "m": 1024,
+      "n": 256,
+      "nrhs": 64,
+      "left": false,
+      "cpu_ms": 0.3074,
+      "mps_ms": 0.2948,
+      "mps_queued_ms": 0.1813,
+      "cpu_fallback_with_transfers_ms": 0.8947,
+      "speedup_vs_cpu_fallback": 3.03,
+      "mps_vs_cpu_compute": 1.04,
+      "mps_queued_vs_cpu_compute": 1.7
+    },
+    {
+      "m": 2048,
+      "n": 512,
+      "nrhs": 1,
+      "left": true,
+      "cpu_ms": 0.6204,
+      "mps_ms": 0.341,
+      "mps_queued_ms": 0.2194,
+      "cpu_fallback_with_transfers_ms": 1.2683,
+      "speedup_vs_cpu_fallback": 3.72,
+      "mps_vs_cpu_compute": 1.82,
+      "mps_queued_vs_cpu_compute": 2.83
+    },
+    {
+      "m": 2048,
+      "n": 512,
+      "nrhs": 1,
+      "left": false,
+      "cpu_ms": 0.6294,
+      "mps_ms": 0.3781,
+      "mps_queued_ms": 0.2503,
+      "cpu_fallback_with_transfers_ms": 1.2614,
+      "speedup_vs_cpu_fallback": 3.34,
+      "mps_vs_cpu_compute": 1.66,
+      "mps_queued_vs_cpu_compute": 2.51
+    },
+    {
+      "m": 2048,
+      "n": 512,
+      "nrhs": 8,
+      "left": true,
+      "cpu_ms": 0.748,
+      "mps_ms": 0.3454,
+      "mps_queued_ms": 0.2191,
+      "cpu_fallback_with_transfers_ms": 1.3914,
+      "speedup_vs_cpu_fallback": 4.03,
+      "mps_vs_cpu_compute": 2.17,
+      "mps_queued_vs_cpu_compute": 3.41
+    },
+    {
+      "m": 2048,
+      "n": 512,
+      "nrhs": 8,
+      "left": false,
+      "cpu_ms": 0.7534,
+      "mps_ms": 0.3906,
+      "mps_queued_ms": 0.2557,
+      "cpu_fallback_with_transfers_ms": 1.3936,
+      "speedup_vs_cpu_fallback": 3.57,
+      "mps_vs_cpu_compute": 1.93,
+      "mps_queued_vs_cpu_compute": 2.95
+    },
+    {
+      "m": 2048,
+      "n": 512,
+      "nrhs": 64,
+      "left": true,
+      "cpu_ms": 1.1946,
+      "mps_ms": 0.5041,
+      "mps_queued_ms": 0.3573,
+      "cpu_fallback_with_transfers_ms": 1.9425,
+      "speedup_vs_cpu_fallback": 3.85,
+      "mps_vs_cpu_compute": 2.37,
+      "mps_queued_vs_cpu_compute": 3.34
+    },
+    {
+      "m": 2048,
+      "n": 512,
+      "nrhs": 64,
+      "left": false,
+      "cpu_ms": 0.9205,
+      "mps_ms": 0.5526,
+      "mps_queued_ms": 0.4219,
+      "cpu_fallback_with_transfers_ms": 1.6515,
+      "speedup_vs_cpu_fallback": 2.99,
+      "mps_vs_cpu_compute": 1.67,
+      "mps_queued_vs_cpu_compute": 2.18
+    }
+  ],
+  "ormqr_stages": [
+    {
+      "m": 512,
+      "n": 512,
+      "nrhs": 8,
+      "block": 16,
+      "threadgroup": 512,
+      "rows_per_thread": 1,
+      "factor_ms": 0.1725,
+      "apply_ms": 0.2226
+    },
+    {
+      "m": 1024,
+      "n": 1024,
+      "nrhs": 8,
+      "block": 16,
+      "threadgroup": 1024,
+      "rows_per_thread": 1,
+      "factor_ms": 0.18,
+      "apply_ms": 0.4017
+    },
+    {
+      "m": 2048,
+      "n": 512,
+      "nrhs": 8,
+      "block": 16,
+      "threadgroup": 1024,
+      "rows_per_thread": 2,
+      "factor_ms": 0.1966,
+      "apply_ms": 0.2739
+    }
+  ],
+  "householder_product": [
+    {
+      "m": 128,
+      "n": 128,
+      "cpu_ms": 0.087,
+      "native_mps_ms": 24.122,
+      "overlay_mps_ms": 0.1846,
+      "speedup_vs_native_mps": 130.6,
+      "overlay_vs_cpu": 0.47
+    },
+    {
+      "m": 256,
+      "n": 256,
+      "cpu_ms": 0.4124,
+      "native_mps_ms": 455.23,
+      "overlay_mps_ms": 0.2437,
+      "speedup_vs_native_mps": 1868.3,
+      "overlay_vs_cpu": 1.69
+    },
+    {
+      "m": 512,
+      "n": 512,
+      "cpu_ms": 1.6896,
+      "native_mps_ms": 7773.591,
+      "overlay_mps_ms": 0.687,
+      "speedup_vs_native_mps": 11316.0,
+      "overlay_vs_cpu": 2.46
+    }
+  ],
+  "orgqr": {
+    "m": 256,
+    "n": 256,
+    "mps_ms": 0.2514,
+    "cpu_ms": 0.4096
+  },
+  "failures": []
+}

@@ -1,0 +1,323 @@
+{
+  "module": "metal_kernelops.fractional_pool_ops",
+  "torch": "2.14.1",
+  "machine": "arm64",
+  "python": "3.11.17",
+  "overlays": [
+    "fractional_max_pool2d.output",
+    "fractional_max_pool2d_backward.grad_input",
+    "fractional_max_pool3d.output",
+    "fractional_max_pool3d_backward",
+    "fractional_max_pool3d_backward.grad_input"
+  ],
+  "missing_before_install": [
+    "fractional_max_pool2d",
+    "fractional_max_pool3d"
+  ],
+  "import_clean": true,
+  "shader_compiled": true,
+  "shader_compile_ms": 4.369208007119596,
+  "dispatch_failures": [],
+  "correctness": {
+    "cases": 348,
+    "failures": 0,
+    "worst_grad_relative_norm": {
+      "torch.float32": 3.8195818063968545e-08,
+      "torch.float16": 0.00030517578125,
+      "torch.bfloat16": 0.0026397705078125
+    },
+    "failed_rows": []
+  },
+  "timings": [
+    {
+      "op": "fractional_max_pool2d",
+      "shape": [
+        16,
+        32,
+        64,
+        64
+      ],
+      "kernel_size": [
+        2,
+        2
+      ],
+      "output_size": [
+        32,
+        32
+      ],
+      "dtype": "float32",
+      "forward": {
+        "cpu": {
+          "median_ms": 0.31587498961016536,
+          "min_ms": 0.30979199800640345
+        },
+        "mps": {
+          "median_ms": 0.29099994571879506,
+          "min_ms": 0.10587502038106322
+        },
+        "speedup": 1.0854812664309157
+      },
+      "forward_backward": {
+        "cpu": {
+          "median_ms": 0.47312548849731684,
+          "min_ms": 0.44529198203235865
+        },
+        "mps": {
+          "median_ms": 0.6791460036765784,
+          "min_ms": 0.18866697791963816
+        },
+        "speedup": 0.6966476809640888
+      }
+    },
+    {
+      "op": "fractional_max_pool2d",
+      "shape": [
+        8,
+        64,
+        56,
+        56
+      ],
+      "kernel_size": [
+        3,
+        3
+      ],
+      "output_size": [
+        27,
+        27
+      ],
+      "dtype": "float32",
+      "forward": {
+        "cpu": {
+          "median_ms": 0.814833038020879,
+          "min_ms": 0.8074169745668769
+        },
+        "mps": {
+          "median_ms": 0.30166603391990066,
+          "min_ms": 0.10645901784300804
+        },
+        "speedup": 2.701109659025239
+      },
+      "forward_backward": {
+        "cpu": {
+          "median_ms": 0.9435834654141217,
+          "min_ms": 0.925124972127378
+        },
+        "mps": {
+          "median_ms": 0.7240625272970647,
+          "min_ms": 0.1710420474410057
+        },
+        "speedup": 1.303179531934254
+      }
+    },
+    {
+      "op": "fractional_max_pool2d",
+      "shape": [
+        8,
+        32,
+        128,
+        128
+      ],
+      "kernel_size": [
+        2,
+        2
+      ],
+      "output_size": [
+        64,
+        64
+      ],
+      "dtype": "float32",
+      "forward": {
+        "cpu": {
+          "median_ms": 0.7716669933870435,
+          "min_ms": 0.7613340276293457
+        },
+        "mps": {
+          "median_ms": 0.16466696979478002,
+          "min_ms": 0.12145901564508677
+        },
+        "speedup": 4.686228175260352
+      },
+      "forward_backward": {
+        "cpu": {
+          "median_ms": 1.067561999661848,
+          "min_ms": 1.0042909998446703
+        },
+        "mps": {
+          "median_ms": 0.28670852771028876,
+          "min_ms": 0.24741602828726172
+        },
+        "speedup": 3.723509754619474
+      }
+    },
+    {
+      "op": "fractional_max_pool3d",
+      "shape": [
+        4,
+        8,
+        16,
+        32,
+        32
+      ],
+      "kernel_size": [
+        2,
+        2,
+        2
+      ],
+      "output_size": [
+        8,
+        16,
+        16
+      ],
+      "dtype": "float32",
+      "forward": {
+        "cpu": {
+          "median_ms": 0.18408300820738077,
+          "min_ms": 0.18224999075755477
+        },
+        "mps": {
+          "median_ms": 0.14408299466595054,
+          "min_ms": 0.12041599256917834
+        },
+        "speedup": 1.2776178662455506
+      },
+      "forward_backward": {
+        "cpu": {
+          "median_ms": 0.2474584907758981,
+          "min_ms": 0.2357500488869846
+        },
+        "mps": {
+          "median_ms": 0.193667015992105,
+          "min_ms": 0.15262496890500188
+        },
+        "speedup": 1.2777523808493334
+      }
+    },
+    {
+      "op": "fractional_max_pool3d",
+      "shape": [
+        2,
+        8,
+        48,
+        96,
+        96
+      ],
+      "kernel_size": [
+        2,
+        2,
+        2
+      ],
+      "output_size": [
+        24,
+        48,
+        48
+      ],
+      "dtype": "float32",
+      "forward": {
+        "cpu": {
+          "median_ms": 4.443041048943996,
+          "min_ms": 4.421624995302409
+        },
+        "mps": {
+          "median_ms": 0.29024999821558595,
+          "min_ms": 0.22570794681087136
+        },
+        "speedup": 15.307635060324394
+      },
+      "forward_backward": {
+        "cpu": {
+          "median_ms": 4.9478544970043,
+          "min_ms": 4.867166979238391
+        },
+        "mps": {
+          "median_ms": 0.7864795043133199,
+          "min_ms": 0.3397500258870423
+        },
+        "speedup": 6.291142324585181
+      }
+    },
+    {
+      "op": "fractional_max_pool2d",
+      "shape": [
+        16,
+        32,
+        64,
+        64
+      ],
+      "kernel_size": [
+        2,
+        2
+      ],
+      "output_size": [
+        32,
+        32
+      ],
+      "dtype": "float16",
+      "forward": {
+        "cpu": {
+          "median_ms": 0.3417079569771886,
+          "min_ms": 0.3340410185046494
+        },
+        "mps": {
+          "median_ms": 0.1807079534046352,
+          "min_ms": 0.14304101932793856
+        },
+        "speedup": 1.8909403296270397
+      },
+      "forward_backward": {
+        "cpu": {
+          "median_ms": 0.4336874990258366,
+          "min_ms": 0.42079202830791473
+        },
+        "mps": {
+          "median_ms": 0.23066697758622468,
+          "min_ms": 0.2145419712178409
+        },
+        "speedup": 1.880145582883539
+      }
+    },
+    {
+      "op": "fractional_max_pool3d",
+      "shape": [
+        4,
+        8,
+        16,
+        32,
+        32
+      ],
+      "kernel_size": [
+        2,
+        2,
+        2
+      ],
+      "output_size": [
+        8,
+        16,
+        16
+      ],
+      "dtype": "bfloat16",
+      "forward": {
+        "cpu": {
+          "median_ms": 0.19504199735820293,
+          "min_ms": 0.19362499006092548
+        },
+        "mps": {
+          "median_ms": 0.16762502491474152,
+          "min_ms": 0.13845902867615223
+        },
+        "speedup": 1.1635613325480871
+      },
+      "forward_backward": {
+        "cpu": {
+          "median_ms": 0.2558960113674402,
+          "min_ms": 0.24979101726785302
+        },
+        "mps": {
+          "median_ms": 0.20485400455072522,
+          "min_ms": 0.1888750120997429
+        },
+        "speedup": 1.249162846138437
+      }
+    }
+  ],
+  "timing_notes": "Warm, synchronized, 15 samples x 3 rounds per case, median and min of the same samples. This GPU is shared with concurrent MPS processes; medians are inflated by contention and min_ms is the uncontended kernel time. CPU and MPS were measured in the same process, one after the other."
+}

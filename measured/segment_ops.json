@@ -1,0 +1,286 @@
+{
+ "accuracy": {
+  "amax/float32": {
+   "cases": 3,
+   "forward_exact": 3,
+   "forward_max_abs_error": 0.0,
+   "gradient_exact": 3,
+   "gradient_max_abs_error": 0.0
+  },
+  "amin/float32": {
+   "cases": 3,
+   "forward_exact": 3,
+   "forward_max_abs_error": 0.0,
+   "gradient_exact": 3,
+   "gradient_max_abs_error": 0.0
+  },
+  "max/bfloat16": {
+   "cases": 2,
+   "forward_exact": 2,
+   "forward_max_abs_error": 0.0,
+   "gradient_exact": 2,
+   "gradient_max_abs_error": 0.0
+  },
+  "max/float16": {
+   "cases": 7,
+   "forward_exact": 7,
+   "forward_max_abs_error": 0.0,
+   "gradient_exact": 7,
+   "gradient_max_abs_error": 0.0
+  },
+  "max/float32": {
+   "cases": 25,
+   "forward_exact": 25,
+   "forward_max_abs_error": 0.0,
+   "gradient_exact": 25,
+   "gradient_max_abs_error": 0.0
+  },
+  "mean/bfloat16": {
+   "cases": 6,
+   "forward_exact": 6,
+   "forward_max_abs_error": 0.0,
+   "gradient_exact": 6,
+   "gradient_max_abs_error": 0.0
+  },
+  "mean/float16": {
+   "cases": 5,
+   "forward_exact": 5,
+   "forward_max_abs_error": 0.0,
+   "gradient_exact": 5,
+   "gradient_max_abs_error": 0.0
+  },
+  "mean/float32": {
+   "cases": 36,
+   "forward_exact": 31,
+   "forward_max_abs_error": 5.960464477539063e-08,
+   "gradient_exact": 36,
+   "gradient_max_abs_error": 0.0
+  },
+  "min/bfloat16": {
+   "cases": 4,
+   "forward_exact": 4,
+   "forward_max_abs_error": 0.0,
+   "gradient_exact": 4,
+   "gradient_max_abs_error": 0.0
+  },
+  "min/float16": {
+   "cases": 5,
+   "forward_exact": 5,
+   "forward_max_abs_error": 0.0,
+   "gradient_exact": 5,
+   "gradient_max_abs_error": 0.0
+  },
+  "min/float32": {
+   "cases": 30,
+   "forward_exact": 30,
+   "forward_max_abs_error": 0.0,
+   "gradient_exact": 30,
+   "gradient_max_abs_error": 0.0
+  },
+  "prod/bfloat16": {
+   "cases": 5,
+   "forward_exact": 5,
+   "forward_max_abs_error": 0.0,
+   "gradient_exact": 5,
+   "gradient_max_abs_error": 0.0
+  },
+  "prod/float16": {
+   "cases": 4,
+   "forward_exact": 4,
+   "forward_max_abs_error": 0.0,
+   "gradient_exact": 4,
+   "gradient_max_abs_error": 0.0
+  },
+  "prod/float32": {
+   "cases": 36,
+   "forward_exact": 35,
+   "forward_max_abs_error": 5.960464477539063e-08,
+   "gradient_exact": 35,
+   "gradient_max_abs_error": 1.52587890625e-05
+  },
+  "sum/bfloat16": {
+   "cases": 6,
+   "forward_exact": 2,
+   "forward_max_abs_error": 0.03125,
+   "gradient_exact": 6,
+   "gradient_max_abs_error": 0.0
+  },
+  "sum/float16": {
+   "cases": 7,
+   "forward_exact": 7,
+   "forward_max_abs_error": 0.0,
+   "gradient_exact": 7,
+   "gradient_max_abs_error": 0.0
+  },
+  "sum/float32": {
+   "cases": 25,
+   "forward_exact": 21,
+   "forward_max_abs_error": 1.9073486328125e-06,
+   "gradient_exact": 25,
+   "gradient_max_abs_error": 0.0
+  }
+ },
+ "checks": 810,
+ "device": "mps",
+ "failures": [],
+ "notes": [
+  "The machine is shared with other benchmark runs; the minimum describes the operation, the median shows how contended that run was.",
+  "Contiguous-lengths descriptors take the fused Metal kernel; non-contiguous input, non-exact prefixes/suffixes and small shapes take the aten composition.",
+  "scan_bounds builds the boundary table and validates it on device; strict validation uses one deferred host read overlapped with the reduction kernel.",
+  "per_row_1024x4096 runs one SIMD group per segment along the axis; wide cases assign lanes to inner columns in whole SIMD groups up to 512.",
+  "backward is bounds-driven with edge filling, avoiding the position map entirely.",
+  "fp32 sum/mean/prod accumulate in a different order on the two devices; max/min are bit-exact.",
+  "fp16/bf16 sums accumulate in float32 in the fused kernel then narrow once, matching the CPU kernel within tolerance.",
+  "unsafe=True skips only the lengths-sum check; the negative-length and unsorted-offset checks and their one host read still run.",
+  "index_reduce_ on MPS is reached only on the aten fallback path.",
+  "stages.* are per-launch GPU costs amortizing one synchronization over 60 submissions, so they exclude the round trip the fused call pays once."
+ ],
+ "overlays": [
+  "segment_reduce",
+  "_segment_reduce_backward"
+ ],
+ "paths_exercised": {
+  "aten": 474,
+  "kernel": 2563
+ },
+ "reference": "aten::segment_reduce and its autograd on the CPU kernel, same inputs",
+ "timing_protocol": "min and median of 60 synchronized iterations after 10 warmup, MPS overlay interleaved with a CPU round trip on the same inputs; speedup uses the minimum because the machine is shared with other work",
+ "timings": {
+  "embedding_bag_4096x768": {
+   "axis": 0,
+   "backward_cpu_to_mps_median_ms": 1.6342,
+   "backward_cpu_to_mps_ms": 1.4044,
+   "backward_mps_isolated_ms": 0.1871,
+   "backward_mps_median_ms": 0.2755,
+   "backward_mps_ms": 0.2337,
+   "backward_speedup": 6.009,
+   "copy_floor_gb_s": 212.8,
+   "copy_floor_ms": 0.1183,
+   "dtype": "float32",
+   "elements": 3145728,
+   "forward_achieved_gb_s": 65.2,
+   "forward_cpu_to_mps_median_ms": 1.6679,
+   "forward_cpu_to_mps_ms": 1.4073,
+   "forward_mps_isolated_ms": 0.193,
+   "forward_mps_median_ms": 0.2338,
+   "forward_mps_ms": 0.1954,
+   "forward_mps_unsafe_ms": 0.2075,
+   "forward_speedup": 7.201,
+   "reduce": "sum",
+   "segments": 512,
+   "shape": [
+    4096,
+    768
+   ],
+   "stages": {
+    "copy_floor_ms": 0.0275,
+    "lanes": 256,
+    "reduce_kernel_ms": 0.021,
+    "scan_bounds_ms": 0.0458,
+    "threadgroups": 512
+   }
+  },
+  "flat_1M": {
+   "axis": 0,
+   "backward_cpu_to_mps_median_ms": 0.3972,
+   "backward_cpu_to_mps_ms": 0.3499,
+   "backward_mps_isolated_ms": 0.2427,
+   "backward_mps_median_ms": 0.2477,
+   "backward_mps_ms": 0.2261,
+   "backward_speedup": 1.547,
+   "copy_floor_gb_s": 69.6,
+   "copy_floor_ms": 0.1149,
+   "dtype": "float32",
+   "elements": 1000000,
+   "forward_achieved_gb_s": 17.7,
+   "forward_cpu_to_mps_median_ms": 0.7499,
+   "forward_cpu_to_mps_ms": 0.715,
+   "forward_mps_isolated_ms": 0.2254,
+   "forward_mps_median_ms": 0.2576,
+   "forward_mps_ms": 0.2333,
+   "forward_mps_unsafe_ms": 0.2374,
+   "forward_speedup": 3.065,
+   "reduce": "sum",
+   "segments": 1000,
+   "shape": [
+    1000000
+   ],
+   "stages": {
+    "copy_floor_ms": 0.0063,
+    "lanes": 32,
+    "reduce_kernel_ms": 0.0114,
+    "scan_bounds_ms": 0.0826,
+    "threadgroups": 1000
+   }
+  },
+  "fp16_mean_8192x256": {
+   "axis": 0,
+   "backward_cpu_to_mps_median_ms": 1.0895,
+   "backward_cpu_to_mps_ms": 0.886,
+   "backward_mps_isolated_ms": 0.2445,
+   "backward_mps_median_ms": 0.2733,
+   "backward_mps_ms": 0.2392,
+   "backward_speedup": 3.704,
+   "copy_floor_gb_s": 76.8,
+   "copy_floor_ms": 0.1092,
+   "dtype": "float16",
+   "elements": 2097152,
+   "forward_achieved_gb_s": 17.0,
+   "forward_cpu_to_mps_median_ms": 1.1931,
+   "forward_cpu_to_mps_ms": 1.0012,
+   "forward_mps_isolated_ms": 0.2467,
+   "forward_mps_median_ms": 0.2637,
+   "forward_mps_ms": 0.2437,
+   "forward_mps_unsafe_ms": 0.2451,
+   "forward_speedup": 4.107,
+   "reduce": "mean",
+   "segments": 1024,
+   "shape": [
+    8192,
+    256
+   ],
+   "stages": {
+    "copy_floor_ms": 0.0068,
+    "lanes": 256,
+    "reduce_kernel_ms": 0.016,
+    "scan_bounds_ms": 0.0851,
+    "threadgroups": 1024
+   }
+  },
+  "per_row_1024x4096": {
+   "axis": 1,
+   "backward_cpu_to_mps_median_ms": 0.6943,
+   "backward_cpu_to_mps_ms": 0.6552,
+   "backward_mps_isolated_ms": 0.1687,
+   "backward_mps_median_ms": 0.2062,
+   "backward_mps_ms": 0.1567,
+   "backward_speedup": 4.182,
+   "copy_floor_gb_s": 225.6,
+   "copy_floor_ms": 0.1487,
+   "dtype": "float32",
+   "elements": 4194304,
+   "forward_achieved_gb_s": 111.2,
+   "forward_cpu_to_mps_median_ms": 1.4348,
+   "forward_cpu_to_mps_ms": 1.3884,
+   "forward_mps_isolated_ms": 0.1508,
+   "forward_mps_median_ms": 0.1868,
+   "forward_mps_ms": 0.1745,
+   "forward_mps_unsafe_ms": 0.1723,
+   "forward_speedup": 7.958,
+   "reduce": "sum",
+   "segments": 16,
+   "shape": [
+    1024,
+    4096
+   ],
+   "stages": {
+    "copy_floor_ms": 0.0363,
+    "lanes": 32,
+    "reduce_kernel_ms": 0.0265,
+    "scan_bounds_ms": 0.0128,
+    "threadgroups": 16384
+   }
+  }
+ },
+ "torch": "2.14.1"
+}

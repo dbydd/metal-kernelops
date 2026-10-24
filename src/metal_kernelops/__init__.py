@@ -1,4 +1,8 @@
-"""Frond-end for the Metal selective scan kernels.
+"""Front end for the Metal selective scan kernels and the MPS accelerator.
+
+Tree-external CV operators live in ``metal_kernelops.cv``: Mamba-2 chunk scan
+and decode update, causal convolution, gated RMSNorm, VMamba path scan, and
+NSA key-block selection. They are explicit imports, not dispatch overlays.
 
 The recurrence is the one from mamba_ssm's ``selective_scan_fn``:
 
@@ -36,4 +40,4 @@ __all__ = [
     "selective_scan_fn",
 ]
 
-__version__ = "0.1.0"
+__version__ = "0.3.0"

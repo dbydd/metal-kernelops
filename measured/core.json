@@ -1,0 +1,786 @@
+{
+  "torch": "2.14.1",
+  "checks": [
+    "take negative/multidimensional/noncontiguous/repeated-index backward",
+    "put noncontiguous/negative/accumulate",
+    "channel shuffle forward/backward",
+    "heaviside boundaries and logspace steps/dtypes",
+    "batch normalization biased outputs/unbiased running stats",
+    "GLU JVP and backward JVP with arbitrary supplied primals",
+    "private add-ReLU/addmm-activation/aminmax exact schemas"
+  ],
+  "coverage": {
+    "aten::take": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.index_ops.take",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::take.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.index_ops.take_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::channel_shuffle": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.index_ops.channel_shuffle",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::put_": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.index_ops.put_",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::put": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.index_ops.put",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::put.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.index_ops.put_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::narrow_copy.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.index_ops.narrow_copy_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::special_ndtri": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.ndtri_ops._ndtri",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::special_ndtri.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.ndtri_ops._ndtri_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::frexp.Tensor": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.frexp_ops.frexp",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::frexp.Tensor_out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.frexp_ops.frexp_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::special_airy_ai.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.airy_ops._special_airy_ai_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::special_laguerre_polynomial_l": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.laguerre_ops.laguerre",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::special_laguerre_polynomial_l.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.laguerre_ops.laguerre_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::special_laguerre_polynomial_l.x_scalar": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.laguerre_ops.laguerre_x_scalar",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::special_laguerre_polynomial_l.x_scalar_out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.laguerre_ops.laguerre_x_scalar_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::special_laguerre_polynomial_l.n_scalar": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.laguerre_ops.laguerre_n_scalar",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::special_laguerre_polynomial_l.n_scalar_out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.laguerre_ops.laguerre_n_scalar_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::rrelu_with_noise": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.rrelu_ops.rrelu_with_noise",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::rrelu_with_noise_": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.rrelu_ops.rrelu_with_noise_",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::rrelu_with_noise.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.rrelu_ops.rrelu_with_noise_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::heaviside": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.heaviside",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::heaviside.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.heaviside_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::heaviside_": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.heaviside_",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::logspace.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.logspace_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_add_relu.Tensor": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.add_relu",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_add_relu.Scalar": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.add_relu",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_add_relu.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.add_relu_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_add_relu.Scalar_out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.add_relu_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_add_relu_.Tensor": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.add_relu_",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_add_relu_.Scalar": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.add_relu_",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_addmm_activation": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.addmm_activation",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_addmm_activation.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.addmm_activation_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_aminmax": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.aminmax",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_aminmax.dim": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.aminmax_dim",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_aminmax.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.aminmax_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_aminmax.dim_out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.aminmax_dim_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::batch_norm_update_stats": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.batch_norm_update_stats",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::glu_jvp": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.glu_jvp",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::glu_jvp.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.glu_jvp_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::glu_backward_jvp": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.glu_backward_jvp",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::glu_backward_jvp.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.decomposition_ops.glu_backward_jvp_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::special_log_ndtr": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.log_ndtr_ops.log_ndtr",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::special_log_ndtr.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.log_ndtr_ops.log_ndtr_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::fractional_max_pool2d.output": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.fractional_pool_ops.fractional_max_pool2d_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::fractional_max_pool2d_backward.grad_input": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.fractional_pool_ops.fractional_max_pool2d_backward",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::fractional_max_pool3d.output": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.fractional_pool_ops.fractional_max_pool3d_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::fractional_max_pool3d_backward": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.fractional_pool_ops.fractional_max_pool3d_backward",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::fractional_max_pool3d_backward.grad_input": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.fractional_pool_ops.fractional_max_pool3d_backward_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_upsample_lanczos2d_aa": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.lanczos_ops._upsample_lanczos2d_aa",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_upsample_lanczos2d_aa_backward": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.lanczos_ops._upsample_lanczos2d_aa_backward",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::special_legendre_polynomial_p": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.legendre_ops.polynomial",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::special_legendre_polynomial_p.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.legendre_ops.polynomial_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::special_legendre_polynomial_p.x_scalar": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.legendre_ops.x_scalar",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::special_legendre_polynomial_p.x_scalar_out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.legendre_ops.x_scalar_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::special_legendre_polynomial_p.n_scalar": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.legendre_ops.n_scalar",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::special_legendre_polynomial_p.n_scalar_out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.legendre_ops.n_scalar_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::linalg_matrix_sqrth": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.matrix_sqrt_ops.matrix_sqrth",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::mode": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.mode_ops.mode_mps",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::mode.values": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.mode_ops.mode_values_mps",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::segment_reduce": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.segment_ops._segment_reduce",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_segment_reduce_backward": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.segment_ops._segment_reduce_backward",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::slow_conv3d_forward": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.convolution_ops._slow_conv3d_forward",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::slow_conv3d_forward.output": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.convolution_ops._slow_conv3d_forward_output",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::slow_conv_dilated2d": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.convolution_ops._slow_conv_dilated2d",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::slow_conv_dilated3d": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.convolution_ops._slow_conv_dilated3d",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::slow_conv_transpose2d": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.convolution_ops._slow_conv_transpose2d",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::slow_conv_transpose2d.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.convolution_ops._slow_conv_transpose2d_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::slow_conv_transpose3d": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.convolution_ops._slow_conv_transpose3d",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::slow_conv_transpose3d.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.convolution_ops._slow_conv_transpose3d_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_slow_conv2d_backward.output_mask": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.convolution_ops._slow_conv2d_backward_output_mask",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_slow_conv2d_backward.grad_input": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.convolution_ops._slow_conv2d_backward_grad_input",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::multi_margin_loss": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.margin_ops.multi_margin_loss",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::multi_margin_loss.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.margin_ops.multi_margin_loss_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::multi_margin_loss_backward": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.margin_ops.multi_margin_loss_backward",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::multi_margin_loss_backward.grad_input": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.margin_ops.multi_margin_loss_backward_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::multilabel_margin_loss_forward": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.margin_ops.multilabel_margin_loss_forward",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::multilabel_margin_loss_forward.output": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.margin_ops.multilabel_margin_loss_forward_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::multilabel_margin_loss_backward": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.margin_ops.multilabel_margin_loss_backward",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::multilabel_margin_loss_backward.grad_input": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.margin_ops.multilabel_margin_loss_backward_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::ormqr": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.householder_ops.ormqr_mps",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::ormqr.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.householder_ops._ormqr_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::linalg_householder_product": {
+      "replaced_existing": true,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.householder_ops.householder_product_mps",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_masked_softmax": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.attention_ops._masked_softmax",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_masked_softmax_backward": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.attention_ops._masked_softmax_backward",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_transform_bias_rescale_qkv": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.attention_ops._transform_bias_rescale_qkv",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_native_multi_head_attention": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.attention_ops._native_multi_head_attention",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_transformer_encoder_layer_fwd": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.attention_ops._transformer_encoder_layer_fwd",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_fused_sdp_choice": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.attention_ops._fused_sdp_choice",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_adaptive_avg_pool3d": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.adaptive_pool_ops._adaptive_avg_pool3d",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_adaptive_avg_pool3d.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.adaptive_pool_ops._adaptive_avg_pool3d_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_adaptive_avg_pool3d_backward": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.adaptive_pool_ops._adaptive_avg_pool3d_backward",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_adaptive_avg_pool3d_backward.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.adaptive_pool_ops._adaptive_avg_pool3d_backward_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::adaptive_avg_pool3d_backward.grad_input": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.adaptive_pool_ops._adaptive_avg_pool3d_backward_grad_input",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::adaptive_max_pool3d": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.adaptive_pool_ops._adaptive_max_pool3d",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::adaptive_max_pool3d.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.adaptive_pool_ops._adaptive_max_pool3d_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::adaptive_max_pool3d_backward": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.adaptive_pool_ops._adaptive_max_pool3d_backward",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::adaptive_max_pool3d_backward.grad_input": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.adaptive_pool_ops._adaptive_max_pool3d_backward_grad_input",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::linalg_eig": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.eigen_ops._eig",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::linalg_eig.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.eigen_ops._eig_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_linalg_eigvals": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.eigen_ops._eigvals",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::linalg_eigvals.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.eigen_ops._eigvals_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_pdist_forward": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.distance_ops.pdist_forward",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_pdist_backward": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.distance_ops.pdist_backward",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_spdiags": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.spdiags_ops.spdiags",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_spdiags.out": {
+      "replaced_existing": false,
+      "previous_kernel": "MPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.spdiags_ops.spdiags_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::linalg_eig@AutogradMPS": {
+      "replaced_existing": false,
+      "previous_kernel": "AutogradMPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.eigen_ops._eig_autograd",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::_linalg_eigvals@AutogradMPS": {
+      "replaced_existing": false,
+      "previous_kernel": "AutogradMPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.eigen_ops._eigvals_autograd",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::sspaddmm@SparseMPS": {
+      "replaced_existing": false,
+      "previous_kernel": "SparseMPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.sparse_addmm_ops.sspaddmm",
+      "compatibility": false,
+      "torch": "2.14.1"
+    },
+    "aten::sspaddmm.out@SparseMPS": {
+      "replaced_existing": false,
+      "previous_kernel": "SparseMPS: registered at /Users/dbydd/vibe-agent-working-dir/ResearchChamber/artifacts/mps-kernelops/src/metal_kernelops/accelerator.py:89 [kernel]",
+      "kernel": "metal_kernelops.sparse_addmm_ops.sspaddmm_out",
+      "compatibility": false,
+      "torch": "2.14.1"
+    }
+  },
+  "heaviside_ms": 0.14865139964967966,
+  "status": "pass"
+}

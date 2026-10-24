@@ -1,0 +1,742 @@
+{
+  "verification": {
+    "passed": true,
+    "checks": [
+      {
+        "check": "MPS raises before registration",
+        "passed": true,
+        "detail": "NotImplementedError"
+      },
+      {
+        "check": "overlay registers both overloads",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "CPU kernel and results unchanged",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "nothing compiles at import",
+        "passed": true,
+        "detail": "0 libraries"
+      },
+      {
+        "check": "the first call compiles the library",
+        "passed": true,
+        "detail": "1.29 ms"
+      },
+      {
+        "check": "the fused kernel reproduces the aten composition",
+        "passed": true,
+        "detail": "3.81e-06"
+      },
+      {
+        "check": "central_-1_1 within 8 ULP of the CPU float32 kernel",
+        "passed": true,
+        "detail": "6 ULP"
+      },
+      {
+        "check": "central_-1_1 inf/NaN pattern matches truth",
+        "passed": true,
+        "detail": "0 mismatches"
+      },
+      {
+        "check": "central_-8_8 within 8 ULP of the CPU float32 kernel",
+        "passed": true,
+        "detail": "6 ULP"
+      },
+      {
+        "check": "central_-8_8 inf/NaN pattern matches truth",
+        "passed": true,
+        "detail": "0 mismatches"
+      },
+      {
+        "check": "tail_-13_-1 within 8 ULP of the CPU float32 kernel",
+        "passed": true,
+        "detail": "4 ULP"
+      },
+      {
+        "check": "tail_-13_-1 inf/NaN pattern matches truth",
+        "passed": true,
+        "detail": "0 mismatches"
+      },
+      {
+        "check": "tail_-1000_-13 within 8 ULP of the CPU float32 kernel",
+        "passed": true,
+        "detail": "1 ULP"
+      },
+      {
+        "check": "tail_-1000_-13 inf/NaN pattern matches truth",
+        "passed": true,
+        "detail": "0 mismatches"
+      },
+      {
+        "check": "positive_1_9 within 8 ULP of the CPU float32 kernel",
+        "passed": true,
+        "detail": "6 ULP"
+      },
+      {
+        "check": "positive_1_9 inf/NaN pattern matches truth",
+        "passed": true,
+        "detail": "0 mismatches"
+      },
+      {
+        "check": "special_values within 8 ULP of the CPU float32 kernel",
+        "passed": true,
+        "detail": "2 ULP"
+      },
+      {
+        "check": "special_values inf/NaN pattern matches truth",
+        "passed": true,
+        "detail": "0 mismatches"
+      },
+      {
+        "check": "float16 forward within 1 output ULP of the dtype reference",
+        "passed": true,
+        "detail": "0 ULP"
+      },
+      {
+        "check": "bfloat16 forward within 1 output ULP of the dtype reference",
+        "passed": true,
+        "detail": "0 ULP"
+      },
+      {
+        "check": "int64 input promotes to float32 like CPU",
+        "passed": true,
+        "detail": "float32"
+      },
+      {
+        "check": "bool input promotes to float32 like CPU",
+        "passed": true,
+        "detail": "float32"
+      },
+      {
+        "check": "complex64 raises as on CPU",
+        "passed": true,
+        "detail": "\"log_ndtr_mps\" not implemented for torch.complex64"
+      },
+      {
+        "check": "non-contiguous input matches CPU",
+        "passed": true,
+        "detail": "1.49e-08"
+      },
+      {
+        "check": "empty input returns an empty tensor",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "out aliases the provided tensor",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "out casts to float16",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "out resizes a size-1 tensor",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "out rejects an integral output dtype",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "out rejects a cross-device tensor",
+        "passed": true,
+        "detail": "Expected all tensors to be on the same device, but found at least two devices, cpu and mps:0!"
+      },
+      {
+        "check": "gradient is finite",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "gradient norm within 1e-5 of float64 CPU",
+        "passed": true,
+        "detail": "1.07e-06"
+      },
+      {
+        "check": "per-element gradient relative error below 1e-4",
+        "passed": true,
+        "detail": "8.48e-06"
+      },
+      {
+        "check": "non-finite gradient pattern matches CPU",
+        "passed": true,
+        "detail": ""
+      }
+    ]
+  },
+  "checks": {
+    "torch": "2.14.1",
+    "python": "3.11.17",
+    "macos": "27.0.1",
+    "machine": "arm64",
+    "device": "mps",
+    "operator": "aten::special_log_ndtr",
+    "module": "src/metal_kernelops/log_ndtr_ops.py",
+    "schemas": {
+      "default": "aten::special_log_ndtr(Tensor self) -> Tensor",
+      "out": "aten::special_log_ndtr.out(Tensor self, *, Tensor(a!) out) -> Tensor(a!)"
+    },
+    "mps_kernel_before": false,
+    "cpu_kernel_before": true,
+    "mps_before_registration": "NotImplementedError",
+    "compiled_at_import": 0,
+    "compile_ms": 1.29,
+    "compiled_after_first_call": 1,
+    "second_call_ms": 0.013,
+    "fused_vs_composition_max_abs": 3.814697265625e-06,
+    "mps_kernel_after": true,
+    "overlay_entries": [
+      "special_log_ndtr",
+      "special_log_ndtr.out"
+    ],
+    "cpu_kernel_after": true,
+    "cpu_result_unchanged": true
+  },
+  "forward": {
+    "central_-1_1": {
+      "points": 200001,
+      "max_abs_error": 6.04746402066425e-07,
+      "max_rel_error": 4.07694620944427e-07,
+      "rel_error_floor": 1e-06,
+      "max_abs_error_vs_reference": 5.960464477539062e-07,
+      "max_ulp_vs_reference": 6,
+      "cpu_vs_truth": {
+        "points": 200001,
+        "max_abs_error": 3.762480786928535e-07,
+        "max_rel_error": 2.1786129696673118e-07,
+        "rel_error_floor": 1e-06
+      }
+    },
+    "central_-8_8": {
+      "points": 200001,
+      "max_abs_error": 7.212087069774498e-06,
+      "max_rel_error": 2.3992957306598857e-06,
+      "rel_error_floor": 1e-06,
+      "max_abs_error_vs_reference": 3.814697265625e-06,
+      "max_ulp_vs_reference": 6,
+      "cpu_vs_truth": {
+        "points": 200001,
+        "max_abs_error": 7.212087069774498e-06,
+        "max_rel_error": 2.3162534464989033e-06,
+        "rel_error_floor": 1e-06
+      }
+    },
+    "tail_-13_-1": {
+      "points": 60001,
+      "max_abs_error": 1.987492758814824e-05,
+      "max_rel_error": 2.5660897122392453e-07,
+      "rel_error_floor": 1e-06,
+      "max_abs_error_vs_reference": 7.62939453125e-06,
+      "max_ulp_vs_reference": 4,
+      "cpu_vs_truth": {
+        "points": 60001,
+        "max_abs_error": 1.987492758814824e-05,
+        "max_rel_error": 2.7335801442096267e-07,
+        "rel_error_floor": 1e-06
+      }
+    },
+    "tail_-1000_-13": {
+      "points": 30001,
+      "max_abs_error": 0.0948086169664748,
+      "max_rel_error": 2.718125356993539e-07,
+      "rel_error_floor": 1e-06,
+      "max_abs_error_vs_reference": 0.001953125,
+      "max_ulp_vs_reference": 1,
+      "cpu_vs_truth": {
+        "points": 30001,
+        "max_abs_error": 0.0948086169664748,
+        "max_rel_error": 2.718125356993539e-07,
+        "rel_error_floor": 1e-06
+      }
+    },
+    "positive_1_9": {
+      "points": 40001,
+      "max_abs_error": 5.5197332399226084e-08,
+      "max_rel_error": 2.315172335750238e-06,
+      "rel_error_floor": 1e-06,
+      "max_abs_error_vs_reference": 4.470348358154297e-08,
+      "max_ulp_vs_reference": 6,
+      "cpu_vs_truth": {
+        "points": 40001,
+        "max_abs_error": 3.79798659744246e-08,
+        "max_rel_error": 2.2844757845345842e-06,
+        "rel_error_floor": 1e-06
+      }
+    },
+    "special_values": {
+      "points": 32,
+      "max_abs_error": 136282092.0,
+      "max_rel_error": 1.926987830569223e-07,
+      "rel_error_floor": 1e-06,
+      "nonfinite_points": 2,
+      "nonfinite_mismatches": 0,
+      "max_abs_error_vs_reference": 2.384185791015625e-07,
+      "max_ulp_vs_reference": 2,
+      "cpu_vs_truth": {
+        "points": 32,
+        "max_abs_error": 136282092.0,
+        "max_rel_error": 1.3665511394249712e-07,
+        "rel_error_floor": 1e-06,
+        "nonfinite_points": 2,
+        "nonfinite_mismatches": 0
+      }
+    },
+    "float16": {
+      "points": 20001,
+      "max_abs_error": 0.051836294897647406,
+      "max_rel_error": 0.002830793274986299,
+      "rel_error_floor": 0.01,
+      "max_abs_error_vs_reference": 0.0,
+      "max_ulp_vs_reference": 0,
+      "input_dtype": "float16"
+    },
+    "bfloat16": {
+      "points": 20001,
+      "max_abs_error": 0.42300248057669876,
+      "max_rel_error": 0.022653087638342173,
+      "rel_error_floor": 0.01,
+      "max_abs_error_vs_reference": 0.0,
+      "max_ulp_vs_reference": 0,
+      "input_dtype": "bfloat16"
+    },
+    "int64": {
+      "mps_dtype": "float32",
+      "cpu_dtype": "float32",
+      "max_abs_error_vs_cpu": 9.5367431640625e-07,
+      "matches_cpu_dtype": true
+    },
+    "bool": {
+      "mps_dtype": "float32",
+      "cpu_dtype": "float32",
+      "max_abs_error_vs_cpu": 1.4901161193847656e-08,
+      "matches_cpu_dtype": true
+    },
+    "complex64": {
+      "raises": true,
+      "message": "\"log_ndtr_mps\" not implemented for torch.complex64",
+      "cpu_raises": true
+    },
+    "noncontiguous_transpose": {
+      "max_abs_error_vs_cpu": 1.4901161193847656e-08,
+      "output_contiguous": true
+    },
+    "empty": {
+      "shape": [
+        0
+      ],
+      "dtype": "float32"
+    }
+  },
+  "out": {
+    "same_dtype": {
+      "aliases_out": true,
+      "max_abs_error_vs_truth": 5.942582845364086e-06
+    },
+    "cast_to_float16": {
+      "returns_out": true,
+      "dtype": "float16",
+      "max_abs_error_vs_cpu_float32": 0.015621185302734375
+    },
+    "resize_from_size_1": {
+      "shape": [
+        7
+      ],
+      "aliases_out": true,
+      "max_abs_error_vs_cpu": 3.814697265625e-06
+    },
+    "rejects_int_out": {
+      "raised": true,
+      "message": "result type torch.float32 can't be cast to the desired output type torch.int32"
+    },
+    "rejects_cross_device_out": {
+      "raised": true,
+      "message": "Expected all tensors to be on the same device, but found at least two devices, cpu and mps:0!"
+    }
+  },
+  "gradient": {
+    "points": 40001,
+    "autograd_node": "SpecialLogNdtrBackward0 (PyTorch's formula, no custom backward in the overlay)",
+    "all_finite": true,
+    "max_abs_error": 0.00018455258466332225,
+    "max_rel_error": 8.477072324665652e-06,
+    "grad_norm_relative_error": 1.074537721419907e-06,
+    "reference": "float64 CPU autograd of aten::special_log_ndtr",
+    "cpu_float32_vs_float64": {
+      "max_abs_error": 0.00018455258466332225,
+      "max_rel_error": 8.401577449380413e-06,
+      "grad_norm_relative_error": 9.984978379488164e-07
+    },
+    "mps_vs_cpu_float32": {
+      "max_abs_error": 9.72747802734375e-05,
+      "max_rel_error": 3.963104487992908e-06
+    },
+    "nonfinite_gradients": {
+      "mps": [
+        "nan",
+        0.0,
+        "nan"
+      ],
+      "cpu_float64": [
+        "nan",
+        0.0,
+        "nan"
+      ],
+      "nan_pattern_matches_cpu": true
+    }
+  },
+  "timing": [
+    {
+      "elements": 4096,
+      "dtype": "float32",
+      "mps_fused": {
+        "median_ms": 0.1266,
+        "min_ms": 0.0553,
+        "rounds": 5,
+        "iters_per_round": 400,
+        "best_throughput_gbs": 0.593
+      },
+      "mps_composition": {
+        "median_ms": 0.1959,
+        "min_ms": 0.1535,
+        "rounds": 5,
+        "iters_per_round": 400,
+        "best_throughput_gbs": 0.213
+      },
+      "mps_single_erfc_op": {
+        "median_ms": 0.131,
+        "min_ms": 0.0618,
+        "rounds": 5,
+        "iters_per_round": 400
+      },
+      "cpu_kernel": {
+        "median_ms": 0.0241,
+        "min_ms": 0.0227,
+        "rounds": 5,
+        "iters_per_round": 400
+      },
+      "speedup_median": 0.19,
+      "speedup_best": 0.41,
+      "composition_vs_fused_median": 1.547,
+      "composition_vs_fused_best": 2.776,
+      "fused_vs_single_op_best": 0.895,
+      "max_abs_error_vs_composition": 3.814697265625e-06
+    },
+    {
+      "elements": 65536,
+      "dtype": "float32",
+      "mps_fused": {
+        "median_ms": 0.1261,
+        "min_ms": 0.0747,
+        "rounds": 5,
+        "iters_per_round": 200,
+        "best_throughput_gbs": 7.019
+      },
+      "mps_composition": {
+        "median_ms": 0.1999,
+        "min_ms": 0.1677,
+        "rounds": 5,
+        "iters_per_round": 200,
+        "best_throughput_gbs": 3.126
+      },
+      "mps_single_erfc_op": {
+        "median_ms": 0.1297,
+        "min_ms": 0.0685,
+        "rounds": 5,
+        "iters_per_round": 200
+      },
+      "cpu_kernel": {
+        "median_ms": 0.247,
+        "min_ms": 0.2405,
+        "rounds": 5,
+        "iters_per_round": 200
+      },
+      "speedup_median": 1.959,
+      "speedup_best": 3.22,
+      "composition_vs_fused_median": 1.585,
+      "composition_vs_fused_best": 2.245,
+      "fused_vs_single_op_best": 1.091,
+      "max_abs_error_vs_composition": 3.814697265625e-06
+    },
+    {
+      "elements": 1048576,
+      "dtype": "float32",
+      "mps_fused": {
+        "median_ms": 0.1514,
+        "min_ms": 0.1178,
+        "rounds": 5,
+        "iters_per_round": 100,
+        "best_throughput_gbs": 71.211
+      },
+      "mps_composition": {
+        "median_ms": 0.3019,
+        "min_ms": 0.269,
+        "rounds": 5,
+        "iters_per_round": 100,
+        "best_throughput_gbs": 31.184
+      },
+      "mps_single_erfc_op": {
+        "median_ms": 0.1472,
+        "min_ms": 0.077,
+        "rounds": 5,
+        "iters_per_round": 100
+      },
+      "cpu_kernel": {
+        "median_ms": 1.4357,
+        "min_ms": 1.3214,
+        "rounds": 5,
+        "iters_per_round": 100
+      },
+      "speedup_median": 9.483,
+      "speedup_best": 11.217,
+      "composition_vs_fused_median": 1.994,
+      "composition_vs_fused_best": 2.284,
+      "fused_vs_single_op_best": 1.53,
+      "max_abs_error_vs_composition": 3.814697265625e-06
+    },
+    {
+      "elements": 16777216,
+      "dtype": "float32",
+      "mps_fused": {
+        "median_ms": 0.4204,
+        "min_ms": 0.3628,
+        "rounds": 5,
+        "iters_per_round": 40,
+        "best_throughput_gbs": 369.95
+      },
+      "mps_composition": {
+        "median_ms": 4.0923,
+        "min_ms": 3.9369,
+        "rounds": 5,
+        "iters_per_round": 40,
+        "best_throughput_gbs": 34.092
+      },
+      "mps_single_erfc_op": {
+        "median_ms": 0.412,
+        "min_ms": 0.349,
+        "rounds": 5,
+        "iters_per_round": 40
+      },
+      "cpu_kernel": {
+        "median_ms": 24.0041,
+        "min_ms": 22.5262,
+        "rounds": 5,
+        "iters_per_round": 40
+      },
+      "speedup_median": 57.098,
+      "speedup_best": 62.09,
+      "composition_vs_fused_median": 9.734,
+      "composition_vs_fused_best": 10.851,
+      "fused_vs_single_op_best": 1.04,
+      "max_abs_error_vs_composition": 3.814697265625e-06
+    }
+  ],
+  "floor": {
+    "rows": [
+      {
+        "elements": 65536,
+        "rounds": 8,
+        "median_ratio_to_copy": {
+          "copy_out_of_place": 1.0,
+          "copy_in_place": 0.9879,
+          "previous_out_of_place": 1.1413,
+          "previous_in_place": 1.0955,
+          "fused_out_of_place": 1.1332,
+          "fused_in_place": 1.0542
+        },
+        "best_ms": {
+          "copy_out_of_place": 0.0066,
+          "copy_in_place": 0.0064,
+          "previous_out_of_place": 0.0073,
+          "previous_in_place": 0.0072,
+          "fused_out_of_place": 0.0075,
+          "fused_in_place": 0.0068
+        },
+        "best_gbs": {
+          "copy_out_of_place": 79.955,
+          "copy_in_place": 81.542,
+          "previous_out_of_place": 71.443,
+          "previous_in_place": 73.303,
+          "fused_out_of_place": 69.772,
+          "fused_in_place": 77.314
+        },
+        "median_speedup_vs_previous": {
+          "out_of_place": 1.014,
+          "in_place": 1.041
+        }
+      },
+      {
+        "elements": 1048576,
+        "rounds": 8,
+        "median_ratio_to_copy": {
+          "copy_out_of_place": 1.0,
+          "copy_in_place": 1.009,
+          "previous_out_of_place": 1.9521,
+          "previous_in_place": 1.3919,
+          "fused_out_of_place": 1.6017,
+          "fused_in_place": 1.2806
+        },
+        "best_ms": {
+          "copy_out_of_place": 0.0102,
+          "copy_in_place": 0.011,
+          "previous_out_of_place": 0.0201,
+          "previous_in_place": 0.0144,
+          "fused_out_of_place": 0.0172,
+          "fused_in_place": 0.0133
+        },
+        "best_gbs": {
+          "copy_out_of_place": 818.923,
+          "copy_in_place": 761.608,
+          "previous_out_of_place": 416.825,
+          "previous_in_place": 581.397,
+          "fused_out_of_place": 486.811,
+          "fused_in_place": 631.985
+        },
+        "median_speedup_vs_previous": {
+          "out_of_place": 1.206,
+          "in_place": 1.079
+        }
+      },
+      {
+        "elements": 4194304,
+        "rounds": 8,
+        "median_ratio_to_copy": {
+          "copy_out_of_place": 1.0,
+          "copy_in_place": 1.0324,
+          "previous_out_of_place": 1.5151,
+          "previous_in_place": 1.0162,
+          "fused_out_of_place": 1.2518,
+          "fused_in_place": 1.017
+        },
+        "best_ms": {
+          "copy_out_of_place": 0.0391,
+          "copy_in_place": 0.0391,
+          "previous_out_of_place": 0.0594,
+          "previous_in_place": 0.0397,
+          "fused_out_of_place": 0.0486,
+          "fused_in_place": 0.04
+        },
+        "best_gbs": {
+          "copy_out_of_place": 859.022,
+          "copy_in_place": 857.422,
+          "previous_out_of_place": 564.484,
+          "previous_in_place": 844.995,
+          "fused_out_of_place": 690.472,
+          "fused_in_place": 838.37
+        },
+        "median_speedup_vs_previous": {
+          "out_of_place": 1.21,
+          "in_place": 0.992
+        }
+      },
+      {
+        "elements": 16777216,
+        "rounds": 8,
+        "median_ratio_to_copy": {
+          "copy_out_of_place": 1.0,
+          "copy_in_place": 0.9371,
+          "previous_out_of_place": 1.0028,
+          "previous_in_place": 0.9352,
+          "fused_out_of_place": 0.995,
+          "fused_in_place": 0.9341
+        },
+        "best_ms": {
+          "copy_out_of_place": 0.2578,
+          "copy_in_place": 0.2399,
+          "previous_out_of_place": 0.2586,
+          "previous_in_place": 0.2403,
+          "fused_out_of_place": 0.2568,
+          "fused_in_place": 0.2413
+        },
+        "best_gbs": {
+          "copy_out_of_place": 520.72,
+          "copy_in_place": 559.392,
+          "previous_out_of_place": 519.05,
+          "previous_in_place": 558.646,
+          "fused_out_of_place": 522.696,
+          "fused_in_place": 556.145
+        },
+        "median_speedup_vs_previous": {
+          "out_of_place": 1.005,
+          "in_place": 0.996
+        }
+      }
+    ],
+    "floor_gbs_512mb": {
+      "copy_512mb": {
+        "ms": 2.0717,
+        "gbs": 518.3
+      },
+      "clone_512mb": {
+        "ms": 2.0643,
+        "gbs": 520.16
+      }
+    },
+    "note": "ratio_to_copy is the operator's device time over a same-size 32-bit copy's; 1.0 means the pass costs no more than moving the bytes. The two in-place rows overwrite x, which is refilled after every round so each row sees the same input. previous_* is the kernel before this round's rewrite, reverted from the same source in the same process, and speedup_vs_previous is measured inside a round, so a busy box moves both sides of it"
+  },
+  "kernel": "one Metal pass per call, compiled by torch.mps.compile_shader on the first call and cached: log_ndtr_f32 / f16 / bf16, one element per thread",
+  "lazy_compile": {
+    "compiled_at_import": 0,
+    "compiled_after_first_call": 1,
+    "compile_ms": 1.29,
+    "second_call_ms": 0.013
+  },
+  "performance": {
+    "composition_vs_fused_best": {
+      "4096": 2.776,
+      "65536": 2.245,
+      "1048576": 2.284,
+      "16777216": 10.851
+    },
+    "fused_vs_composition_max_abs": 3.814697265625e-06,
+    "median_ratio_to_streaming_copy": {
+      "65536": 1.1332,
+      "1048576": 1.6017,
+      "4194304": 1.2518,
+      "16777216": 0.995
+    },
+    "streaming_copy_gbs": {
+      "65536": 79.955,
+      "1048576": 818.923,
+      "4194304": 859.022,
+      "16777216": 520.72
+    },
+    "median_speedup_vs_previous_out_of_place": {
+      "65536": 1.014,
+      "1048576": 1.206,
+      "4194304": 1.21,
+      "16777216": 1.005
+    },
+    "median_speedup_vs_previous_in_place": {
+      "65536": 1.041,
+      "1048576": 1.079,
+      "4194304": 0.992,
+      "16777216": 0.996
+    }
+  },
+  "algorithm": "ATen calc_log_ndtr: t = x/sqrt(2); x < -1 -> log(erfcx(-t)/2) - t*t, else log1p(-erfc(t)/2); erfcx is ATen calc_erfcx (continued fraction above 50, erfcx_y100 table below); erfc(t) = exp(-t*t) erfcx(t), with exp2/log2 and a degree-3 cut of the table",
+  "attribution": {
+    "algorithm": "PyTorch ATen aten/src/ATen/native/Math.h calc_log_ndtr",
+    "upstream": "SciPy special.log_ndtr / erfcx; erfcx_y100 from Steven G. Johnson, Faddeeva package, http://ab-initio.mit.edu/faddeeva",
+    "license": "BSD-3-Clause (PyTorch and SciPy); MIT (erfcx_y100, Copyright (c) 2012 Massachusetts Institute of Technology)"
+  },
+  "boundaries": [
+    "float64 has no MPS storage in torch 2.14.1; the kernel runs float32, float16, bfloat16 and integral inputs only",
+    "the out overload is not differentiable, as every aten out= overload",
+    "gradient at -inf is NaN and at +inf is 0, matching the CPU kernel",
+    "the fused pass still pays one dispatch: at a few thousand elements the single-kernel CPU implementation wins (speedup_best < 1), from tens of thousands up the GPU wins and the margin grows with size",
+    "forward error is at most 6 ULP of the CPU float32 kernel over these regions and 7 on a 4M-point sweep of [-8, 8]; the residual is Metal's exp2 and log2 (about 2 ULP each), not the table",
+    "erfcx_y100 is cut after c3: the dropped terms are 1.2e-7 of erfcx at worst and the ULP counts are unchanged by the cut",
+    "compile_ms is the first call's cost with the Metal compiler's on-disk cache warm; a cold cache measured 29 ms for this source"
+  ],
+  "timing_note": "shared workstation: medians absorb contention from other GPU work, minima give the uncontended cost; speedup_best uses the minima. The floor table is the exception: its ratio is per-round against a copy in the same round, so contention cancels and the minimum only picks the best round, not the best kernel"
+}

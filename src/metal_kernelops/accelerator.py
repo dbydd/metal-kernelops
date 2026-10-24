@@ -4,12 +4,14 @@ Importing this module changes nothing. Call :func:`install` to take over MPS
 kernels for operators this package implements; from then on ordinary PyTorch
 code reaches those kernels with no call-site change.
 
-Every overlay here exists because the operator raises ``NotImplementedError``
-on the MPS device today. Operators that run but run slowly belong in a Metal
-kernel, not in this table.
+``install()`` registers only kernels that are exact and worth running on the
+device. ``install(compatibility=True)`` also registers exact kernels whose cost
+is worse than the missing-error path they replace, so callers choose that trade.
 
 Registration is permanent for the life of the process. There is no uninstall.
 """
+
+from importlib import import_module
 
 import torch
 from torch.library import Library
@@ -19,41 +21,35 @@ CHECKED_TORCH = "2.14.1"
 _installed = {}
 _library = None
 
-
-def _take(self, index):
-    return self.reshape(-1).index_select(0, index.reshape(-1)).reshape(index.shape)
-
-
-def _channel_shuffle(self, groups):
-    channels = self.shape[1]
-    if channels % groups:
-        raise ValueError(f"channel count {channels} is not divisible by {groups}")
-    shape = self.shape
-    shuffled = (
-        self.reshape(shape[0], groups, channels // groups, *shape[2:])
-        .transpose(1, 2)
-        .reshape(shape)
-    )
-    return shuffled.contiguous()
-
-
-def _put_(self, index, source, accumulate=False):
-    flat = self.reshape(-1)
-    flat.index_put_((index.reshape(-1),), source.reshape(-1), accumulate)
-    if flat.data_ptr() != self.data_ptr():
-        self.copy_(flat.reshape(self.shape))
-    return self
-
-
-_OVERLAYS = (
-    ("take", _take),
-    ("channel_shuffle", _channel_shuffle),
-    ("put_", _put_),
+_MODULES = (
+    "index_ops", "ndtri_ops", "frexp_ops", "airy_ops", "laguerre_ops", "rrelu_ops",
+    "decomposition_ops", "log_ndtr_ops", "fractional_pool_ops", "lanczos_ops",
+    "legendre_ops", "matrix_sqrt_ops", "mode_ops", "segment_ops", "convolution_ops",
+    "margin_ops", "householder_ops", "attention_ops", "adaptive_pool_ops", "eigen_ops",
+    "distance_ops",
+    "spdiags_ops",
+    "sparse_addmm_ops",
 )
 
+_COMPATIBILITY_MODULES = ("ldl_ops",)
 
-def install():
-    """Register the overlays on the MPS dispatch key. Returns the coverage table."""
+
+def _previous(operator, dispatch):
+    table = torch._C._dispatch_dump_table(operator)
+    return next(
+        (line for line in table.splitlines() if line.startswith(f"{dispatch}:")),
+        None,
+    )
+
+
+def install(compatibility=False):
+    """Register overlays on MPS. Returns the coverage table.
+
+    ``compatibility`` adds exact implementations whose measured cost is worse
+    than leaving the operator unsupported, such as the sequential LDL
+    factorization. The default table contains only kernels that provide a real
+    device path with competitive performance.
+    """
     version = torch.__version__.split("+")[0]
     if version != CHECKED_TORCH:
         raise RuntimeError(
@@ -65,18 +61,53 @@ def install():
     if _installed:
         return coverage()
 
+    overlays = []
+    autograd_overlays = []
+    sparse_overlays = []
+    names = set()
+    autograd_names = set()
+    sparse_names = set()
+    for module_name in _MODULES + (_COMPATIBILITY_MODULES if compatibility else ()):
+        module = import_module(f".{module_name}", __package__)
+        for name, function in getattr(module, "OVERLAYS", ()):
+            if name in names:
+                raise RuntimeError(f"duplicate MPS overlay: aten::{name}")
+            names.add(name)
+            overlays.append((name, function, module_name in _COMPATIBILITY_MODULES))
+        for name, function in getattr(module, "AUTOGRAD_OVERLAYS", ()):
+            if name in autograd_names:
+                raise RuntimeError(f"duplicate AutogradMPS overlay: aten::{name}")
+            autograd_names.add(name)
+            autograd_overlays.append((name, function, module_name in _COMPATIBILITY_MODULES))
+        for name, function in getattr(module, "SPARSE_OVERLAYS", ()):
+            if name in sparse_names:
+                raise RuntimeError(f"duplicate SparseMPS overlay: aten::{name}")
+            sparse_names.add(name)
+            sparse_overlays.append((name, function, module_name in _COMPATIBILITY_MODULES))
+
     global _library
     _library = Library("aten", "FRAGMENT")
-    for name, function in _OVERLAYS:
-        operator = f"aten::{name}"
-        replaced = torch._C._dispatch_has_kernel_for_dispatch_key(operator, "MPS")
-        _library.impl(name, function, "MPS")
-        _installed[operator] = {"replaced_existing": replaced, "kernel": function.__name__}
+    tables = (
+        ("MPS", overlays, ""),
+        ("AutogradMPS", autograd_overlays, "@AutogradMPS"),
+        ("SparseMPS", sparse_overlays, "@SparseMPS"),
+    )
+    for dispatch, entries, suffix in tables:
+        for name, function, compatibility_only in entries:
+            operator = f"aten::{name}"
+            replaced = torch._C._dispatch_has_kernel_for_dispatch_key(operator, dispatch)
+            _library.impl(name, function, dispatch)
+            _installed[operator + suffix] = {
+                "replaced_existing": replaced,
+                "previous_kernel": _previous(operator, dispatch),
+                "kernel": f"{function.__module__}.{function.__name__}",
+                "compatibility": compatibility_only,
+            }
     return coverage()
 
 
 def coverage():
-    """What this package has taken over: one row per operator, current process only."""
+    """What this package has taken over: one row per operator and dispatch key."""
     return {
         operator: dict(row) | {"torch": torch.__version__}
         for operator, row in _installed.items()

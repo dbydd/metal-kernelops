@@ -1,0 +1,246 @@
+{
+  "op": "aten::special_ndtri",
+  "overlays": [
+    "special_ndtri",
+    "special_ndtri.out"
+  ],
+  "algorithm": "Cephes calc_ndtri port from ATen/native/Math.h; float32 arithmetic, raw-bit denormal path, precise::log and precise::sqrt",
+  "torch": "2.14.1",
+  "python": "3.11.17",
+  "platform": "27.0.1 arm64",
+  "first_call_ms_including_pipeline_compile": 52.78191703837365,
+  "elapsed_s": 0.6942110061645508,
+  "parity": {
+    "values": 11534347,
+    "bit_equal_to_cpu_f32_fraction": 0.878449555921978,
+    "max_abs_error_vs_float64": 2.0296182050572042e-06,
+    "max_rel_error_vs_float64": 4.094967149675564e-07,
+    "max_ulp_vs_cpu_f32": 6.0,
+    "p99_ulp_vs_cpu_f32": 2.0,
+    "mean_ulp_vs_cpu_f32": 0.13886469336986695,
+    "finite_agreement": true,
+    "nan_agreement": true,
+    "subnormal_decreases": 2,
+    "cpu_subnormal_decreases": 2,
+    "groups": {
+      "uniform": {
+        "values": 1048576,
+        "bit_equal_to_cpu_f32_fraction": 0.9280843734741211,
+        "max_abs_error_vs_float64": 7.317112391547198e-07,
+        "max_rel_error_vs_float64": 4.094967149675564e-07,
+        "max_ulp_vs_cpu_f32": 6.0
+      },
+      "log_tails": {
+        "values": 1048576,
+        "bit_equal_to_cpu_f32_fraction": 0.8770332336425781,
+        "max_abs_error_vs_float64": 2.026169571678338e-06,
+        "max_rel_error_vs_float64": 3.925542498293931e-07,
+        "max_ulp_vs_cpu_f32": 6.0
+      },
+      "bit_patterns": {
+        "values": 1048576,
+        "bit_equal_to_cpu_f32_fraction": 0.7676858901977539,
+        "max_abs_error_vs_float64": 2.0296182050572042e-06,
+        "max_rel_error_vs_float64": 3.6929559228991217e-07,
+        "max_ulp_vs_cpu_f32": 6.0
+      },
+      "subnormals": {
+        "values": 8388607,
+        "bit_equal_to_cpu_f32_fraction": 0.8862675292810832,
+        "max_abs_error_vs_float64": 1.8611615946184656e-06,
+        "max_rel_error_vs_float64": 1.4329895033397228e-07,
+        "max_ulp_vs_cpu_f32": 3.0
+      },
+      "boundaries": {
+        "values": 12,
+        "bit_equal_to_cpu_f32_fraction": 1.0,
+        "max_abs_error_vs_float64": 1.5123466301503186e-07,
+        "max_rel_error_vs_float64": 1.0928791848320624e-07,
+        "max_ulp_vs_cpu_f32": 0.0
+      }
+    }
+  },
+  "edges": {
+    "cases": 12,
+    "failures": [],
+    "scalar_shape": [],
+    "scalar_error": 0.0,
+    "empty_numel": 0,
+    "shapes": [
+      {
+        "shape": [
+          3,
+          4
+        ],
+        "shape_preserved": true,
+        "dtype_preserved": true
+      },
+      {
+        "shape": [
+          2,
+          3,
+          5
+        ],
+        "shape_preserved": true,
+        "dtype_preserved": true
+      },
+      {
+        "shape": [
+          7
+        ],
+        "shape_preserved": true,
+        "dtype_preserved": true
+      }
+    ]
+  },
+  "dtypes": {
+    "float16": {
+      "domain_values": 15362,
+      "rounded_bit_equal": true,
+      "mismatches": 0,
+      "max_abs_error_finite": 0.0,
+      "min_subnormal_output": -5.29296875,
+      "dtype_preserved": true
+    },
+    "bfloat16": {
+      "domain_values": 16258,
+      "rounded_bit_equal": true,
+      "mismatches": 0,
+      "max_abs_error_finite": 0.0,
+      "min_subnormal_output": -13.3125,
+      "dtype_preserved": true
+    }
+  },
+  "out": {
+    "returns_out": true,
+    "matches_default": true,
+    "dtype_cast_matches": true,
+    "resizes": true,
+    "noncontiguous_out": true,
+    "in_place_alias": true,
+    "overlapping_input_out": true,
+    "empty": true,
+    "rejects_autograd_out": true,
+    "rejects_integer_out": true
+  },
+  "autograd": {
+    "has_grad_fn": true,
+    "grad_dtype": "torch.float32",
+    "grad_shape": [
+      11
+    ],
+    "max_rel_error_vs_closed_form": 1.0839237828804379e-05,
+    "max_rel_error_central": 1.0788391235694974e-06,
+    "values": [
+      9.999999350456404e-39,
+      9.999999682655225e-21,
+      1.000000013351432e-10,
+      0.009999999776482582,
+      0.10000000149011612,
+      0.30000001192092896,
+      0.5,
+      0.699999988079071,
+      0.8999999761581421,
+      0.9900000095367432,
+      0.9999998807907104
+    ],
+    "grad": [
+      7.669610649934446e+36,
+      1.0674782361100485e+19,
+      1535724800.0,
+      37.52043533325195,
+      5.698060512542725,
+      2.876103639602661,
+      2.5066282749176025,
+      2.876103639602661,
+      5.698057174682617,
+      37.520469665527344,
+      1568612.75
+    ],
+    "expected_grad": [
+      7.669527518101643e+36,
+      1.0674725667952876e+19,
+      1535723678.1653821,
+      37.520436889313245,
+      5.698059794114359,
+      2.8761036075533735,
+      2.5066282746310002,
+      2.8761036075533735,
+      5.69805886407492,
+      37.52046739009342,
+      1568614.4422826301
+    ]
+  },
+  "timing": {
+    "cpu_threads": 6,
+    "group_size": 512,
+    "elements_per_thread": 4,
+    "vector_bytes": 16,
+    "note": "warmed, synchronized; per-batch median and best per-call time; the ndtri call and a same-shape float4 copy are timed in the same batch, so the copy is the memory floor this kernel is measured against; measured on a machine shared with other work, so the minimum is the cleaner kernel estimate",
+    "rows": [
+      {
+        "elements": 1048576,
+        "mps_median_ms": 0.07225525041576475,
+        "mps_min_ms": 0.039494749216828495,
+        "cpu_median_ms": 0.883333501406014,
+        "cpu_min_ms": 0.8736249874345958,
+        "speedup_median": 12.225180818324132,
+        "speedup_min": 22.120028731878843,
+        "mps_Melem_s": 14512.10803320696,
+        "mps_Melem_s_min": 26549.757139696118,
+        "mps_GB_s": 116.09686426565567,
+        "mps_GB_s_min": 212.39805711756895,
+        "copy_floor_median_ms": 0.031213494366966188,
+        "copy_floor_min_ms": 0.020531253539957106,
+        "copy_floor_GB_s_min": 408.5774881535814,
+        "over_copy_floor_min": 1.92364042166083
+      },
+      {
+        "elements": 4194304,
+        "mps_median_ms": 0.16335397958755493,
+        "mps_min_ms": 0.14481248217634857,
+        "cpu_median_ms": 3.4658749937079847,
+        "cpu_min_ms": 3.455542027950287,
+        "speedup_median": 21.216960875142533,
+        "speedup_min": 23.862183535685997,
+        "mps_Melem_s": 25676.16663267102,
+        "mps_Melem_s_min": 28963.691091851426,
+        "mps_GB_s": 205.40933306136813,
+        "mps_GB_s_min": 231.7095287348114,
+        "copy_floor_median_ms": 0.10985447443090379,
+        "copy_floor_min_ms": 0.09416701504960656,
+        "copy_floor_GB_s_min": 356.3289330380043,
+        "over_copy_floor_min": 1.5378259797240288
+      },
+      {
+        "elements": 16777216,
+        "mps_median_ms": 0.5565410247072577,
+        "mps_min_ms": 0.4719579592347145,
+        "cpu_median_ms": 14.549207990057766,
+        "cpu_min_ms": 14.414125005714595,
+        "speedup_median": 26.142202181251047,
+        "speedup_min": 30.541120715682542,
+        "mps_Melem_s": 30145.515344218995,
+        "mps_Melem_s_min": 35548.11540249148,
+        "mps_GB_s": 241.16412275375194,
+        "mps_GB_s_min": 284.3849232199318,
+        "copy_floor_median_ms": 0.4206249723210931,
+        "copy_floor_min_ms": 0.3784580039791763,
+        "copy_floor_GB_s_min": 354.6436502565949,
+        "over_copy_floor_min": 1.247055034567806
+      }
+    ]
+  },
+  "classification": {
+    "bound": "memory",
+    "evidence": "in a probe outside this verifier, stacking up to 8 precise::log calls per element on the copy access pattern did not raise launch time measurably, so on a uniformly distributed input the arithmetic hides under memory latency and only the access pattern is left to tune",
+    "physical_floor": "a float4 copy of the same 8 bytes per element; the kernel/floor ratio varies with the load on the machine (0.66x-2.01x across recorded runs, 1.27x-1.48x in a quiet window) while the quiet-window ceiling measured with the same access pattern was 184-313 GB/s, so the copy is the bound the kernel trades against and not a cost it can beat",
+    "noise": "the machine is shared with other work: single-launch minima swing 4x between sweeps and GPU event timers stall, so the numbers are per-batch minima and means of interleaved batches"
+  },
+  "limits": [
+    "float64 tensors do not exist on MPS, so only float32/float16/bfloat16 are served",
+    "the generated backward multiplies by exp(ndtri(p)^2/2); in the extreme tail (p <= ~1e-40) that overflows float32, matching the CPU float32 kernel",
+    "float16/bfloat16 are computed in float32 and rounded on write"
+  ],
+  "failures": []
+}

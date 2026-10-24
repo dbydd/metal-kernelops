@@ -1,0 +1,951 @@
+{
+  "schema": 1,
+  "module": "metal_kernelops/rrelu_ops.py",
+  "torch": "2.14.1",
+  "platform": "macOS-27.0.1-arm64-arm-64bit arm64",
+  "device": "mps",
+  "operators": [
+    "aten::rrelu_with_noise",
+    "aten::rrelu_with_noise_",
+    "aten::rrelu_with_noise.out"
+  ],
+  "overlays": [
+    {
+      "aten": "aten::rrelu_with_noise",
+      "replaced_existing_kernel": false,
+      "kernel": "rrelu_with_noise"
+    },
+    {
+      "aten": "aten::rrelu_with_noise_",
+      "replaced_existing_kernel": false,
+      "kernel": "rrelu_with_noise_"
+    },
+    {
+      "aten": "aten::rrelu_with_noise.out",
+      "replaced_existing_kernel": false,
+      "kernel": "rrelu_with_noise_out"
+    }
+  ],
+  "backward": {
+    "overlay": null,
+    "reason": "aten::rrelu_with_noise_backward is CompositeExplicitAutograd and already runs on MPS as one kernel (mul in training, leaky_relu_backward in eval); a Python body would only add a dispatch frame"
+  },
+  "kernel_launches": {
+    "training": 2,
+    "training_aten_composition": 4,
+    "eval": 1,
+    "backward_training": 1,
+    "backward_eval": 1
+  },
+  "correctness": {
+    "checks": 114,
+    "failed": 0,
+    "rows": [
+      {
+        "check": "train formula (4,) torch.float32",
+        "ok": true
+      },
+      {
+        "check": "train noise contract (4,) torch.float32",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.30000001192092896
+        }
+      },
+      {
+        "check": "train out is new storage (4,) torch.float32",
+        "ok": true
+      },
+      {
+        "check": "train formula (32, 64) torch.float32",
+        "ok": true
+      },
+      {
+        "check": "train noise contract (32, 64) torch.float32",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.30000001192092896
+        }
+      },
+      {
+        "check": "train out is new storage (32, 64) torch.float32",
+        "ok": true
+      },
+      {
+        "check": "train formula (3, 7, 13, 11) torch.float32",
+        "ok": true
+      },
+      {
+        "check": "train noise contract (3, 7, 13, 11) torch.float32",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.30000001192092896
+        }
+      },
+      {
+        "check": "train out is new storage (3, 7, 13, 11) torch.float32",
+        "ok": true
+      },
+      {
+        "check": "train formula (2, 3, 4, 5, 6) torch.float32",
+        "ok": true
+      },
+      {
+        "check": "train noise contract (2, 3, 4, 5, 6) torch.float32",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.30000001192092896
+        }
+      },
+      {
+        "check": "train out is new storage (2, 3, 4, 5, 6) torch.float32",
+        "ok": true
+      },
+      {
+        "check": "train formula (4,) torch.float16",
+        "ok": true
+      },
+      {
+        "check": "train noise contract (4,) torch.float16",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.300048828125
+        }
+      },
+      {
+        "check": "train out is new storage (4,) torch.float16",
+        "ok": true
+      },
+      {
+        "check": "train formula (32, 64) torch.float16",
+        "ok": true
+      },
+      {
+        "check": "train noise contract (32, 64) torch.float16",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.300048828125
+        }
+      },
+      {
+        "check": "train out is new storage (32, 64) torch.float16",
+        "ok": true
+      },
+      {
+        "check": "train formula (3, 7, 13, 11) torch.float16",
+        "ok": true
+      },
+      {
+        "check": "train noise contract (3, 7, 13, 11) torch.float16",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.300048828125
+        }
+      },
+      {
+        "check": "train out is new storage (3, 7, 13, 11) torch.float16",
+        "ok": true
+      },
+      {
+        "check": "train formula (2, 3, 4, 5, 6) torch.float16",
+        "ok": true
+      },
+      {
+        "check": "train noise contract (2, 3, 4, 5, 6) torch.float16",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.300048828125
+        }
+      },
+      {
+        "check": "train out is new storage (2, 3, 4, 5, 6) torch.float16",
+        "ok": true
+      },
+      {
+        "check": "train formula (4,) torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "train noise contract (4,) torch.bfloat16",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.30078125
+        }
+      },
+      {
+        "check": "train out is new storage (4,) torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "train formula (32, 64) torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "train noise contract (32, 64) torch.bfloat16",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.30078125
+        }
+      },
+      {
+        "check": "train out is new storage (32, 64) torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "train formula (3, 7, 13, 11) torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "train noise contract (3, 7, 13, 11) torch.bfloat16",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.30078125
+        }
+      },
+      {
+        "check": "train out is new storage (3, 7, 13, 11) torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "train formula (2, 3, 4, 5, 6) torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "train noise contract (2, 3, 4, 5, 6) torch.bfloat16",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.30078125
+        }
+      },
+      {
+        "check": "train out is new storage (2, 3, 4, 5, 6) torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "eval formula (4,) torch.float32",
+        "ok": true
+      },
+      {
+        "check": "eval leaves noise alone (4,) torch.float32",
+        "ok": true
+      },
+      {
+        "check": "eval formula (32, 64) torch.float32",
+        "ok": true
+      },
+      {
+        "check": "eval leaves noise alone (32, 64) torch.float32",
+        "ok": true
+      },
+      {
+        "check": "eval formula (3, 7, 13, 11) torch.float32",
+        "ok": true
+      },
+      {
+        "check": "eval leaves noise alone (3, 7, 13, 11) torch.float32",
+        "ok": true
+      },
+      {
+        "check": "eval formula (2, 3, 4, 5, 6) torch.float32",
+        "ok": true
+      },
+      {
+        "check": "eval leaves noise alone (2, 3, 4, 5, 6) torch.float32",
+        "ok": true
+      },
+      {
+        "check": "eval formula (4,) torch.float16",
+        "ok": true
+      },
+      {
+        "check": "eval leaves noise alone (4,) torch.float16",
+        "ok": true
+      },
+      {
+        "check": "eval formula (32, 64) torch.float16",
+        "ok": true
+      },
+      {
+        "check": "eval leaves noise alone (32, 64) torch.float16",
+        "ok": true
+      },
+      {
+        "check": "eval formula (3, 7, 13, 11) torch.float16",
+        "ok": true
+      },
+      {
+        "check": "eval leaves noise alone (3, 7, 13, 11) torch.float16",
+        "ok": true
+      },
+      {
+        "check": "eval formula (2, 3, 4, 5, 6) torch.float16",
+        "ok": true
+      },
+      {
+        "check": "eval leaves noise alone (2, 3, 4, 5, 6) torch.float16",
+        "ok": true
+      },
+      {
+        "check": "eval formula (4,) torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "eval leaves noise alone (4,) torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "eval formula (32, 64) torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "eval leaves noise alone (32, 64) torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "eval formula (3, 7, 13, 11) torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "eval leaves noise alone (3, 7, 13, 11) torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "eval formula (2, 3, 4, 5, 6) torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "eval leaves noise alone (2, 3, 4, 5, 6) torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "eval matches CPU kernel torch.float32 up to the MPS leaky_relu floor",
+        "ok": true,
+        "detail": {
+          "max_abs_diff": 0.0,
+          "mps_leaky_relu_vs_cpu": 0.0
+        }
+      },
+      {
+        "check": "eval matches CPU kernel torch.bfloat16 up to the MPS leaky_relu floor",
+        "ok": true,
+        "detail": {
+          "max_abs_diff": 0.00390625,
+          "mps_leaky_relu_vs_cpu": 0.00390625
+        }
+      },
+      {
+        "check": "inplace keeps storage torch.float32",
+        "ok": true
+      },
+      {
+        "check": "inplace formula torch.float32",
+        "ok": true
+      },
+      {
+        "check": "inplace noise contract torch.float32",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.30000001192092896
+        }
+      },
+      {
+        "check": "inplace eval formula torch.float32",
+        "ok": true
+      },
+      {
+        "check": "inplace eval leaves noise alone torch.float32",
+        "ok": true
+      },
+      {
+        "check": "inplace keeps storage torch.float16",
+        "ok": true
+      },
+      {
+        "check": "inplace formula torch.float16",
+        "ok": true
+      },
+      {
+        "check": "inplace noise contract torch.float16",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.300048828125
+        }
+      },
+      {
+        "check": "inplace eval formula torch.float16",
+        "ok": true
+      },
+      {
+        "check": "inplace eval leaves noise alone torch.float16",
+        "ok": true
+      },
+      {
+        "check": "inplace keeps storage torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "inplace formula torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "inplace noise contract torch.bfloat16",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.30078125
+        }
+      },
+      {
+        "check": "inplace eval formula torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "inplace eval leaves noise alone torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "non-contiguous train torch.float32",
+        "ok": true
+      },
+      {
+        "check": "non-contiguous noise torch.float32",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.30000001192092896
+        }
+      },
+      {
+        "check": "non-contiguous inplace torch.float32",
+        "ok": true
+      },
+      {
+        "check": "non-contiguous train torch.float16",
+        "ok": true
+      },
+      {
+        "check": "non-contiguous noise torch.float16",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.300048828125
+        }
+      },
+      {
+        "check": "non-contiguous inplace torch.float16",
+        "ok": true
+      },
+      {
+        "check": "non-contiguous train torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "non-contiguous noise torch.bfloat16",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.30078125
+        }
+      },
+      {
+        "check": "non-contiguous inplace torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "channels_last train",
+        "ok": true
+      },
+      {
+        "check": "empty tensor",
+        "ok": true
+      },
+      {
+        "check": "generator replay",
+        "ok": true
+      },
+      {
+        "check": "generator advances",
+        "ok": true
+      },
+      {
+        "check": "manual_seed replay",
+        "ok": true
+      },
+      {
+        "check": "sample mean near interval midpoint",
+        "ok": true,
+        "detail": {
+          "mean": 0.21239019930362701,
+          "expected": 0.21250000596046448
+        }
+      },
+      {
+        "check": "out returns out",
+        "ok": true
+      },
+      {
+        "check": "out formula",
+        "ok": true
+      },
+      {
+        "check": "out noise contract",
+        "ok": true,
+        "detail": {
+          "positives_are_one": true,
+          "negatives_in_range": true,
+          "lo": 0.125,
+          "hi": 0.30000001192092896
+        }
+      },
+      {
+        "check": "out resizes",
+        "ok": true
+      },
+      {
+        "check": "out aliasing noise",
+        "ok": true
+      },
+      {
+        "check": "out non-contiguous",
+        "ok": true
+      },
+      {
+        "check": "noise shape error matches CPU",
+        "ok": true,
+        "detail": {
+          "cpu": "noise tensor shape must match self tensor shape. Got self.shape = [5] noise.shape = [3]",
+          "mps": "noise tensor shape must match self tensor shape. Got self.shape = [5] noise.shape = [3]"
+        }
+      },
+      {
+        "check": "noise dtype error",
+        "ok": true
+      },
+      {
+        "check": "cpu kernel untouched",
+        "ok": true
+      },
+      {
+        "check": "train gradient is the sample torch.float32",
+        "ok": true
+      },
+      {
+        "check": "eval gradient is the slope torch.float32",
+        "ok": true
+      },
+      {
+        "check": "train gradient is the sample torch.float16",
+        "ok": true
+      },
+      {
+        "check": "eval gradient is the slope torch.float16",
+        "ok": true
+      },
+      {
+        "check": "train gradient is the sample torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "eval gradient is the slope torch.bfloat16",
+        "ok": true
+      },
+      {
+        "check": "inplace gradient training=True",
+        "ok": true
+      },
+      {
+        "check": "inplace gradient training=False",
+        "ok": true
+      },
+      {
+        "check": "gradient matches explicit reference",
+        "ok": true,
+        "detail": {
+          "mps_norm": 370.2170715332031,
+          "reference_norm": 370.2170715332031,
+          "relative_error": 0.0
+        }
+      },
+      {
+        "check": "all parameters receive gradient",
+        "ok": true,
+        "detail": {
+          "parameters": 4,
+          "nonzero_grad": 4
+        }
+      },
+      {
+        "check": "optimizer step moves every parameter",
+        "ok": true,
+        "detail": {
+          "moved": 4,
+          "parameters": 4
+        }
+      },
+      {
+        "check": "loss decreases",
+        "ok": true,
+        "detail": {
+          "losses": [
+            0.831811,
+            0.820042,
+            0.801568,
+            0.777355,
+            0.752712
+          ]
+        }
+      },
+      {
+        "check": "eval forward finite",
+        "ok": true
+      }
+    ]
+  },
+  "gradients": {
+    "losses": [
+      0.831811,
+      0.820042,
+      0.801568,
+      0.777355,
+      0.752712
+    ],
+    "parameters": 4,
+    "nonzero_grad": 4,
+    "moved": 4
+  },
+  "timings_us": {
+    "torch.float32 1048576": {
+      "mps_fused_train": {
+        "median": 31.5,
+        "min": 29.6
+      },
+      "mps_aten_composition_train": {
+        "median": 42.4,
+        "min": 38.7
+      },
+      "mps_fused_inplace_train": {
+        "median": 25.1,
+        "min": 23.2
+      },
+      "mps_eval": {
+        "median": 14.8,
+        "min": 13.4
+      },
+      "mps_backward_train": {
+        "median": 22.1,
+        "min": 21.0
+      },
+      "mps_backward_eval": {
+        "median": 22.8,
+        "min": 20.1
+      },
+      "mps_forward_and_backward": {
+        "median": 79.7,
+        "min": 75.8
+      },
+      "cpu_train": {
+        "median": 3836.5,
+        "min": 3787.3
+      },
+      "cpu_eval": {
+        "median": 48.8,
+        "min": 46.8
+      },
+      "rounds": 15,
+      "speedup_fused_over_aten_composition": 1.31,
+      "speedup_mps_over_cpu_train": 127.95
+    },
+    "torch.float32 16777216": {
+      "mps_fused_train": {
+        "median": 735.8,
+        "min": 634.0
+      },
+      "mps_aten_composition_train": {
+        "median": 1143.9,
+        "min": 1099.3
+      },
+      "mps_fused_inplace_train": {
+        "median": 714.4,
+        "min": 650.8
+      },
+      "mps_eval": {
+        "median": 281.0,
+        "min": 271.4
+      },
+      "mps_backward_train": {
+        "median": 394.8,
+        "min": 385.2
+      },
+      "mps_backward_eval": {
+        "median": 396.0,
+        "min": 386.3
+      },
+      "mps_forward_and_backward": {
+        "median": 1176.9,
+        "min": 1071.4
+      },
+      "cpu_train": {
+        "median": 62091.0,
+        "min": 62020.5
+      },
+      "cpu_eval": {
+        "median": 751.3,
+        "min": 697.1
+      },
+      "rounds": 15,
+      "speedup_fused_over_aten_composition": 1.73,
+      "speedup_mps_over_cpu_train": 97.82
+    },
+    "torch.float32 12845056": {
+      "mps_fused_train": {
+        "median": 487.9,
+        "min": 480.2
+      },
+      "mps_aten_composition_train": {
+        "median": 883.4,
+        "min": 777.8
+      },
+      "mps_fused_inplace_train": {
+        "median": 478.0,
+        "min": 468.6
+      },
+      "mps_eval": {
+        "median": 220.0,
+        "min": 212.3
+      },
+      "mps_backward_train": {
+        "median": 308.6,
+        "min": 302.3
+      },
+      "mps_backward_eval": {
+        "median": 304.8,
+        "min": 300.2
+      },
+      "mps_forward_and_backward": {
+        "median": 943.4,
+        "min": 843.0
+      },
+      "cpu_train": {
+        "median": 47574.0,
+        "min": 47382.0
+      },
+      "cpu_eval": {
+        "median": 571.8,
+        "min": 547.3
+      },
+      "rounds": 15,
+      "speedup_fused_over_aten_composition": 1.62,
+      "speedup_mps_over_cpu_train": 98.67
+    },
+    "torch.float16 1048576": {
+      "mps_fused_train": {
+        "median": 23.9,
+        "min": 21.9
+      },
+      "mps_aten_composition_train": {
+        "median": 35.3,
+        "min": 31.5
+      },
+      "mps_fused_inplace_train": {
+        "median": 23.5,
+        "min": 21.4
+      },
+      "mps_eval": {
+        "median": 14.1,
+        "min": 13.6
+      },
+      "mps_backward_train": {
+        "median": 12.4,
+        "min": 11.3
+      },
+      "mps_backward_eval": {
+        "median": 12.9,
+        "min": 12.0
+      },
+      "mps_forward_and_backward": {
+        "median": 67.9,
+        "min": 62.4
+      },
+      "rounds": 15,
+      "speedup_fused_over_aten_composition": 1.44
+    },
+    "torch.float16 4194304": {
+      "mps_fused_train": {
+        "median": 76.2,
+        "min": 68.9
+      },
+      "mps_aten_composition_train": {
+        "median": 115.0,
+        "min": 107.7
+      },
+      "mps_fused_inplace_train": {
+        "median": 74.6,
+        "min": 67.8
+      },
+      "mps_eval": {
+        "median": 37.9,
+        "min": 32.9
+      },
+      "mps_backward_train": {
+        "median": 46.9,
+        "min": 39.2
+      },
+      "mps_backward_eval": {
+        "median": 44.0,
+        "min": 38.9
+      },
+      "mps_forward_and_backward": {
+        "median": 174.3,
+        "min": 170.7
+      },
+      "rounds": 15,
+      "speedup_fused_over_aten_composition": 1.56
+    },
+    "torch.bfloat16 1048576": {
+      "mps_fused_train": {
+        "median": 23.9,
+        "min": 22.3
+      },
+      "mps_aten_composition_train": {
+        "median": 33.5,
+        "min": 33.0
+      },
+      "mps_fused_inplace_train": {
+        "median": 22.2,
+        "min": 21.4
+      },
+      "mps_eval": {
+        "median": 13.9,
+        "min": 12.8
+      },
+      "mps_backward_train": {
+        "median": 12.2,
+        "min": 11.1
+      },
+      "mps_backward_eval": {
+        "median": 12.8,
+        "min": 12.2
+      },
+      "mps_forward_and_backward": {
+        "median": 66.0,
+        "min": 64.6
+      },
+      "cpu_train": {
+        "median": 4814.9,
+        "min": 4772.4
+      },
+      "cpu_eval": {
+        "median": 58.1,
+        "min": 54.8
+      },
+      "rounds": 15,
+      "speedup_fused_over_aten_composition": 1.48,
+      "speedup_mps_over_cpu_train": 214.01
+    },
+    "torch.bfloat16 4194304": {
+      "mps_fused_train": {
+        "median": 78.4,
+        "min": 69.0
+      },
+      "mps_aten_composition_train": {
+        "median": 120.0,
+        "min": 114.4
+      },
+      "mps_fused_inplace_train": {
+        "median": 72.8,
+        "min": 62.5
+      },
+      "mps_eval": {
+        "median": 37.8,
+        "min": 34.6
+      },
+      "mps_backward_train": {
+        "median": 42.5,
+        "min": 39.3
+      },
+      "mps_backward_eval": {
+        "median": 41.1,
+        "min": 38.8
+      },
+      "mps_forward_and_backward": {
+        "median": 175.5,
+        "min": 170.6
+      },
+      "cpu_train": {
+        "median": 19715.3,
+        "min": 19669.7
+      },
+      "cpu_eval": {
+        "median": 161.8,
+        "min": 158.3
+      },
+      "rounds": 15,
+      "speedup_fused_over_aten_composition": 1.66,
+      "speedup_mps_over_cpu_train": 285.07
+    }
+  },
+  "timings_method": "each variant runs 10 or 20 calls per round with one torch.mps.synchronize at the end; variants are interleaved round by round, so a load spike hits all of them; median and min over rounds are recorded and the ratios use min",
+  "timings_load_average": [
+    7.88,
+    7.88
+  ],
+  "notes": [
+    "training: noise is overwritten with the slope used, 1.0 where self > 0, so the backward is grad * noise",
+    "eval: noise is untouched and the output is leaky_relu with (lower + upper) / 2 in double precision, as the CPU kernel computes it",
+    "noise is non-differentiable",
+    "the draw comes from MPS's uniform_, so the MPS generator (default or explicit) advances; the stream differs from the CPU kernel's",
+    "non-contiguous inputs and dtypes without a Metal kernel take the 4-launch aten composition, still entirely on the GPU",
+    "the CPU training path is dominated by the per-element draw from the CPU generator, not the arithmetic; compare cpu_train with cpu_eval at the same size",
+    "the host is shared with other builds, so a round's median is inflated by contention; the minimum is the closer estimate of the kernel and the round-by-round ratios are the stable part of these numbers"
+  ]
+}

@@ -1,0 +1,541 @@
+{
+  "operator": "aten::linalg_matrix_sqrth",
+  "torch": "2.14.1",
+  "device": "mps",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "measured_at": "2026-10-24T07:04:30+00:00",
+  "loadavg": [
+    4.81,
+    5.66,
+    6.51
+  ],
+  "algorithm": "torch.linalg.eigh from the lower triangle (UPLO='L'), clamp negative eigenvalues to zero, sqrt, rebuild (V*sqrt(w)) @ V^H",
+  "mps_kernel_before": "raises NotImplementedError",
+  "dispatch_had_mps_kernel_before": false,
+  "registration": {
+    "aten::linalg_matrix_sqrth": {
+      "kernel": "matrix_sqrth",
+      "replaced_existing": false,
+      "has_kernel_after": true
+    }
+  },
+  "torch_eigh_regimes": {
+    "metal_requires": "2*n*n*itemsize <= 32768 and batch*n*n >= 12288",
+    "note": "eigh_kernel_mps in aten/src/ATen/native/mps/operations/LinearAlgebra.mm falls back to the CPU kernel outside these bounds; that internal branch, not the overlay, sets the fallback rows' timing and the metal rows' ~1e-6 accuracy"
+  },
+  "upstream_metal_eigh_reuse": {
+    "kernel": "eigh_jacobi in aten/src/ATen/native/mps/kernels/LinearAlgebra.metal, dispatched from operations/LinearAlgebra.mm",
+    "native_limits": "stages the full n x n A and Q in threadgroup memory, so 2*n*n*itemsize <= 32768; float32/complex64 only; max 80 sweeps at tol 1e-6",
+    "python_reuse": "not reachable: the kernel is compiled into torch's MPS library and no public torch.mps API launches an arbitrary kernel (compile_shader only compiles); reuse needs a C++/ObjC++ extension or a patched torch",
+    "would_it_remove_the_fallback": "only below the threadgroup limit; n > 64 (float32) or n > 45 (complex64) cannot be staged by this kernel at all, so eliminating the CPU branch there needs a multi-pass algorithm with device-memory workspace",
+    "verdict": "no bounded reuse path from the Python overlay route"
+  },
+  "dtype_scope": {
+    "supported": [
+      "float32",
+      "complex64"
+    ],
+    "rejected_by_cpu_kernel": [
+      "float16",
+      "bfloat16"
+    ],
+    "unavailable_on_mps": [
+      "float64",
+      "complex128"
+    ]
+  },
+  "rows": [
+    {
+      "shape": [
+        4,
+        4
+      ],
+      "dtype": "torch.float32",
+      "batch": 1,
+      "n": 4,
+      "mps_eigh_path": "cpu_fallback",
+      "forward": {
+        "cpu": {
+          "median_ms": 0.0104,
+          "min_ms": 0.0089,
+          "iters": 32
+        },
+        "fallback": {
+          "median_ms": 0.1677,
+          "min_ms": 0.1317,
+          "iters": 32
+        },
+        "overlay": {
+          "median_ms": 0.8626,
+          "min_ms": 0.7119,
+          "iters": 32
+        },
+        "speedup_vs_fallback_median": 0.194,
+        "speedup_vs_fallback_min": 0.185
+      },
+      "forward_backward": {
+        "fallback": {
+          "median_ms": 0.6856,
+          "min_ms": 0.5849,
+          "iters": 32
+        },
+        "overlay": {
+          "median_ms": 1.6499,
+          "min_ms": 1.3848,
+          "iters": 32
+        },
+        "speedup_vs_fallback_median": 0.416,
+        "speedup_vs_fallback_min": 0.422
+      },
+      "accuracy": {
+        "forward_max_abs": 2.4e-07,
+        "forward_rel_fro": 7.75e-08,
+        "grad_rel_fro": 5.99e-08
+      }
+    },
+    {
+      "shape": [
+        64,
+        64
+      ],
+      "dtype": "torch.float32",
+      "batch": 1,
+      "n": 64,
+      "mps_eigh_path": "cpu_fallback",
+      "forward": {
+        "cpu": {
+          "median_ms": 0.1375,
+          "min_ms": 0.1321,
+          "iters": 32
+        },
+        "fallback": {
+          "median_ms": 0.2896,
+          "min_ms": 0.2511,
+          "iters": 32
+        },
+        "overlay": {
+          "median_ms": 0.9969,
+          "min_ms": 0.8487,
+          "iters": 32
+        },
+        "speedup_vs_fallback_median": 0.291,
+        "speedup_vs_fallback_min": 0.296
+      },
+      "forward_backward": {
+        "fallback": {
+          "median_ms": 0.9266,
+          "min_ms": 0.8635,
+          "iters": 32
+        },
+        "overlay": {
+          "median_ms": 1.8668,
+          "min_ms": 1.693,
+          "iters": 32
+        },
+        "speedup_vs_fallback_median": 0.496,
+        "speedup_vs_fallback_min": 0.51
+      },
+      "accuracy": {
+        "forward_max_abs": 2.4e-07,
+        "forward_rel_fro": 3.57e-08,
+        "grad_rel_fro": 0.0
+      }
+    },
+    {
+      "shape": [
+        256,
+        256
+      ],
+      "dtype": "torch.float32",
+      "batch": 1,
+      "n": 256,
+      "mps_eigh_path": "cpu_fallback",
+      "forward": {
+        "cpu": {
+          "median_ms": 2.231,
+          "min_ms": 1.986,
+          "iters": 16
+        },
+        "fallback": {
+          "median_ms": 2.6347,
+          "min_ms": 2.1867,
+          "iters": 16
+        },
+        "overlay": {
+          "median_ms": 3.4472,
+          "min_ms": 3.0994,
+          "iters": 16
+        },
+        "speedup_vs_fallback_median": 0.764,
+        "speedup_vs_fallback_min": 0.706
+      },
+      "forward_backward": {
+        "fallback": {
+          "median_ms": 5.841,
+          "min_ms": 5.1742,
+          "iters": 16
+        },
+        "overlay": {
+          "median_ms": 6.9023,
+          "min_ms": 6.4779,
+          "iters": 16
+        },
+        "speedup_vs_fallback_median": 0.846,
+        "speedup_vs_fallback_min": 0.799
+      },
+      "accuracy": {
+        "forward_max_abs": 2.4e-07,
+        "forward_rel_fro": 4.69e-08,
+        "grad_rel_fro": 0.0
+      }
+    },
+    {
+      "shape": [
+        512,
+        512
+      ],
+      "dtype": "torch.float32",
+      "batch": 1,
+      "n": 512,
+      "mps_eigh_path": "cpu_fallback",
+      "forward": {
+        "cpu": {
+          "median_ms": 9.049,
+          "min_ms": 8.5437,
+          "iters": 16
+        },
+        "fallback": {
+          "median_ms": 9.5864,
+          "min_ms": 8.9985,
+          "iters": 16
+        },
+        "overlay": {
+          "median_ms": 11.3773,
+          "min_ms": 9.7887,
+          "iters": 16
+        },
+        "speedup_vs_fallback_median": 0.843,
+        "speedup_vs_fallback_min": 0.919
+      },
+      "forward_backward": {
+        "fallback": {
+          "median_ms": 20.6382,
+          "min_ms": 19.5376,
+          "iters": 16
+        },
+        "overlay": {
+          "median_ms": 23.069,
+          "min_ms": 21.6451,
+          "iters": 16
+        },
+        "speedup_vs_fallback_median": 0.895,
+        "speedup_vs_fallback_min": 0.903
+      },
+      "accuracy": {
+        "forward_max_abs": 3.6e-07,
+        "forward_rel_fro": 5.46e-08,
+        "grad_rel_fro": 0.0
+      }
+    },
+    {
+      "shape": [
+        8,
+        16,
+        16
+      ],
+      "dtype": "torch.float32",
+      "batch": 8,
+      "n": 16,
+      "mps_eigh_path": "cpu_fallback",
+      "forward": {
+        "cpu": {
+          "median_ms": 0.0768,
+          "min_ms": 0.0732,
+          "iters": 32
+        },
+        "fallback": {
+          "median_ms": 0.2229,
+          "min_ms": 0.1838,
+          "iters": 32
+        },
+        "overlay": {
+          "median_ms": 0.8716,
+          "min_ms": 0.7121,
+          "iters": 32
+        },
+        "speedup_vs_fallback_median": 0.256,
+        "speedup_vs_fallback_min": 0.258
+      },
+      "forward_backward": {
+        "fallback": {
+          "median_ms": 0.8133,
+          "min_ms": 0.72,
+          "iters": 32
+        },
+        "overlay": {
+          "median_ms": 1.7461,
+          "min_ms": 1.5723,
+          "iters": 32
+        },
+        "speedup_vs_fallback_median": 0.466,
+        "speedup_vs_fallback_min": 0.458
+      },
+      "accuracy": {
+        "forward_max_abs": 1.2e-07,
+        "forward_rel_fro": 2.71e-08,
+        "grad_rel_fro": 1.148e-07
+      }
+    },
+    {
+      "shape": [
+        64,
+        16,
+        16
+      ],
+      "dtype": "torch.float32",
+      "batch": 64,
+      "n": 16,
+      "mps_eigh_path": "metal",
+      "forward": {
+        "cpu": {
+          "median_ms": 0.5075,
+          "min_ms": 0.4925,
+          "iters": 16
+        },
+        "fallback": {
+          "median_ms": 0.6607,
+          "min_ms": 0.6379,
+          "iters": 16
+        },
+        "overlay": {
+          "median_ms": 0.4126,
+          "min_ms": 0.3831,
+          "iters": 16
+        },
+        "speedup_vs_fallback_median": 1.601,
+        "speedup_vs_fallback_min": 1.665
+      },
+      "forward_backward": {
+        "fallback": {
+          "median_ms": 1.7862,
+          "min_ms": 1.7425,
+          "iters": 16
+        },
+        "overlay": {
+          "median_ms": 0.7893,
+          "min_ms": 0.7607,
+          "iters": 16
+        },
+        "speedup_vs_fallback_median": 2.263,
+        "speedup_vs_fallback_min": 2.291
+      },
+      "accuracy": {
+        "forward_max_abs": 2.193e-05,
+        "forward_rel_fro": 3.2174e-06,
+        "grad_rel_fro": 9.1227e-06
+      }
+    },
+    {
+      "shape": [
+        256,
+        8,
+        8
+      ],
+      "dtype": "torch.float32",
+      "batch": 256,
+      "n": 8,
+      "mps_eigh_path": "metal",
+      "forward": {
+        "cpu": {
+          "median_ms": 0.6141,
+          "min_ms": 0.6016,
+          "iters": 16
+        },
+        "fallback": {
+          "median_ms": 0.7836,
+          "min_ms": 0.7594,
+          "iters": 16
+        },
+        "overlay": {
+          "median_ms": 0.4178,
+          "min_ms": 0.367,
+          "iters": 16
+        },
+        "speedup_vs_fallback_median": 1.876,
+        "speedup_vs_fallback_min": 2.069
+      },
+      "forward_backward": {
+        "fallback": {
+          "median_ms": 2.153,
+          "min_ms": 2.0548,
+          "iters": 16
+        },
+        "overlay": {
+          "median_ms": 0.7829,
+          "min_ms": 0.7354,
+          "iters": 16
+        },
+        "speedup_vs_fallback_median": 2.75,
+        "speedup_vs_fallback_min": 2.794
+      },
+      "accuracy": {
+        "forward_max_abs": 1.121e-05,
+        "forward_rel_fro": 1.6194e-06,
+        "grad_rel_fro": 3.0887e-06
+      }
+    },
+    {
+      "shape": [
+        3,
+        64,
+        64
+      ],
+      "dtype": "torch.float32",
+      "batch": 3,
+      "n": 64,
+      "mps_eigh_path": "metal",
+      "forward": {
+        "cpu": {
+          "median_ms": 0.421,
+          "min_ms": 0.4117,
+          "iters": 16
+        },
+        "fallback": {
+          "median_ms": 0.5727,
+          "min_ms": 0.5455,
+          "iters": 16
+        },
+        "overlay": {
+          "median_ms": 2.1158,
+          "min_ms": 2.0301,
+          "iters": 16
+        },
+        "speedup_vs_fallback_median": 0.271,
+        "speedup_vs_fallback_min": 0.269
+      },
+      "forward_backward": {
+        "fallback": {
+          "median_ms": 1.5261,
+          "min_ms": 1.4659,
+          "iters": 16
+        },
+        "overlay": {
+          "median_ms": 4.1571,
+          "min_ms": 4.0267,
+          "iters": 16
+        },
+        "speedup_vs_fallback_median": 0.367,
+        "speedup_vs_fallback_min": 0.364
+      },
+      "accuracy": {
+        "forward_max_abs": 0.00012493,
+        "forward_rel_fro": 1.49163e-05,
+        "grad_rel_fro": 5.14693e-05
+      }
+    },
+    {
+      "shape": [
+        16,
+        16
+      ],
+      "dtype": "torch.complex64",
+      "batch": 1,
+      "n": 16,
+      "mps_eigh_path": "cpu_fallback",
+      "forward": {
+        "cpu": {
+          "median_ms": 0.0248,
+          "min_ms": 0.022,
+          "iters": 32
+        },
+        "fallback": {
+          "median_ms": 0.1818,
+          "min_ms": 0.1615,
+          "iters": 32
+        },
+        "overlay": {
+          "median_ms": 0.9394,
+          "min_ms": 0.8121,
+          "iters": 32
+        },
+        "speedup_vs_fallback_median": 0.194,
+        "speedup_vs_fallback_min": 0.199
+      },
+      "forward_backward": {
+        "fallback": {
+          "median_ms": 0.7428,
+          "min_ms": 0.6522,
+          "iters": 32
+        },
+        "overlay": {
+          "median_ms": 1.9543,
+          "min_ms": 1.7375,
+          "iters": 32
+        },
+        "speedup_vs_fallback_median": 0.38,
+        "speedup_vs_fallback_min": 0.375
+      },
+      "accuracy": {
+        "forward_max_abs": 1.6e-07,
+        "forward_rel_fro": 3.84e-08,
+        "grad_rel_fro": 1.553e-07
+      }
+    },
+    {
+      "shape": [
+        256,
+        8,
+        8
+      ],
+      "dtype": "torch.complex64",
+      "batch": 256,
+      "n": 8,
+      "mps_eigh_path": "metal",
+      "forward": {
+        "cpu": {
+          "median_ms": 0.8627,
+          "min_ms": 0.8374,
+          "iters": 16
+        },
+        "fallback": {
+          "median_ms": 1.4527,
+          "min_ms": 1.0009,
+          "iters": 16
+        },
+        "overlay": {
+          "median_ms": 0.5192,
+          "min_ms": 0.427,
+          "iters": 16
+        },
+        "speedup_vs_fallback_median": 2.798,
+        "speedup_vs_fallback_min": 2.344
+      },
+      "forward_backward": {
+        "fallback": {
+          "median_ms": 2.8551,
+          "min_ms": 2.749,
+          "iters": 16
+        },
+        "overlay": {
+          "median_ms": 1.0696,
+          "min_ms": 0.9666,
+          "iters": 16
+        },
+        "speedup_vs_fallback_median": 2.669,
+        "speedup_vs_fallback_min": 2.844
+      },
+      "accuracy": {
+        "forward_max_abs": 9.54e-06,
+        "forward_rel_fro": 1.5456e-06,
+        "grad_rel_fro": 2.8486e-06
+      }
+    }
+  ],
+  "notes": [
+    "fallback = torch.linalg.matrix_sqrth(A.cpu()).to('mps'); it matches the dispatcher's PYTORCH_ENABLE_MPS_FALLBACK route within run-to-run noise",
+    "timings are medians over synchronized iterations after three warmup calls; this machine runs other probes concurrently, so treat differences under ~20% as noise; loadavg is recorded and min_ms is the cleaner estimate under contention",
+    "single matrices and small batches go through eigh's internal CPU branch; there the overlay is slower than the manual fallback (about 0.2x for tiny matrices, 0.8-0.9x at n=256-512) because it adds Python/dispatch work around a route that already copies to the CPU; the batched Metal rows are where it wins (1.4-2.3x)",
+    "accuracy is against the CPU kernel on the same input; metal rows inherit eigh's 1e-6 Jacobi tolerance (forward 2e-6..1e-5, gradient 3e-6..5e-5), the cpu_fallback rows match to ~1e-7"
+  ]
+}

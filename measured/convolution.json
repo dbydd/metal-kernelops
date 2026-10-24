@@ -1,0 +1,889 @@
+{
+ "torch": "2.14.1",
+ "device": "mps",
+ "module": "metal_kernelops.convolution_ops",
+ "machine_load_at_start": [
+  5.39,
+  6.58,
+  7.2
+ ],
+ "timing": {
+  "clock": "time.perf_counter",
+  "warmup": 5,
+  "iterations": 30,
+  "batches": {
+   "mps": 12,
+   "cpu": 2
+  },
+  "sync": "torch.mps.synchronize() after warmup and after each batch",
+  "statistic": "median of per-batch samples; overhead_us and overhead_ratio are the median of the paired differences within each batch; mps_min_ms and native_min_ms preserve the minima",
+  "mps_fields": {
+   "mps_ms": "overlay: submission plus execution",
+   "native_ms": "aten::convolution / convolution_backward, same inputs",
+   "native_repeat_ms": "the same native call measured a second time",
+   "overhead_us": "mps_ms - native_ms, in microseconds",
+   "enqueue_ms": "overlay submission only, no wait for the GPU",
+   "enqueue_overhead_us": "enqueue_ms - native_enqueue_ms: the Python work the alias adds",
+   "noise_us": "|native_ms - native_repeat_ms|: two identical calls differ by this much on this machine",
+   "batch_spread_us": "max - min over batches, per function: how far the load moved during the run",
+   "copy_floor_ms": "a device copy of the same output, same batch",
+   "copy_floor_gbps": "that copy's achieved bandwidth, read plus write"
+  },
+  "note": "shared machine: other MPS jobs run concurrently. An overhead smaller than noise_us is not a measurement of the alias."
+ },
+ "overlays": [
+  {
+   "op": "slow_conv3d_forward",
+   "schema": "aten::slow_conv3d_forward(Tensor self, Tensor weight, SymInt[3] kernel_size, Tensor? bias, SymInt[3] stride, SymInt[3] padding) -> Tensor",
+   "mps_kernel_before": false,
+   "baseline": "NotImplementedError: The operator 'aten::slow_conv3d_forward' is not currently implemented for the MPS device. If you want this op to be considered for addition please comment on ht"
+  },
+  {
+   "op": "slow_conv_dilated2d",
+   "schema": "aten::slow_conv_dilated2d(Tensor self, Tensor weight, SymInt[2] kernel_size, Tensor? bias=None, SymInt[2] stride=[1, 1], SymInt[2] padding=[0, 0], SymInt[2] dilation=[1, 1]) -> Tensor",
+   "mps_kernel_before": false,
+   "baseline": "NotImplementedError: The operator 'aten::slow_conv_dilated2d' is not currently implemented for the MPS device. If you want this op to be considered for addition please comment on ht"
+  },
+  {
+   "op": "slow_conv_dilated3d",
+   "schema": "aten::slow_conv_dilated3d(Tensor self, Tensor weight, SymInt[3] kernel_size, Tensor? bias=None, SymInt[3] stride=[1, 1, 1], SymInt[3] padding=[0, 0, 0], SymInt[3] dilation=[1, 1, 1]) -> Tensor",
+   "mps_kernel_before": false,
+   "baseline": "NotImplementedError: The operator 'aten::slow_conv_dilated3d' is not currently implemented for the MPS device. If you want this op to be considered for addition please comment on ht"
+  },
+  {
+   "op": "slow_conv_transpose2d",
+   "schema": "aten::slow_conv_transpose2d(Tensor self, Tensor weight, SymInt[2] kernel_size, Tensor? bias=None, SymInt[2] stride=[1, 1], SymInt[2] padding=[0, 0], SymInt[2] output_padding=[0, 0], SymInt[2] dilation=[1, 1]) -> Tensor",
+   "mps_kernel_before": false,
+   "baseline": "NotImplementedError: The operator 'aten::slow_conv_transpose2d.out' is not currently implemented for the MPS device. If you want this op to be considered for addition please comment"
+  },
+  {
+   "op": "slow_conv_transpose3d",
+   "schema": "aten::slow_conv_transpose3d(Tensor self, Tensor weight, SymInt[3] kernel_size, Tensor? bias=None, SymInt[3] stride=[1, 1, 1], SymInt[3] padding=[0, 0, 0], SymInt[3] output_padding=[0, 0, 0], SymInt[3] dilation=[1, 1, 1]) -> Tensor",
+   "mps_kernel_before": false,
+   "baseline": "NotImplementedError: The operator 'aten::slow_conv_transpose3d' is not currently implemented for the MPS device. If you want this op to be considered for addition please comment on "
+  },
+  {
+   "op": "_slow_conv2d_backward",
+   "schema": "aten::_slow_conv2d_backward.output_mask(Tensor grad_output, Tensor self, Tensor weight, SymInt[2] kernel_size, SymInt[2] stride, SymInt[2] padding, bool[3] output_mask) -> (Tensor grad_input, Tensor grad_weight, Tensor grad_bias)",
+   "mps_kernel_before": false,
+   "baseline": "NotImplementedError: The operator 'aten::_slow_conv2d_backward.output_mask' is not currently implemented for the MPS device. If you want this op to be considered for addition please"
+  }
+ ],
+ "limitations": [
+  "slow_conv_transpose3d: the native MPS kernel has no fp16/bf16 variant ('ConvTranspose 3D with BF16 or FP16 types is not supported on MPS'); fp32 only.",
+  "slow_conv_transpose2d with an unbatched (3-D) input: forward works, backward raises because the generated autograd formula passes the 3-D input to aten::convolution_backward, which rejects unbatched input on CPU and MPS alike.",
+  "slow_conv_dilated2d / slow_conv_dilated3d with an unbatched input: backward raises for the same reason on CPU and MPS; forward handles the unbatched case.",
+  "A kernel larger than the padded input: the CPU kernels raise, the Metal kernel returns a zero-sized output, so MPS and CPU disagree on that input."
+ ],
+ "cases": [
+  {
+   "name": "conv3d",
+   "op": "slow_conv3d_forward",
+   "dtype": "float32",
+   "supported": true,
+   "shape": [
+    2,
+    16,
+    12,
+    12,
+    12
+   ],
+   "reference_shape": [
+    2,
+    16,
+    12,
+    12,
+    12
+   ],
+   "shape_match": true,
+   "dtype_match": true,
+   "value_rel_error": 2.5156752649231185e-07,
+   "cpu_ms": 0.12310969953735669,
+   "mps_ms": 0.27591041677321,
+   "native_ms": 0.2463923495573302,
+   "native_repeat_ms": 0.25153610040433705,
+   "overhead_us": 16.443784503887102,
+   "overhead_ratio": 1.0829133866946286,
+   "mps_min_ms": 0.0659041649972399,
+   "native_min_ms": 0.06421249903117617,
+   "enqueue_ms": 0.009611100540496409,
+   "native_enqueue_ms": 0.0078187498729676,
+   "enqueue_overhead_us": 1.8576499617968993,
+   "noise_us": 18.529149626071273,
+   "batch_spread_us": {
+    "mps": 236.87636906591558,
+    "native": 247.25553424408037
+   },
+   "copy_floor_ms": 0.025350716896355152,
+   "copy_floor_gbps": 17.44992071855776,
+   "step_mps_ms": 0.4232152656186372,
+   "step_native_ms": 0.4122951339619855,
+   "step_cpu_ms": 0.4337569659886261,
+   "grad_rel_error": {
+    "input": 3.6861317691448604e-07,
+    "weight": 0.0,
+    "bias": 1.979251406041677e-07
+   },
+   "grad_norms_mps": {
+    "input": 3104.5192247910045,
+    "weight": 3183.778701481092,
+    "bias": 217.04015942265843
+   }
+  },
+  {
+   "name": "conv3d",
+   "op": "slow_conv3d_forward",
+   "dtype": "float16",
+   "supported": true,
+   "shape": [
+    2,
+    16,
+    12,
+    12,
+    12
+   ],
+   "reference_shape": [
+    2,
+    16,
+    12,
+    12,
+    12
+   ],
+   "shape_match": true,
+   "dtype_match": true,
+   "value_rel_error": 0.0003598151983369706,
+   "cpu_ms": 1.8918999994639307,
+   "mps_ms": 0.033112516393885016,
+   "native_ms": 0.032534016645513475,
+   "native_repeat_ms": 0.03297500079497695,
+   "overhead_us": 0.16668345779180177,
+   "overhead_ratio": 1.005316628374766,
+   "mps_min_ms": 0.03171666758134961,
+   "native_min_ms": 0.02968193342288335,
+   "enqueue_ms": 0.008611117179195087,
+   "native_enqueue_ms": 0.006418049451895058,
+   "enqueue_overhead_us": 2.1673680748790503,
+   "noise_us": 1.56111782416702,
+   "batch_spread_us": {
+    "mps": 16.14859987360736,
+    "native": 20.077766384929415
+   },
+   "copy_floor_ms": 0.007535417292577525,
+   "copy_floor_gbps": 29.3525881065497
+  },
+  {
+   "name": "conv3d",
+   "op": "slow_conv3d_forward",
+   "dtype": "bfloat16",
+   "supported": true,
+   "shape": [
+    2,
+    16,
+    12,
+    12,
+    12
+   ],
+   "reference_shape": [
+    2,
+    16,
+    12,
+    12,
+    12
+   ],
+   "shape_match": true,
+   "dtype_match": true,
+   "value_rel_error": 0.0028690896276195735,
+   "cpu_ms": 1.8853430345188826,
+   "mps_ms": 0.03518124964709084,
+   "native_ms": 0.031926382992727056,
+   "native_repeat_ms": 0.0328618004762878,
+   "overhead_us": 2.087499403084321,
+   "overhead_ratio": 1.068394919348692,
+   "mps_min_ms": 0.03248333426502844,
+   "native_min_ms": 0.030305566421399515,
+   "enqueue_ms": 0.008665283288185796,
+   "native_enqueue_ms": 0.007131249488641819,
+   "enqueue_overhead_us": 1.4493319516380625,
+   "noise_us": 0.9631844780718241,
+   "batch_spread_us": {
+    "mps": 27.984700864180923,
+    "native": 25.780566890413564
+   },
+   "copy_floor_ms": 0.007849301133925717,
+   "copy_floor_gbps": 28.178814422600443
+  },
+  {
+   "name": "dilated2d",
+   "op": "slow_conv_dilated2d",
+   "dtype": "float32",
+   "supported": true,
+   "shape": [
+    2,
+    16,
+    32,
+    32
+   ],
+   "reference_shape": [
+    2,
+    16,
+    32,
+    32
+   ],
+   "shape_match": true,
+   "dtype_match": true,
+   "value_rel_error": 1.5320780786258743e-07,
+   "cpu_ms": 0.08656389933700362,
+   "mps_ms": 0.037193750419343516,
+   "native_ms": 0.03507015062496066,
+   "native_repeat_ms": 0.034927082985329136,
+   "overhead_us": 2.7555516377712337,
+   "overhead_ratio": 1.07961839798114,
+   "mps_min_ms": 0.03667636774480343,
+   "native_min_ms": 0.034275000992541514,
+   "enqueue_ms": 0.022230565082281828,
+   "native_enqueue_ms": 0.019884716796999175,
+   "enqueue_overhead_us": 2.6215323790286984,
+   "noise_us": 0.7152683489645533,
+   "batch_spread_us": {
+    "mps": 12.62643296892444,
+    "native": 2.7610997979839667
+   },
+   "copy_floor_ms": 0.0069611162568132086,
+   "copy_floor_gbps": 37.658328108430304,
+   "step_mps_ms": 0.15391806664410979,
+   "step_native_ms": 0.15304305028015128,
+   "step_cpu_ms": 0.27488333483537036,
+   "grad_rel_error": {
+    "input": 2.2345022669606746e-07,
+    "weight": 8.086326660611451e-07,
+    "bias": 1.0806261357047478e-07
+   },
+   "grad_norms_mps": {
+    "input": 1478.7427623402398,
+    "weight": 1441.4601349642112,
+    "bias": 196.54655719862572
+   }
+  },
+  {
+   "name": "dilated2d",
+   "op": "slow_conv_dilated2d",
+   "dtype": "float16",
+   "supported": true,
+   "shape": [
+    2,
+    16,
+    32,
+    32
+   ],
+   "reference_shape": [
+    2,
+    16,
+    32,
+    32
+   ],
+   "shape_match": true,
+   "dtype_match": true,
+   "value_rel_error": 0.00036019780418449523,
+   "cpu_ms": 1.2117722343342998,
+   "mps_ms": 0.03712153314457585,
+   "native_ms": 0.0342444497315834,
+   "native_repeat_ms": 0.03448126662988216,
+   "overhead_us": 2.586133390044175,
+   "overhead_ratio": 1.0788143230455591,
+   "mps_min_ms": 0.03535280120559037,
+   "native_min_ms": 0.032804167130962014,
+   "enqueue_ms": 0.023909733863547444,
+   "native_enqueue_ms": 0.021589583290430408,
+   "enqueue_overhead_us": 2.3965335761507376,
+   "noise_us": 0.5624994325141088,
+   "batch_spread_us": {
+    "mps": 39.834697963669896,
+    "native": 76.86526708615324
+   },
+   "copy_floor_ms": 0.00623471763295432,
+   "copy_floor_gbps": 21.022924808527623
+  },
+  {
+   "name": "dilated2d",
+   "op": "slow_conv_dilated2d",
+   "dtype": "bfloat16",
+   "supported": true,
+   "shape": [
+    2,
+    16,
+    32,
+    32
+   ],
+   "reference_shape": [
+    2,
+    16,
+    32,
+    32
+   ],
+   "shape_match": true,
+   "dtype_match": true,
+   "value_rel_error": 0.0029072286987254425,
+   "cpu_ms": 1.2044416662926474,
+   "mps_ms": 0.036596516535306975,
+   "native_ms": 0.03427986715299388,
+   "native_repeat_ms": 0.033846532460302114,
+   "overhead_us": 2.154849547271926,
+   "overhead_ratio": 1.0636489816531338,
+   "mps_min_ms": 0.034944431778664395,
+   "native_min_ms": 0.03283609985373914,
+   "enqueue_ms": 0.022797216661274433,
+   "native_enqueue_ms": 0.021063199771257736,
+   "enqueue_overhead_us": 1.6833325692762973,
+   "noise_us": 2.430565655231483,
+   "batch_spread_us": {
+    "mps": 78.81110068410635,
+    "native": 50.76390031414728
+   },
+   "copy_floor_ms": 0.007243050883213678,
+   "copy_floor_gbps": 18.096241778967663
+  },
+  {
+   "name": "dilated3d",
+   "op": "slow_conv_dilated3d",
+   "dtype": "float32",
+   "supported": true,
+   "shape": [
+    2,
+    16,
+    10,
+    10,
+    10
+   ],
+   "reference_shape": [
+    2,
+    16,
+    10,
+    10,
+    10
+   ],
+   "shape_match": true,
+   "dtype_match": true,
+   "value_rel_error": 2.284006145900363e-07,
+   "cpu_ms": 0.1946222347517808,
+   "mps_ms": 0.15103888387481373,
+   "native_ms": 0.1468486162290598,
+   "native_repeat_ms": 0.1463965163566172,
+   "overhead_us": 1.468067057430758,
+   "overhead_ratio": 1.010020187415257,
+   "mps_min_ms": 0.14675969917637605,
+   "native_min_ms": 0.14488053469297787,
+   "enqueue_ms": 0.008965267140107851,
+   "native_enqueue_ms": 0.007631250385505457,
+   "enqueue_overhead_us": 1.4368173045416675,
+   "noise_us": 1.9895834460233601,
+   "batch_spread_us": {
+    "mps": 11.001401192819117,
+    "native": 14.780566561967134
+   },
+   "copy_floor_ms": 0.008745832989613215,
+   "copy_floor_gbps": 29.271082617748643,
+   "step_mps_ms": 0.3994270839029923,
+   "step_native_ms": 0.3928847174393013,
+   "step_cpu_ms": 0.5809236337275555,
+   "grad_rel_error": {
+    "input": 3.321754202334417e-07,
+    "weight": 0.0,
+    "bias": 1.0359405223704721e-07
+   },
+   "grad_norms_mps": {
+    "input": 2120.140193917275,
+    "weight": 2093.6472441378846,
+    "bias": 222.66049968334792
+   }
+  },
+  {
+   "name": "dilated3d",
+   "op": "slow_conv_dilated3d",
+   "dtype": "float16",
+   "supported": true,
+   "shape": [
+    2,
+    16,
+    10,
+    10,
+    10
+   ],
+   "reference_shape": [
+    2,
+    16,
+    10,
+    10,
+    10
+   ],
+   "shape_match": true,
+   "dtype_match": true,
+   "value_rel_error": 0.00036156066087413474,
+   "cpu_ms": 1.0621847332610437,
+   "mps_ms": 0.06731458318730195,
+   "native_ms": 0.06624444989332309,
+   "native_repeat_ms": 0.07249234962121895,
+   "overhead_us": 1.3534658743689503,
+   "overhead_ratio": 1.0202357715076618,
+   "mps_min_ms": 0.06589306673655906,
+   "native_min_ms": 0.06320973431381086,
+   "enqueue_ms": 0.008913200387420755,
+   "native_enqueue_ms": 0.00797916630593439,
+   "enqueue_overhead_us": 1.3951338284338513,
+   "noise_us": 1.394434366375208,
+   "batch_spread_us": {
+    "mps": 16.668066382408142,
+    "native": 17.424998804926886
+   },
+   "copy_floor_ms": 0.008499316754750907,
+   "copy_floor_gbps": 15.060034081969139
+  },
+  {
+   "name": "dilated3d",
+   "op": "slow_conv_dilated3d",
+   "dtype": "bfloat16",
+   "supported": true,
+   "shape": [
+    2,
+    16,
+    10,
+    10,
+    10
+   ],
+   "reference_shape": [
+    2,
+    16,
+    10,
+    10,
+    10
+   ],
+   "shape_match": true,
+   "dtype_match": true,
+   "value_rel_error": 0.002892180632339354,
+   "cpu_ms": 1.0475986326734223,
+   "mps_ms": 0.06649513282657911,
+   "native_ms": 0.06587013388828686,
+   "native_repeat_ms": 0.06560070129732291,
+   "overhead_us": 0.7937487680464914,
+   "overhead_ratio": 1.0120553607311562,
+   "mps_min_ms": 0.06580276725192864,
+   "native_min_ms": 0.0638749993716677,
+   "enqueue_ms": 0.009034032700583339,
+   "native_enqueue_ms": 0.007307634223252535,
+   "enqueue_overhead_us": 2.1076489550371966,
+   "noise_us": 4.184716575158134,
+   "batch_spread_us": {
+    "mps": 27.738899613420173,
+    "native": 18.9374996504436
+   },
+   "copy_floor_ms": 0.00797500057766835,
+   "copy_floor_gbps": 16.05015557722045
+  },
+  {
+   "name": "transpose2d",
+   "op": "slow_conv_transpose2d",
+   "dtype": "float32",
+   "supported": true,
+   "shape": [
+    2,
+    16,
+    32,
+    32
+   ],
+   "reference_shape": [
+    2,
+    16,
+    32,
+    32
+   ],
+   "shape_match": true,
+   "dtype_match": true,
+   "value_rel_error": 9.484350942590692e-08,
+   "cpu_ms": 0.05756113290165861,
+   "mps_ms": 0.04204999907718351,
+   "native_ms": 0.03859791710662345,
+   "native_repeat_ms": 0.03881320105089496,
+   "overhead_us": 3.683315784049526,
+   "overhead_ratio": 1.0970760201839629,
+   "mps_min_ms": 0.04070833480606477,
+   "native_min_ms": 0.03645140095613897,
+   "enqueue_ms": 0.024388199866128467,
+   "native_enqueue_ms": 0.0204347171044598,
+   "enqueue_overhead_us": 4.072217658783002,
+   "noise_us": 1.0534655302762985,
+   "batch_spread_us": {
+    "mps": 3.1680314956853692,
+    "native": 5.5471997863302605
+   },
+   "copy_floor_ms": 0.00687984963102887,
+   "copy_floor_gbps": 38.10315836231391,
+   "step_mps_ms": 0.15363333319934708,
+   "step_native_ms": 0.1455708338956659,
+   "step_cpu_ms": 0.21107639962186414,
+   "grad_rel_error": {
+    "input": 2.4695744494790216e-07,
+    "weight": 4.0889437735146134e-07,
+    "bias": 1.0806261357047478e-07
+   },
+   "grad_norms_mps": {
+    "input": 767.9252031962919,
+    "weight": 746.3744990878231,
+    "bias": 196.54655719862572
+   }
+  },
+  {
+   "name": "transpose2d",
+   "op": "slow_conv_transpose2d",
+   "dtype": "float16",
+   "supported": true,
+   "shape": [
+    2,
+    16,
+    32,
+    32
+   ],
+   "reference_shape": [
+    2,
+    16,
+    32,
+    32
+   ],
+   "shape_match": true,
+   "dtype_match": true,
+   "value_rel_error": 0.00040716801429670967,
+   "cpu_ms": 0.08865973213687539,
+   "mps_ms": 0.04497431703687956,
+   "native_ms": 0.041413199505768716,
+   "native_repeat_ms": 0.04082221712451428,
+   "overhead_us": 3.8409663829952443,
+   "overhead_ratio": 1.0943668187100786,
+   "mps_min_ms": 0.04317639977671206,
+   "native_min_ms": 0.03920279947730402,
+   "enqueue_ms": 0.024804865824989974,
+   "native_enqueue_ms": 0.02130486633783827,
+   "enqueue_overhead_us": 3.7069325723374895,
+   "noise_us": 1.0610829728345124,
+   "batch_spread_us": {
+    "mps": 16.03193231858313,
+    "native": 18.224966091414295
+   },
+   "copy_floor_ms": 0.007376399783728024,
+   "copy_floor_gbps": 17.769101979686404
+  },
+  {
+   "name": "transpose2d",
+   "op": "slow_conv_transpose2d",
+   "dtype": "bfloat16",
+   "supported": true,
+   "shape": [
+    2,
+    16,
+    32,
+    32
+   ],
+   "reference_shape": [
+    2,
+    16,
+    32,
+    32
+   ],
+   "shape_match": true,
+   "dtype_match": true,
+   "value_rel_error": 0.003313310837502116,
+   "cpu_ms": 0.0889708346221596,
+   "mps_ms": 0.04582985032660265,
+   "native_ms": 0.041772216597261526,
+   "native_repeat_ms": 0.042245133469502136,
+   "overhead_us": 4.182633711025122,
+   "overhead_ratio": 1.1029325255174385,
+   "mps_min_ms": 0.04367500077933073,
+   "native_min_ms": 0.039352800619478025,
+   "enqueue_ms": 0.025002099573612213,
+   "native_enqueue_ms": 0.021704850951209664,
+   "enqueue_overhead_us": 3.6611493366460017,
+   "noise_us": 1.3235985534265637,
+   "batch_spread_us": {
+    "mps": 5.726397891218461,
+    "native": 15.15829935669899
+   },
+   "copy_floor_ms": 0.007330550579354167,
+   "copy_floor_gbps": 17.880239496491907
+  },
+  {
+   "name": "transpose3d",
+   "op": "slow_conv_transpose3d",
+   "dtype": "float32",
+   "supported": true,
+   "shape": [
+    2,
+    16,
+    16,
+    16,
+    16
+   ],
+   "reference_shape": [
+    2,
+    16,
+    16,
+    16,
+    16
+   ],
+   "shape_match": true,
+   "dtype_match": true,
+   "value_rel_error": 1.1152275100679014e-07,
+   "cpu_ms": 0.20255276661676663,
+   "mps_ms": 0.06931805013058087,
+   "native_ms": 0.064829865974995,
+   "native_repeat_ms": 0.06465208425652236,
+   "overhead_us": 3.5097162860135214,
+   "overhead_ratio": 1.054759655334583,
+   "mps_min_ms": 0.06652636608729759,
+   "native_min_ms": 0.06247500035290916,
+   "enqueue_ms": 0.02096458338201046,
+   "native_enqueue_ms": 0.017188882338814437,
+   "enqueue_overhead_us": 3.7604166815678273,
+   "noise_us": 0.9430514182895352,
+   "batch_spread_us": {
+    "mps": 14.240300515666604,
+    "native": 14.983332948759212
+   },
+   "copy_floor_ms": 0.008071533132654926,
+   "copy_floor_gbps": 129.9103878738707,
+   "step_mps_ms": 0.27391598268877715,
+   "step_native_ms": 0.26372916666635626,
+   "step_cpu_ms": 0.7053986327567447,
+   "grad_rel_error": {
+    "input": 4.5322398848018636e-07,
+    "weight": 0.0,
+    "bias": 1.5659521154352916e-07
+   },
+   "grad_norms_mps": {
+    "input": 1769.6297121976397,
+    "weight": 1769.2616919070242,
+    "bias": 392.98588232286545
+   }
+  },
+  {
+   "name": "transpose3d",
+   "op": "slow_conv_transpose3d",
+   "dtype": "float16",
+   "supported": false,
+   "error": "ConvTranspose 3D with BF16 or FP16 types is not supported on MPS"
+  },
+  {
+   "name": "transpose3d",
+   "op": "slow_conv_transpose3d",
+   "dtype": "bfloat16",
+   "supported": false,
+   "error": "ConvTranspose 3D with BF16 or FP16 types is not supported on MPS"
+  },
+  {
+   "name": "conv2d_backward",
+   "op": "_slow_conv2d_backward",
+   "dtype": "float32",
+   "supported": true,
+   "shape": [
+    [
+     2,
+     8,
+     18,
+     18
+    ],
+    [
+     16,
+     8,
+     3,
+     3
+    ],
+    [
+     16
+    ]
+   ],
+   "reference_shape": [
+    [
+     2,
+     8,
+     18,
+     18
+    ],
+    [
+     16,
+     8,
+     3,
+     3
+    ],
+    [
+     16
+    ]
+   ],
+   "shape_match": true,
+   "dtype_match": true,
+   "value_rel_error": 1.595873451523383e-07,
+   "cpu_ms": 0.0526888994500041,
+   "grad_rel_error": {
+    "input": 1.595873451523383e-07,
+    "weight": 1.1429010884750217e-07,
+    "bias": 1.0985132854990395e-07
+   },
+   "mps_ms": 0.061023616581223905,
+   "native_ms": 0.05638126749545336,
+   "native_repeat_ms": 0.05738541561489304,
+   "overhead_us": 3.7513818824663794,
+   "overhead_ratio": 1.0669041022636168,
+   "mps_min_ms": 0.05898749999081095,
+   "native_min_ms": 0.05484860157594085,
+   "enqueue_ms": 0.0346090169235443,
+   "native_enqueue_ms": 0.03152498393319547,
+   "enqueue_overhead_us": 3.027081644783415,
+   "noise_us": 1.3083151619260498,
+   "batch_spread_us": {
+    "mps": 6.613899798442908,
+    "native": 26.54863249820967
+   },
+   "copy_floor_ms": 0.01001666629842172,
+   "copy_floor_gbps": 5.073144945240598
+  }
+ ],
+ "semantics": [
+  {
+   "check": "cpu_legacy_equals_native/conv3d",
+   "passed": true,
+   "detail": "max |diff| 0.000e+00"
+  },
+  {
+   "check": "cpu_legacy_equals_native/dilated2d",
+   "passed": true,
+   "detail": "max |diff| 0.000e+00"
+  },
+  {
+   "check": "cpu_legacy_equals_native/dilated3d",
+   "passed": true,
+   "detail": "max |diff| 0.000e+00"
+  },
+  {
+   "check": "cpu_legacy_equals_native/transpose2d",
+   "passed": true,
+   "detail": "max |diff| 0.000e+00"
+  },
+  {
+   "check": "cpu_legacy_equals_native/transpose3d",
+   "passed": true,
+   "detail": "max |diff| 0.000e+00"
+  },
+  {
+   "check": "cpu_legacy_equals_native/conv2d_backward",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "check": "unbatched_dilated2d_rank",
+   "passed": true,
+   "detail": "[16, 20, 20]"
+  },
+  {
+   "check": "unbatched_dilated2d_value",
+   "passed": true,
+   "detail": "2.048e-07"
+  },
+  {
+   "check": "unbatched_transpose2d_stays_batched_rank",
+   "passed": true,
+   "detail": "[1, 16, 22, 22]"
+  },
+  {
+   "check": "unbatched_transpose2d_stays_batched_value",
+   "passed": true,
+   "detail": "1.526e-07"
+  },
+  {
+   "check": "unbatched_transpose2d_batch_one",
+   "passed": true,
+   "detail": "3-D in, 4-D out with batch 1"
+  },
+  {
+   "check": "unbatched_dilated3d_rank",
+   "passed": true,
+   "detail": "[16, 10, 10, 10]"
+  },
+  {
+   "check": "unbatched_dilated3d_value",
+   "passed": true,
+   "detail": "3.100e-07"
+  },
+  {
+   "check": "unbatched_transpose3d_stays_unbatched_rank",
+   "passed": true,
+   "detail": "[16, 12, 12, 12]"
+  },
+  {
+   "check": "unbatched_transpose3d_stays_unbatched_value",
+   "passed": true,
+   "detail": "2.507e-07"
+  },
+  {
+   "check": "backward_output_mask_returns_undefined",
+   "passed": true,
+   "detail": "['NoneType', 'Tensor', 'NoneType']"
+  },
+  {
+   "check": "backward_flat_weight_shape",
+   "passed": true,
+   "detail": "[16, 72]"
+  },
+  {
+   "check": "backward_grad_input_writes_in_place",
+   "passed": true,
+   "detail": "[[1, 8, 10, 10], [16, 8, 3, 3], [16]]"
+  },
+  {
+   "check": "out_overload/slow_conv3d_forward.output",
+   "passed": true,
+   "detail": "[1, 16, 6, 6, 6], max |diff| 0.000e+00"
+  },
+  {
+   "check": "out_overload/slow_conv_transpose2d.out",
+   "passed": true,
+   "detail": "[1, 16, 16, 16], max |diff| 0.000e+00"
+  },
+  {
+   "check": "out_overload/slow_conv_transpose3d.out",
+   "passed": true,
+   "detail": "[1, 16, 12, 12, 12], max |diff| 0.000e+00"
+  },
+  {
+   "check": "out_overload/slow_conv_dilated2d.out",
+   "passed": true,
+   "detail": "[1, 16, 6, 6], max |diff| 0.000e+00"
+  },
+  {
+   "check": "reject_kernel_size_mismatch",
+   "passed": true,
+   "detail": "slow_conv3d_forward: kernel_size [2, 2, 2] does not match weight spatial dims [3, 3, 3]"
+  },
+  {
+   "check": "reject_negative_padding",
+   "passed": true,
+   "detail": "slow_conv_dilated2d: padding must be non-negative, got [-1, -1]"
+  },
+  {
+   "check": "reject_output_padding",
+   "passed": true,
+   "detail": "slow_conv_transpose2d: output_padding must be non-negative and smaller than stride or dilation, got "
+  },
+  {
+   "check": "no_recursion",
+   "passed": true,
+   "detail": "entries {'slow_conv3d_forward': 1}"
+  },
+  {
+   "check": "no_cpu_round_trip",
+   "passed": true,
+   "detail": "['mps']"
+  }
+ ],
+ "verdict": "pass",
+ "machine_load_at_end": [
+  5.12,
+  6.5,
+  7.17
+ ]
+}

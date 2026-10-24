@@ -34,18 +34,16 @@ def selective_scan(u, dt, A, B, C):
         if dim % groups != 0:
             raise ValueError("dim must be divisible by groups")
         per_group = dim // groups
-        # expand A: (groups, per_group, states) -> (groups*per_group, states)
-        A_expanded = A.repeat_interleave(groups, dim=0)  # (dim, states)
         for b in range(batch):
             for g in range(groups):
                 for d in range(per_group):
                     channel = g * per_group + d
-                    a_vec = A_expanded[channel]  # (states,)
+                    a_vec = A[channel]  # (states,)
                     a_scalar = torch.exp(a_vec * dt_t[b, channel])
                     # x[b, group*per_group+d] += dt_t[b,d]*u[b,d]*B[b,g,:,d]
                     term1 = a_scalar * x[b, channel]
                     term2 = dt_t[b, channel] * u_t[b, channel] * B_t[b, g]
                     x[b, channel] = term1 + term2
                     # C shape: (batch, groups, states)
-                    y[b, channel, t] = torch.dot(x[b, channel].cpu().numpy(), C_t[b, g].cpu().numpy())
+                    y[b, channel, t] = torch.dot(x[b, channel], C_t[b, g])
     return y.to(device).to(dtype)

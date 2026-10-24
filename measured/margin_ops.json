@@ -1,0 +1,742 @@
+{
+  "environment": {
+    "torch": "2.14.1",
+    "torch_git": "5c4886908584029761b579af026dcfb627c84070",
+    "device": "mps",
+    "machine": "arm64",
+    "macos": "27.0.1",
+    "python": "3.11.17",
+    "load_average": [
+      5.32,
+      5.79,
+      6.57
+    ]
+  },
+  "registration": {
+    "overloads": [
+      "multi_margin_loss",
+      "multi_margin_loss.out",
+      "multi_margin_loss_backward",
+      "multi_margin_loss_backward.grad_input",
+      "multilabel_margin_loss_forward",
+      "multilabel_margin_loss_forward.output",
+      "multilabel_margin_loss_backward",
+      "multilabel_margin_loss_backward.grad_input"
+    ],
+    "mps_kernel_before": {
+      "multi_margin_loss": false,
+      "multi_margin_loss.out": false,
+      "multi_margin_loss_backward": false,
+      "multi_margin_loss_backward.grad_input": false,
+      "multilabel_margin_loss_forward": false,
+      "multilabel_margin_loss_forward.output": false,
+      "multilabel_margin_loss_backward": false,
+      "multilabel_margin_loss_backward.grad_input": false
+    }
+  },
+  "lease": {
+    "acquired": true,
+    "project": "mps-kernelops",
+    "tier": 1,
+    "id": "mps-kernelops-t1-1792825462217-10679"
+  },
+  "shader_compile_s": 0.132,
+  "dtype_extensions": {
+    "float16": {
+      "max_abs": 0.0003905296325683594,
+      "max_rel": 0.0007451028213836253,
+      "tol": 0.02
+    },
+    "bfloat16": {
+      "max_abs": 0.005468845367431641,
+      "max_rel": 0.005607603117823601,
+      "tol": 0.1
+    }
+  },
+  "kernel_paths": {
+    "mm float32 64x10 none": [
+      "mm_forward_rows",
+      "mm_backward_rows"
+    ],
+    "mm float32 64x10 mean": [
+      "mm_total",
+      "mm_backward_rows"
+    ],
+    "mm float32 64x10 sum": [
+      "mm_total",
+      "mm_backward_rows"
+    ],
+    "mm float32 256x10 none": [
+      "mm_forward_rows",
+      "mm_backward_rows"
+    ],
+    "mm float32 256x10 mean": [
+      "mm_total",
+      "mm_backward_rows"
+    ],
+    "mm float32 256x10 sum": [
+      "mm_total",
+      "mm_backward_rows"
+    ],
+    "mm float32 256x100 none": [
+      "mm_forward",
+      "mm_backward"
+    ],
+    "mm float32 256x100 mean": [
+      "mm_forward",
+      "row_reduce",
+      "mm_backward"
+    ],
+    "mm float32 256x100 sum": [
+      "mm_forward",
+      "row_reduce",
+      "mm_backward"
+    ],
+    "mm float32 16x1000 none": [
+      "mm_forward",
+      "mm_backward"
+    ],
+    "mm float32 16x1000 mean": [
+      "mm_forward",
+      "row_reduce",
+      "mm_backward"
+    ],
+    "mm float32 16x1000 sum": [
+      "mm_forward",
+      "row_reduce",
+      "mm_backward"
+    ],
+    "ml float32 64x10 l3 none": [
+      "ml_forward",
+      "ml_backward"
+    ],
+    "ml float32 64x10 l3 mean": [
+      "ml_total",
+      "ml_backward"
+    ],
+    "ml float32 64x10 l3 sum": [
+      "ml_total",
+      "ml_backward"
+    ],
+    "ml float32 256x100 l3 none": [
+      "ml_forward",
+      "ml_backward"
+    ],
+    "ml float32 256x100 l3 mean": [
+      "ml_forward",
+      "row_reduce",
+      "ml_backward"
+    ],
+    "ml float32 256x100 l3 sum": [
+      "ml_forward",
+      "row_reduce",
+      "ml_backward"
+    ],
+    "ml float32 16x1000 l3 none": [
+      "ml_forward",
+      "ml_backward"
+    ],
+    "ml float32 16x1000 l3 mean": [
+      "ml_forward",
+      "row_reduce",
+      "ml_backward"
+    ],
+    "ml float32 16x1000 l3 sum": [
+      "ml_forward",
+      "row_reduce",
+      "ml_backward"
+    ],
+    "mm float16 64x10 none": [
+      "mm_forward_rows_h",
+      "mm_backward_rows_h"
+    ],
+    "mm float16 64x10 mean": [
+      "mm_total_h",
+      "mm_backward_rows_h"
+    ],
+    "mm float16 64x10 sum": [
+      "mm_total_h",
+      "mm_backward_rows_h"
+    ],
+    "mm float16 256x10 none": [
+      "mm_forward_rows_h",
+      "mm_backward_rows_h"
+    ],
+    "mm float16 256x10 mean": [
+      "mm_total_h",
+      "mm_backward_rows_h"
+    ],
+    "mm float16 256x10 sum": [
+      "mm_total_h",
+      "mm_backward_rows_h"
+    ],
+    "mm float16 256x100 none": [
+      "mm_forward_h",
+      "mm_backward_h"
+    ],
+    "mm float16 256x100 mean": [
+      "mm_forward_h",
+      "row_reduce_h",
+      "mm_backward_h"
+    ],
+    "mm float16 256x100 sum": [
+      "mm_forward_h",
+      "row_reduce_h",
+      "mm_backward_h"
+    ],
+    "mm float16 16x1000 none": [
+      "mm_forward_h",
+      "mm_backward_h"
+    ],
+    "mm float16 16x1000 mean": [
+      "mm_forward_h",
+      "row_reduce_h",
+      "mm_backward_h"
+    ],
+    "mm float16 16x1000 sum": [
+      "mm_forward_h",
+      "row_reduce_h",
+      "mm_backward_h"
+    ],
+    "ml float16 64x10 l3 none": [
+      "ml_forward_h",
+      "ml_backward_h"
+    ],
+    "ml float16 64x10 l3 mean": [
+      "ml_total_h",
+      "ml_backward_h"
+    ],
+    "ml float16 64x10 l3 sum": [
+      "ml_total_h",
+      "ml_backward_h"
+    ],
+    "ml float16 256x100 l3 none": [
+      "ml_forward_h",
+      "ml_backward_h"
+    ],
+    "ml float16 256x100 l3 mean": [
+      "ml_forward_h",
+      "row_reduce_h",
+      "ml_backward_h"
+    ],
+    "ml float16 256x100 l3 sum": [
+      "ml_forward_h",
+      "row_reduce_h",
+      "ml_backward_h"
+    ],
+    "ml float16 16x1000 l3 none": [
+      "ml_forward_h",
+      "ml_backward_h"
+    ],
+    "ml float16 16x1000 l3 mean": [
+      "ml_forward_h",
+      "row_reduce_h",
+      "ml_backward_h"
+    ],
+    "ml float16 16x1000 l3 sum": [
+      "ml_forward_h",
+      "row_reduce_h",
+      "ml_backward_h"
+    ],
+    "mm bfloat16 64x10 none": [
+      "mm_forward_rows_b",
+      "mm_backward_rows_b"
+    ],
+    "mm bfloat16 64x10 mean": [
+      "mm_total_b",
+      "mm_backward_rows_b"
+    ],
+    "mm bfloat16 64x10 sum": [
+      "mm_total_b",
+      "mm_backward_rows_b"
+    ],
+    "mm bfloat16 256x10 none": [
+      "mm_forward_rows_b",
+      "mm_backward_rows_b"
+    ],
+    "mm bfloat16 256x10 mean": [
+      "mm_total_b",
+      "mm_backward_rows_b"
+    ],
+    "mm bfloat16 256x10 sum": [
+      "mm_total_b",
+      "mm_backward_rows_b"
+    ],
+    "mm bfloat16 256x100 none": [
+      "mm_forward_b",
+      "mm_backward_b"
+    ],
+    "mm bfloat16 256x100 mean": [
+      "mm_forward_b",
+      "row_reduce_b",
+      "mm_backward_b"
+    ],
+    "mm bfloat16 256x100 sum": [
+      "mm_forward_b",
+      "row_reduce_b",
+      "mm_backward_b"
+    ],
+    "mm bfloat16 16x1000 none": [
+      "mm_forward_b",
+      "mm_backward_b"
+    ],
+    "mm bfloat16 16x1000 mean": [
+      "mm_forward_b",
+      "row_reduce_b",
+      "mm_backward_b"
+    ],
+    "mm bfloat16 16x1000 sum": [
+      "mm_forward_b",
+      "row_reduce_b",
+      "mm_backward_b"
+    ],
+    "ml bfloat16 64x10 l3 none": [
+      "ml_forward_b",
+      "ml_backward_b"
+    ],
+    "ml bfloat16 64x10 l3 mean": [
+      "ml_total_b",
+      "ml_backward_b"
+    ],
+    "ml bfloat16 64x10 l3 sum": [
+      "ml_total_b",
+      "ml_backward_b"
+    ],
+    "ml bfloat16 256x100 l3 none": [
+      "ml_forward_b",
+      "ml_backward_b"
+    ],
+    "ml bfloat16 256x100 l3 mean": [
+      "ml_forward_b",
+      "row_reduce_b",
+      "ml_backward_b"
+    ],
+    "ml bfloat16 256x100 l3 sum": [
+      "ml_forward_b",
+      "row_reduce_b",
+      "ml_backward_b"
+    ],
+    "ml bfloat16 16x1000 l3 none": [
+      "ml_forward_b",
+      "ml_backward_b"
+    ],
+    "ml bfloat16 16x1000 l3 mean": [
+      "ml_forward_b",
+      "row_reduce_b",
+      "ml_backward_b"
+    ],
+    "ml bfloat16 16x1000 l3 sum": [
+      "ml_forward_b",
+      "row_reduce_b",
+      "ml_backward_b"
+    ]
+  },
+  "error_paths": {
+    "p=1.5": "ValueError",
+    "p=3": "ValueError",
+    "int target": "RuntimeError",
+    "bad weight": "RuntimeError",
+    "3-D input": "RuntimeError",
+    "bad multilabel shape": "RuntimeError"
+  },
+  "optimizer": {
+    "first_loss_cpu": 8.303088188171387,
+    "first_loss_mps": 8.303089141845703,
+    "final_loss_cpu": 4.71889591217041,
+    "final_loss_mps": 4.71889591217041,
+    "weights_moved": true,
+    "multilabel_module_loss_cpu": 1.7850980758666992,
+    "multilabel_module_loss_mps": 1.7850980758666992
+  },
+  "launch_floor": {
+    "single_kernel_launch_us": 31.25,
+    "single_kernel_launch_us_min": 25.13,
+    "one_element_overlay_us": 10.27,
+    "one_element_overlay_us_min": 8.32,
+    "bare_kernel_enqueue_us": 4.87,
+    "one_element_overlay_enqueue_us": 9.0,
+    "one_launch_vs_two": [
+      {
+        "case": "mm fwd 64x10 mean",
+        "one_launch_us": 38.23,
+        "two_launch_us": 39.63,
+        "one_launch_us_min": 24.55,
+        "two_launch_us_min": 33.47,
+        "two_over_one": 1.09,
+        "one_launch_enqueue_us": 8.75,
+        "two_launch_enqueue_us": 10.67,
+        "second_launch_enqueue_us": 2.0
+      },
+      {
+        "case": "mm fwd 256x10 mean",
+        "one_launch_us": 35.61,
+        "two_launch_us": 42.0,
+        "one_launch_us_min": 29.46,
+        "two_launch_us_min": 34.97,
+        "two_over_one": 1.12,
+        "one_launch_enqueue_us": 8.25,
+        "two_launch_enqueue_us": 10.12,
+        "second_launch_enqueue_us": 1.9
+      },
+      {
+        "case": "mm fwd 64x32 mean",
+        "one_launch_us": 33.7,
+        "two_launch_us": 35.6,
+        "one_launch_us_min": 29.8,
+        "two_launch_us_min": 32.14,
+        "two_over_one": 1.07,
+        "one_launch_enqueue_us": 8.0,
+        "two_launch_enqueue_us": 11.46,
+        "second_launch_enqueue_us": 2.1
+      }
+    ]
+  },
+  "timings": [
+    {
+      "case": "mm fwd 64x10 w0",
+      "cpu_us": 0.83,
+      "cpu_us_min": 0.82,
+      "mps_queued_us": 9.98,
+      "mps_queued_us_min": 9.19,
+      "mps_synced_us": 138.02,
+      "speedup": 0.083
+    },
+    {
+      "case": "mm fwd 4096x10 w0",
+      "cpu_us": 85.56,
+      "cpu_us_min": 83.89,
+      "mps_queued_us": 27.81,
+      "mps_queued_us_min": 26.04,
+      "mps_synced_us": 171.35,
+      "speedup": 3.077
+    },
+    {
+      "case": "mm fwd 256x100 w1",
+      "cpu_us": 28.48,
+      "cpu_us_min": 27.82,
+      "mps_queued_us": 15.53,
+      "mps_queued_us_min": 13.87,
+      "mps_synced_us": 144.42,
+      "speedup": 1.834
+    },
+    {
+      "case": "mm fwd 256x1000 w0",
+      "cpu_us": 412.26,
+      "cpu_us_min": 404.16,
+      "mps_queued_us": 15.94,
+      "mps_queued_us_min": 14.25,
+      "mps_synced_us": 149.27,
+      "speedup": 25.856
+    },
+    {
+      "case": "mm fwd+bwd 64x10",
+      "cpu_us": 7.09,
+      "cpu_us_min": 6.75,
+      "mps_queued_us": 36.81,
+      "mps_queued_us_min": 34.04,
+      "mps_synced_us": 180.44,
+      "speedup": 0.193
+    },
+    {
+      "case": "mm fwd+bwd 256x100",
+      "cpu_us": 52.81,
+      "cpu_us_min": 51.72,
+      "mps_queued_us": 40.56,
+      "mps_queued_us_min": 37.17,
+      "mps_synced_us": 183.77,
+      "speedup": 1.302
+    },
+    {
+      "case": "mm fwd+bwd 256x1000",
+      "cpu_us": 734.55,
+      "cpu_us_min": 725.13,
+      "mps_queued_us": 63.99,
+      "mps_queued_us_min": 57.06,
+      "mps_synced_us": 199.6,
+      "speedup": 11.479
+    },
+    {
+      "case": "ml fwd 64x10 l3",
+      "cpu_us": 2.04,
+      "cpu_us_min": 1.92,
+      "mps_queued_us": 14.47,
+      "mps_queued_us_min": 13.96,
+      "mps_synced_us": 156.23,
+      "speedup": 0.141
+    },
+    {
+      "case": "ml fwd 256x100 l3",
+      "cpu_us": 84.74,
+      "cpu_us_min": 84.1,
+      "mps_queued_us": 48.72,
+      "mps_queued_us_min": 26.55,
+      "mps_synced_us": 203.48,
+      "speedup": 1.739
+    },
+    {
+      "case": "ml fwd 64x1000 l3",
+      "cpu_us": 274.36,
+      "cpu_us_min": 269.17,
+      "mps_queued_us": 38.93,
+      "mps_queued_us_min": 33.68,
+      "mps_synced_us": 186.0,
+      "speedup": 7.048
+    },
+    {
+      "case": "ml fwd 16x1000 l20",
+      "cpu_us": 370.6,
+      "cpu_us_min": 368.71,
+      "mps_queued_us": 39.49,
+      "mps_queued_us_min": 34.23,
+      "mps_synced_us": 203.79,
+      "speedup": 9.385
+    },
+    {
+      "case": "ml fwd+bwd 64x10 l3",
+      "cpu_us": 10.19,
+      "cpu_us_min": 9.85,
+      "mps_queued_us": 42.64,
+      "mps_queued_us_min": 39.59,
+      "mps_synced_us": 187.21,
+      "speedup": 0.239
+    },
+    {
+      "case": "ml fwd+bwd 256x100 l3",
+      "cpu_us": 265.33,
+      "cpu_us_min": 262.07,
+      "mps_queued_us": 78.98,
+      "mps_queued_us_min": 59.49,
+      "mps_synced_us": 217.81,
+      "speedup": 3.359
+    },
+    {
+      "case": "ml fwd+bwd 64x1000 l3",
+      "cpu_us": 890.81,
+      "cpu_us_min": 875.79,
+      "mps_queued_us": 77.58,
+      "mps_queued_us_min": 74.04,
+      "mps_synced_us": 210.92,
+      "speedup": 11.482
+    }
+  ],
+  "fused_vs_composed": [
+    {
+      "case": "mm float32 fwd 64x10 w0",
+      "calls_per_sample": 50,
+      "fused_us": 9.58,
+      "fused_us_min": 9.31,
+      "composed_us": 37.85,
+      "composed_us_min": 37.39,
+      "speedup_vs_composed": 3.98,
+      "speedup_of_medians": 3.95,
+      "speedup_min": 4.01
+    },
+    {
+      "case": "mm float32 fwd 256x100 w1",
+      "calls_per_sample": 50,
+      "fused_us": 13.15,
+      "fused_us_min": 12.77,
+      "composed_us": 47.29,
+      "composed_us_min": 46.09,
+      "speedup_vs_composed": 3.6,
+      "speedup_of_medians": 3.6,
+      "speedup_min": 3.61
+    },
+    {
+      "case": "mm float32 fwd 256x1000 w0",
+      "calls_per_sample": 45,
+      "fused_us": 14.01,
+      "fused_us_min": 13.85,
+      "composed_us": 56.87,
+      "composed_us_min": 55.59,
+      "speedup_vs_composed": 4.06,
+      "speedup_of_medians": 4.06,
+      "speedup_min": 4.01
+    },
+    {
+      "case": "ml float32 fwd 64x10 l3",
+      "calls_per_sample": 28,
+      "fused_us": 16.85,
+      "fused_us_min": 15.92,
+      "composed_us": 146.74,
+      "composed_us_min": 129.32,
+      "speedup_vs_composed": 8.62,
+      "speedup_of_medians": 8.71,
+      "speedup_min": 8.12
+    },
+    {
+      "case": "ml float32 fwd 256x100 l3",
+      "calls_per_sample": 14,
+      "fused_us": 23.75,
+      "fused_us_min": 22.87,
+      "composed_us": 500.62,
+      "composed_us_min": 468.8,
+      "speedup_vs_composed": 20.26,
+      "speedup_of_medians": 21.07,
+      "speedup_min": 20.49
+    },
+    {
+      "case": "ml float32 fwd 64x1000 l3",
+      "calls_per_sample": 1,
+      "fused_us": 222.85,
+      "fused_us_min": 163.96,
+      "composed_us": 9524.48,
+      "composed_us_min": 8571.75,
+      "speedup_vs_composed": 41.84,
+      "speedup_of_medians": 42.74,
+      "speedup_min": 52.28
+    },
+    {
+      "case": "mm float16 fwd 64x10 w0",
+      "calls_per_sample": 50,
+      "fused_us": 9.81,
+      "fused_us_min": 9.27,
+      "composed_us": 43.49,
+      "composed_us_min": 42.01,
+      "speedup_vs_composed": 4.44,
+      "speedup_of_medians": 4.43,
+      "speedup_min": 4.53
+    },
+    {
+      "case": "mm float16 fwd 256x100 w1",
+      "calls_per_sample": 47,
+      "fused_us": 14.18,
+      "fused_us_min": 13.03,
+      "composed_us": 53.2,
+      "composed_us_min": 51.91,
+      "speedup_vs_composed": 3.74,
+      "speedup_of_medians": 3.75,
+      "speedup_min": 3.98
+    },
+    {
+      "case": "mm float16 fwd 256x1000 w0",
+      "calls_per_sample": 44,
+      "fused_us": 14.21,
+      "fused_us_min": 13.82,
+      "composed_us": 61.08,
+      "composed_us_min": 60.6,
+      "speedup_vs_composed": 4.37,
+      "speedup_of_medians": 4.3,
+      "speedup_min": 4.38
+    },
+    {
+      "case": "ml float16 fwd 64x10 l3",
+      "calls_per_sample": 33,
+      "fused_us": 15.22,
+      "fused_us_min": 14.7,
+      "composed_us": 147.97,
+      "composed_us_min": 140.08,
+      "speedup_vs_composed": 9.31,
+      "speedup_of_medians": 9.72,
+      "speedup_min": 9.53
+    },
+    {
+      "case": "ml float16 fwd 256x100 l3",
+      "calls_per_sample": 15,
+      "fused_us": 21.88,
+      "fused_us_min": 21.02,
+      "composed_us": 475.34,
+      "composed_us_min": 467.59,
+      "speedup_vs_composed": 22.01,
+      "speedup_of_medians": 21.72,
+      "speedup_min": 22.24
+    },
+    {
+      "case": "ml float16 fwd 64x1000 l3",
+      "calls_per_sample": 1,
+      "fused_us": 210.71,
+      "fused_us_min": 163.21,
+      "composed_us": 8344.1,
+      "composed_us_min": 8182.0,
+      "speedup_vs_composed": 39.05,
+      "speedup_of_medians": 39.6,
+      "speedup_min": 50.13
+    },
+    {
+      "case": "mm bfloat16 fwd 64x10 w0",
+      "calls_per_sample": 50,
+      "fused_us": 9.57,
+      "fused_us_min": 9.36,
+      "composed_us": 43.06,
+      "composed_us_min": 42.47,
+      "speedup_vs_composed": 4.51,
+      "speedup_of_medians": 4.5,
+      "speedup_min": 4.54
+    },
+    {
+      "case": "mm bfloat16 fwd 256x100 w1",
+      "calls_per_sample": 49,
+      "fused_us": 13.07,
+      "fused_us_min": 12.95,
+      "composed_us": 53.19,
+      "composed_us_min": 51.97,
+      "speedup_vs_composed": 4.02,
+      "speedup_of_medians": 4.07,
+      "speedup_min": 4.01
+    },
+    {
+      "case": "mm bfloat16 fwd 256x1000 w0",
+      "calls_per_sample": 44,
+      "fused_us": 14.89,
+      "fused_us_min": 13.81,
+      "composed_us": 61.57,
+      "composed_us_min": 61.19,
+      "speedup_vs_composed": 4.17,
+      "speedup_of_medians": 4.13,
+      "speedup_min": 4.43
+    },
+    {
+      "case": "ml bfloat16 fwd 64x10 l3",
+      "calls_per_sample": 32,
+      "fused_us": 15.21,
+      "fused_us_min": 14.8,
+      "composed_us": 141.6,
+      "composed_us_min": 130.44,
+      "speedup_vs_composed": 9.17,
+      "speedup_of_medians": 9.31,
+      "speedup_min": 8.81
+    },
+    {
+      "case": "ml bfloat16 fwd 256x100 l3",
+      "calls_per_sample": 14,
+      "fused_us": 22.9,
+      "fused_us_min": 21.64,
+      "composed_us": 478.44,
+      "composed_us_min": 469.57,
+      "speedup_vs_composed": 20.71,
+      "speedup_of_medians": 20.89,
+      "speedup_min": 21.7
+    },
+    {
+      "case": "ml bfloat16 fwd 64x1000 l3",
+      "calls_per_sample": 1,
+      "fused_us": 174.98,
+      "fused_us_min": 135.54,
+      "composed_us": 8274.25,
+      "composed_us_min": 8197.25,
+      "speedup_vs_composed": 50.68,
+      "speedup_of_medians": 47.29,
+      "speedup_min": 60.48
+    }
+  ],
+  "correctness": {
+    "checks": 1114,
+    "failed": 0,
+    "max_abs_error_float32": 6.103515625e-05,
+    "max_rel_error_float32": 1.6089737982838415e-05,
+    "failures": []
+  },
+  "notes": [
+    "float32, float16 and bfloat16 inputs of at most two dimensions take the fused Metal kernels; the aten-op composition is left for other dtypes, a weight tensor whose dtype differs from the input, and backward calls whose is_target mask dtype differs from the input.",
+    "The half kernels accumulate in float32 and store once: each row value, each gradient element and the reduced scalar is rounded a single time from the float32 result.",
+    "multi_margin rows of at most 32 classes run one thread per row; wider rows run one threadgroup per row.",
+    "multilabel_margin_loss runs one threadgroup per row; the group holds 32 threads for rows of at most 32 classes and 64 otherwise.",
+    "A reduction on a batch whose nframe*dim fits 4096 elements (and, for multi_margin, whose rows are at most 32 classes wide) is produced by the forward kernel itself; multilabel also needs at least 8 rows, or the single threadgroup would be half idle. Larger batches write per-row partials and take a second reduce pass.",
+    "kernel_paths records the launch sequence per dtype and shape, so a regression that silently adds a launch or drops to the composition fails the run instead of only costing time.",
+    "launch_floor times a single trivial kernel launch and compares the one-launch reduction against the two-pass path on the same shape, round by round, and reports the median of the per-round ratio; a small case cannot go faster than that floor, whatever the kernel does. environment.load_average is the CPU load when the run started.",
+    "launch_floor.*_enqueue_us is the CPU-side cost of one call, timed from an empty queue to the enqueue with the minimum of 40 samples. It is the one number a busy GPU cannot inflate, and it is what a second launch adds: on an idle device the queued cost of a small batch is this figure plus a microsecond or two of kernel time.",
+    "The CPU kernels dispatch float32 and float64 only, so float16 and bfloat16 are extensions of this overlay and are compared with the float32 CPU result.",
+    "Target entries are assumed in range, as on CPU. The fused kernels bounds-check out-of-range entries and contribute nothing for them; the composed path raises through tensor indexing. Valid inputs match the CPU kernel.",
+    "The machine is shared. timings are medians and minima of 30 samples of 20 queued calls plus one synchronized call; fused_vs_composed times both paths on the same tensors and alternates which one runs first, so its ratio survives background load better than its absolute numbers. launch_floor.single_kernel_launch_us is the calibration for the run: near 2-3 us the machine was idle, in the tens or hundreds of us it was busy and every row is inflated by roughly that much. Compare rows inside one JSON, or ratios, not absolute times across runs."
+  ]
+}

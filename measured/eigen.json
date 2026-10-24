@@ -1,0 +1,279 @@
+{
+ "torch": "2.14.1",
+ "device": "mps",
+ "machine": "arm64",
+ "overlays": [
+  "aten::linalg_eig",
+  "aten::linalg_eig.out",
+  "aten::_linalg_eigvals",
+  "aten::linalg_eigvals.out"
+ ],
+ "autograd_overlays": [
+  "aten::linalg_eig",
+  "aten::_linalg_eigvals"
+ ],
+ "dtype": {
+  "input": [
+   "float32",
+   "complex64"
+  ],
+  "output": "complex64",
+  "note": "MPS has no float64; other dtypes raise TypeError"
+ },
+ "mps_primitives": {
+  "complex64_tensor": "torch.complex64",
+  "view_as_real_shape": [
+   4,
+   4,
+   2
+  ],
+  "view_round_trip": true,
+  "complex_matmul_rel_err": 6.277710132467194e-08,
+  "compile_shader": true
+ },
+ "forward": [
+  {
+   "case": "(1, 1)",
+   "shape": [
+    1,
+    1
+   ],
+   "dtype": "torch.float32",
+   "result_dtype": "torch.complex64",
+   "eigenvalue_rel_err": 0.0,
+   "residual": 0.0,
+   "reference_residual": 0.0
+  },
+  {
+   "case": "(4, 4)",
+   "shape": [
+    4,
+    4
+   ],
+   "dtype": "torch.float32",
+   "result_dtype": "torch.complex64",
+   "eigenvalue_rel_err": 3.071148407310867e-07,
+   "residual": 2.876957978514838e-07,
+   "reference_residual": 7.065872864586709e-08
+  },
+  {
+   "case": "(4, 4) complex",
+   "shape": [
+    4,
+    4
+   ],
+   "dtype": "torch.complex64",
+   "result_dtype": "torch.complex64",
+   "eigenvalue_rel_err": 3.8263914026981604e-07,
+   "residual": 6.429298764487612e-07,
+   "reference_residual": 1.003323291115521e-07
+  },
+  {
+   "case": "(3, 8, 8)",
+   "shape": [
+    3,
+    8,
+    8
+   ],
+   "dtype": "torch.float32",
+   "result_dtype": "torch.complex64",
+   "eigenvalue_rel_err": 5.218553208830569e-07,
+   "residual": 6.051523087080568e-07,
+   "reference_residual": 9.323838412456098e-08
+  },
+  {
+   "case": "(2, 3, 16, 16)",
+   "shape": [
+    2,
+    3,
+    16,
+    16
+   ],
+   "dtype": "torch.float32",
+   "result_dtype": "torch.complex64",
+   "eigenvalue_rel_err": 1.1720468316468336e-06,
+   "residual": 1.2596892702276818e-06,
+   "reference_residual": 1.0288995611063001e-07
+  },
+  {
+   "case": "(32, 32)",
+   "shape": [
+    32,
+    32
+   ],
+   "dtype": "torch.float32",
+   "result_dtype": "torch.complex64",
+   "eigenvalue_rel_err": 1.4830204165504475e-06,
+   "residual": 1.0405163948234986e-06,
+   "reference_residual": 1.510694289663661e-07
+  }
+ ],
+ "backward": [
+  {
+   "case": "n=4",
+   "shape": [
+    4,
+    4
+   ],
+   "reference_dtype": "torch.float64",
+   "grad_rel_err": 6.693591719585818e-06
+  },
+  {
+   "case": "n=6",
+   "shape": [
+    6,
+    6
+   ],
+   "reference_dtype": "torch.float64",
+   "grad_rel_err": 2.9484871355438293e-06
+  },
+  {
+   "case": "n=4 complex",
+   "shape": [
+    4,
+    4
+   ],
+   "reference_dtype": "torch.complex128",
+   "grad_rel_err": 6.388590721153291e-07
+  },
+  {
+   "case": "n=8 complex",
+   "shape": [
+    8,
+    8
+   ],
+   "reference_dtype": "torch.complex128",
+   "grad_rel_err": 1.4628422247974655e-06
+  },
+  {
+   "case": "formula consistency",
+   "shape": [
+    8,
+    8
+   ],
+   "grad_rel_err": 1.1079494945677887e-07
+  }
+ ],
+ "eigvals": {
+  "eigenvalue_rel_err": 3.435999819563791e-07,
+  "out_variant_writes_in_place": true,
+  "grad_rel_err": 2.4354852691588776e-07
+ },
+ "out": {
+  "eig_out_writes_in_place": true
+ },
+ "errors": {
+  "non_square": "RuntimeError",
+  "float16": "TypeError",
+  "order_0": "no error"
+ },
+ "symmetric": {
+  "max_abs_err_vs_eigvalsh": 7.62939453125e-06
+ },
+ "defective": {
+  "values": [
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "finite": true,
+  "order_0": "no error"
+ },
+ "timing_ms": [
+  {
+   "n": 16,
+   "batch": 1,
+   "overlay_ms": 0.831,
+   "cpu_fallback_ms": 0.354,
+   "speedup": 0.43,
+   "kernel_ms": 0.225,
+   "copy_ms": 0.017,
+   "sweeps": 37,
+   "rotations": 325,
+   "sweep_budget": 580,
+   "rotations_per_sweep": 8.8
+  },
+  {
+   "n": 32,
+   "batch": 1,
+   "overlay_ms": 1.391,
+   "cpu_fallback_ms": 0.393,
+   "speedup": 0.28,
+   "kernel_ms": 0.859,
+   "copy_ms": 0.017,
+   "sweeps": 79,
+   "rotations": 1297,
+   "sweep_budget": 1060,
+   "rotations_per_sweep": 16.4
+  },
+  {
+   "n": 64,
+   "batch": 1,
+   "overlay_ms": 3.834,
+   "cpu_fallback_ms": 0.717,
+   "speedup": 0.19,
+   "kernel_ms": 3.389,
+   "copy_ms": 0.018,
+   "sweeps": 161,
+   "rotations": 5382,
+   "sweep_budget": 2020,
+   "rotations_per_sweep": 33.4
+  },
+  {
+   "n": 128,
+   "batch": 1,
+   "overlay_ms": 14.555,
+   "cpu_fallback_ms": 3.75,
+   "speedup": 0.26,
+   "kernel_ms": 13.785,
+   "copy_ms": 0.018,
+   "sweeps": 319,
+   "rotations": 21193,
+   "sweep_budget": 3940,
+   "rotations_per_sweep": 66.4
+  },
+  {
+   "n": 32,
+   "batch": 64,
+   "overlay_ms": 1.516,
+   "cpu_fallback_ms": 5.754,
+   "speedup": 3.79,
+   "kernel_ms": 0.968,
+   "copy_ms": 0.016,
+   "sweeps": 86,
+   "rotations": 1487,
+   "sweep_budget": 1060,
+   "rotations_per_sweep": 17.3
+  },
+  {
+   "n": 64,
+   "batch": 64,
+   "overlay_ms": 4.212,
+   "cpu_fallback_ms": 29.031,
+   "speedup": 6.89,
+   "kernel_ms": 3.583,
+   "copy_ms": 0.018,
+   "sweeps": 165,
+   "rotations": 5672,
+   "sweep_budget": 2020,
+   "rotations_per_sweep": 34.4
+  },
+  {
+   "n": 128,
+   "batch": 8,
+   "overlay_ms": 15.025,
+   "cpu_fallback_ms": 24.967,
+   "speedup": 1.66,
+   "kernel_ms": 13.958,
+   "copy_ms": 0.018,
+   "sweeps": 318,
+   "rotations": 21451,
+   "sweep_budget": 3940,
+   "rotations_per_sweep": 67.5
+  }
+ ],
+ "timing_note": "wall clock including torch.mps.synchronize(); minimum of 7 synchronized runs; kernel_ms excludes the input refresh copy measured in the same batch; machine shared, ratios indicative"
+}

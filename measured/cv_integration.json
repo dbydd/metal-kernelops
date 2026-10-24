@@ -1,0 +1,41 @@
+{
+  "torch": "2.14.1",
+  "mamba2_block": {
+    "loss": 0.3317900002002716,
+    "gradient_parameters": [
+      "conv_weight",
+      "conv_bias",
+      "a_log",
+      "d_skip",
+      "dt_bias",
+      "norm_weight",
+      "in_proj.weight",
+      "in_proj.bias",
+      "out_proj.weight",
+      "out_proj.bias"
+    ],
+    "parameters_moved": true
+  },
+  "mamba2_step_ms": 5.438562497147359,
+  "path_scan_block": {
+    "loss": 1.936682939529419,
+    "gradient_parameters": [
+      "a",
+      "u.weight",
+      "u.bias",
+      "dt.weight",
+      "dt.bias",
+      "b.weight",
+      "b.bias",
+      "c.weight",
+      "c.bias"
+    ],
+    "parameters_moved": true
+  },
+  "path_scan_step_ms": 2.1981770114507526,
+  "k_select": {
+    "indices": "bit-equal to reference",
+    "k_select_ms": 0.08003750117495656
+  },
+  "status": "pass"
+}

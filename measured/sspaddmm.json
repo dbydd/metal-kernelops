@@ -1,0 +1,581 @@
+{
+  "op": "aten::sspaddmm",
+  "device": "mps",
+  "dispatch_key": "SparseMPS",
+  "overlays": [
+    "sspaddmm",
+    "sspaddmm.out"
+  ],
+  "before_overlay": "NotImplementedError: Could not run 'aten::sspaddmm.out' with arguments from the 'SparseMPS' backend. This could be because the operator doesn't exist for this backend, or was omitted during the selective/custom build proc",
+  "algorithm": "native SparseMPS mm restricted to the coalesced mat1's occupied rows; self's stored entries and the occupied-row block are written into preallocated index/value buffers, result left uncoalesced",
+  "torch": "2.14.1",
+  "python": "3.11.17",
+  "platform": "27.0.1 arm64",
+  "first_call_ms_including_pipeline_compile": 7.066750025842339,
+  "elapsed_s": 2.9787838459014893,
+  "structure": {
+    "structured": [
+      {
+        "name": "coalesced operands",
+        "nnz": [
+          18,
+          18
+        ],
+        "nnz_equal": true,
+        "shape_equal": true,
+        "indices_equal": true,
+        "index_dtype_equal": true,
+        "values_max_abs_error": 0.0,
+        "layout_equal": true,
+        "coalesced_flag_equal": true,
+        "dtype_equal": true,
+        "dense_agreement": true
+      },
+      {
+        "name": "unsorted mat1 rows",
+        "nnz": [
+          18,
+          18
+        ],
+        "nnz_equal": true,
+        "shape_equal": true,
+        "indices_equal": true,
+        "index_dtype_equal": true,
+        "values_max_abs_error": 0.0,
+        "layout_equal": true,
+        "coalesced_flag_equal": true,
+        "dtype_equal": true,
+        "dense_agreement": true
+      },
+      {
+        "name": "duplicate mat1 rows",
+        "nnz": [
+          14,
+          14
+        ],
+        "nnz_equal": true,
+        "shape_equal": true,
+        "indices_equal": true,
+        "index_dtype_equal": true,
+        "values_max_abs_error": 0.0,
+        "layout_equal": true,
+        "coalesced_flag_equal": true,
+        "dtype_equal": true,
+        "dense_agreement": true
+      },
+      {
+        "name": "uncoalesced self with duplicates",
+        "nnz": [
+          16,
+          16
+        ],
+        "nnz_equal": true,
+        "shape_equal": true,
+        "indices_equal": true,
+        "index_dtype_equal": true,
+        "values_max_abs_error": 0.0,
+        "layout_equal": true,
+        "coalesced_flag_equal": true,
+        "dtype_equal": true,
+        "dense_agreement": true
+      },
+      {
+        "name": "explicit zeros both sides",
+        "nnz": [
+          18,
+          18
+        ],
+        "nnz_equal": true,
+        "shape_equal": true,
+        "indices_equal": true,
+        "index_dtype_equal": true,
+        "values_max_abs_error": 0.0,
+        "layout_equal": true,
+        "coalesced_flag_equal": true,
+        "dtype_equal": true,
+        "dense_agreement": true
+      },
+      {
+        "name": "mat1 covers every row",
+        "nnz": [
+          22,
+          22
+        ],
+        "nnz_equal": true,
+        "shape_equal": true,
+        "indices_equal": true,
+        "index_dtype_equal": true,
+        "values_max_abs_error": 0.0,
+        "layout_equal": true,
+        "coalesced_flag_equal": true,
+        "dtype_equal": true,
+        "dense_agreement": true
+      },
+      {
+        "name": "mat2 with a zero row",
+        "nnz": [
+          18,
+          18
+        ],
+        "nnz_equal": true,
+        "shape_equal": true,
+        "indices_equal": true,
+        "index_dtype_equal": true,
+        "values_max_abs_error": 0.0,
+        "layout_equal": true,
+        "coalesced_flag_equal": true,
+        "dtype_equal": true,
+        "dense_agreement": true
+      },
+      {
+        "name": "empty mat1",
+        "nnz": [
+          6,
+          6
+        ],
+        "nnz_equal": true,
+        "shape_equal": true,
+        "indices_equal": true,
+        "index_dtype_equal": true,
+        "values_max_abs_error": 0.0,
+        "layout_equal": true,
+        "coalesced_flag_equal": true,
+        "dtype_equal": true,
+        "dense_agreement": true
+      },
+      {
+        "name": "empty self",
+        "nnz": [
+          12,
+          12
+        ],
+        "nnz_equal": true,
+        "shape_equal": true,
+        "indices_equal": true,
+        "index_dtype_equal": true,
+        "values_max_abs_error": 0.0,
+        "layout_equal": true,
+        "coalesced_flag_equal": true,
+        "dtype_equal": true,
+        "dense_agreement": true
+      },
+      {
+        "name": "both empty",
+        "nnz": [
+          0,
+          0
+        ],
+        "nnz_equal": true,
+        "shape_equal": true,
+        "indices_equal": true,
+        "index_dtype_equal": true,
+        "values_max_abs_error": 0.0,
+        "layout_equal": true,
+        "coalesced_flag_equal": true,
+        "dtype_equal": true,
+        "dense_agreement": true
+      },
+      {
+        "name": "beta 0",
+        "nnz": [
+          18,
+          18
+        ],
+        "nnz_equal": true,
+        "shape_equal": true,
+        "indices_equal": true,
+        "index_dtype_equal": true,
+        "values_max_abs_error": 0.0,
+        "layout_equal": true,
+        "coalesced_flag_equal": true,
+        "dtype_equal": true,
+        "dense_agreement": true
+      },
+      {
+        "name": "alpha 0",
+        "nnz": [
+          18,
+          18
+        ],
+        "nnz_equal": true,
+        "shape_equal": true,
+        "indices_equal": true,
+        "index_dtype_equal": true,
+        "values_max_abs_error": 0.0,
+        "layout_equal": true,
+        "coalesced_flag_equal": true,
+        "dtype_equal": true,
+        "dense_agreement": true
+      },
+      {
+        "name": "beta and alpha 0",
+        "nnz": [
+          18,
+          18
+        ],
+        "nnz_equal": true,
+        "shape_equal": true,
+        "indices_equal": true,
+        "index_dtype_equal": true,
+        "values_max_abs_error": 0.0,
+        "layout_equal": true,
+        "coalesced_flag_equal": true,
+        "dtype_equal": true,
+        "dense_agreement": true
+      },
+      {
+        "name": "negative scalars",
+        "nnz": [
+          18,
+          18
+        ],
+        "nnz_equal": true,
+        "shape_equal": true,
+        "indices_equal": true,
+        "index_dtype_equal": true,
+        "values_max_abs_error": 0.0,
+        "layout_equal": true,
+        "coalesced_flag_equal": true,
+        "dtype_equal": true,
+        "dense_agreement": true
+      },
+      {
+        "name": "non-contiguous mat2",
+        "nnz": [
+          18,
+          18
+        ],
+        "nnz_equal": true,
+        "shape_equal": true,
+        "indices_equal": true,
+        "index_dtype_equal": true,
+        "values_max_abs_error": 0.0,
+        "layout_equal": true,
+        "coalesced_flag_equal": true,
+        "dtype_equal": true,
+        "dense_agreement": true
+      },
+      {
+        "name": "zero columns",
+        "nnz": [
+          0,
+          0
+        ],
+        "nnz_equal": true,
+        "shape_equal": true,
+        "indices_equal": true,
+        "index_dtype_equal": true,
+        "values_max_abs_error": 0.0,
+        "layout_equal": true,
+        "coalesced_flag_equal": true,
+        "dtype_equal": true,
+        "dense_agreement": true
+      },
+      {
+        "name": "zero inner dimension",
+        "nnz": [
+          3,
+          3
+        ],
+        "nnz_equal": true,
+        "shape_equal": true,
+        "indices_equal": true,
+        "index_dtype_equal": true,
+        "values_max_abs_error": 0.0,
+        "layout_equal": true,
+        "coalesced_flag_equal": true,
+        "dtype_equal": true,
+        "dense_agreement": true
+      },
+      {
+        "name": "zero rows",
+        "nnz": [
+          0,
+          0
+        ],
+        "nnz_equal": true,
+        "shape_equal": true,
+        "indices_equal": true,
+        "index_dtype_equal": true,
+        "values_max_abs_error": 0.0,
+        "layout_equal": true,
+        "coalesced_flag_equal": true,
+        "dtype_equal": true,
+        "dense_agreement": true
+      }
+    ],
+    "structured_failures": [],
+    "generated_cases": 216,
+    "generated_index_mismatches": 0,
+    "generated_bit_exact_values": 194,
+    "generated_value_mismatches_beyond_1e-5": 0,
+    "generated_structure_failures": [],
+    "generated_values_max_abs_error": 4.76837158203125e-07
+  },
+  "dtypes": {
+    "float32": {
+      "served": true,
+      "dtype_preserved": true,
+      "layout": "torch.sparse_coo",
+      "coalesced": false,
+      "nnz_equal": true,
+      "indices_equal": true,
+      "values_max_abs_error": 1.1920928955078125e-07,
+      "values_equal": false,
+      "values_close": true,
+      "dense_matches_closed_form": true
+    },
+    "float16": {
+      "served": true,
+      "dtype_preserved": true,
+      "layout": "torch.sparse_coo",
+      "coalesced": false,
+      "reference": "float32 CPU sspaddmm of the same operands",
+      "indices_equal_to_float32_structure": true,
+      "values_max_abs_error_vs_float32": 0.0005879402160644531
+    },
+    "bfloat16": {
+      "served": true,
+      "dtype_preserved": true,
+      "layout": "torch.sparse_coo",
+      "coalesced": false,
+      "reference": "float32 CPU sspaddmm of the same operands",
+      "indices_equal_to_float32_structure": true,
+      "values_max_abs_error_vs_float32": 0.01171875
+    },
+    "int8": {
+      "served": true,
+      "dtype_preserved": true,
+      "layout": "torch.sparse_coo",
+      "coalesced": false,
+      "nnz_equal": true,
+      "indices_equal": true,
+      "values_max_abs_error": 0.0,
+      "values_equal": true,
+      "values_close": true,
+      "dense_matches_closed_form": true
+    },
+    "int16": {
+      "served": true,
+      "dtype_preserved": true,
+      "layout": "torch.sparse_coo",
+      "coalesced": false,
+      "nnz_equal": true,
+      "indices_equal": true,
+      "values_max_abs_error": 0.0,
+      "values_equal": true,
+      "values_close": true,
+      "dense_matches_closed_form": true
+    },
+    "int32": {
+      "served": true,
+      "dtype_preserved": true,
+      "layout": "torch.sparse_coo",
+      "coalesced": false,
+      "nnz_equal": true,
+      "indices_equal": true,
+      "values_max_abs_error": 0.0,
+      "values_equal": true,
+      "values_close": true,
+      "dense_matches_closed_form": true
+    },
+    "int64": {
+      "served": true,
+      "dtype_preserved": true,
+      "layout": "torch.sparse_coo",
+      "coalesced": false,
+      "nnz_equal": true,
+      "indices_equal": true,
+      "values_max_abs_error": 0.0,
+      "values_equal": true,
+      "values_close": true,
+      "dense_matches_closed_form": true
+    },
+    "complex64": {
+      "served": true,
+      "dtype_preserved": true,
+      "layout": "torch.sparse_coo",
+      "coalesced": false,
+      "nnz_equal": true,
+      "indices_equal": true,
+      "values_max_abs_error": 0.0,
+      "values_close": true
+    },
+    "unsupported": {
+      "float64": {
+        "mps": "TypeError: Cannot convert a MPS Tensor to float64 dtype as the MPS framework doesn't support float64. Please use float32 instead.",
+        "cpu": "no error"
+      },
+      "bool": {
+        "mps": "RuntimeError: result type Long can't be cast to the desired output type Bool",
+        "cpu": "RuntimeError: result type Long can't be cast to the desired output type Bool"
+      }
+    }
+  },
+  "out": {
+    "returns_out": true,
+    "overwrites_prefilled": true,
+    "resizes": true,
+    "coalesced_out_becomes_uncoalesced": true,
+    "coalesced_out_values": true,
+    "aliases_self": true,
+    "rejects_dense_out": true,
+    "rejects_wrong_dtype": true
+  },
+  "autograd": {
+    "self": {
+      "forward": "ok",
+      "grad_fn": "NotImplemented",
+      "backward": "RuntimeError: derivative for aten::sspaddmm is not implemented"
+    },
+    "mat1": {
+      "forward": "ok",
+      "grad_fn": "NotImplemented",
+      "backward": "RuntimeError: derivative for aten::sspaddmm is not implemented"
+    },
+    "mat2": {
+      "forward": "ok",
+      "grad_fn": "NotImplemented",
+      "backward": "RuntimeError: derivative for aten::sspaddmm is not implemented"
+    },
+    "cpu_backward": "RuntimeError: derivative for aten::sspaddmm is not implemented"
+  },
+  "sync": {
+    "note": "the occupied-row count sets the output nnz, so it is materialised once per call; torch.unique_consecutive carries that readback, so its enqueue-only time is already a large fraction of its synchronized time, while mm returns in microseconds and only the synchronize waits for its kernel",
+    "row_index_entries": 334748,
+    "row_count_ms": 0.2825839910656214,
+    "row_count_min_ms": 0.23929099552333355,
+    "row_count_enqueue_ms": 0.16329175559803843,
+    "row_count_enqueue_min_ms": 0.15262499800883234,
+    "scan_is_flat_in_nnz": [
+      {
+        "indices": 131072,
+        "unique_consecutive_ms": 0.2739159972406924
+      },
+      {
+        "indices": 1048576,
+        "unique_consecutive_ms": 0.32658304553478956
+      }
+    ],
+    "native_mm_ms": 0.4590839962475002,
+    "native_mm_min_ms": 0.4285830073058605,
+    "native_mm_enqueue_ms": 0.005052002961747348,
+    "native_mm_enqueue_min_ms": 0.002489498001523316
+  },
+  "timing": {
+    "cpu_threads": 6,
+    "note": "warmed, synchronized; per-call median and best of 21 MPS / 7 CPU batches; enqueue excludes the wait; measured on a machine shared with other work, so the minimum is the cleaner kernel estimate",
+    "rows": [
+      {
+        "m": 4096,
+        "k": 4096,
+        "n": 256,
+        "density_of_mat1": 0.01,
+        "mat1_nnz": 166908,
+        "result_nnz": 1461134,
+        "parity": true,
+        "values_max_abs_error": 5.7220458984375e-06,
+        "cpu_median_ms": 7.376208028290421,
+        "cpu_min_ms": 7.09266698686406,
+        "mps_median_ms": 0.7936250185593963,
+        "mps_min_ms": 0.6889170035719872,
+        "speedup_median": 9.294323963828482,
+        "speedup_min": 10.295386744831484,
+        "mps_enqueue_median_ms": 0.49147925165016204,
+        "mps_enqueue_min_ms": 0.4625415022019297,
+        "dense_product_MB": 4.0,
+        "estimated_peak_MB": 30.295135498046875
+      },
+      {
+        "m": 16384,
+        "k": 8192,
+        "n": 128,
+        "density_of_mat1": 0.005,
+        "mat1_nnz": 669467,
+        "result_nnz": 2922802,
+        "parity": true,
+        "values_max_abs_error": 7.62939453125e-06,
+        "cpu_median_ms": 15.37133299279958,
+        "cpu_min_ms": 15.156750043388456,
+        "mps_median_ms": 1.2784579885192215,
+        "mps_min_ms": 1.1851669987663627,
+        "speedup_median": 12.023338373913624,
+        "speedup_min": 12.788704089098902,
+        "mps_enqueue_median_ms": 0.8695312571944669,
+        "mps_enqueue_min_ms": 0.8201147429645061,
+        "dense_product_MB": 8.0,
+        "estimated_peak_MB": 60.598419189453125
+      },
+      {
+        "m": 8192,
+        "k": 16384,
+        "n": 512,
+        "density_of_mat1": 0.002,
+        "mat1_nnz": 268154,
+        "result_nnz": 5844686,
+        "parity": true,
+        "values_max_abs_error": 7.62939453125e-06,
+        "cpu_median_ms": 37.03299997141585,
+        "cpu_min_ms": 36.407875013537705,
+        "mps_median_ms": 1.9330420182086527,
+        "mps_min_ms": 1.8753340118564665,
+        "speedup_median": 19.157886700121644,
+        "speedup_min": 19.414074923909755,
+        "mps_enqueue_median_ms": 1.4311249979073182,
+        "mps_enqueue_min_ms": 1.3969894935144112,
+        "dense_product_MB": 16.0,
+        "estimated_peak_MB": 121.18283081054688
+      },
+      {
+        "m": 65536,
+        "k": 4096,
+        "n": 64,
+        "density_of_mat1": 0.005,
+        "mat1_nnz": 1338830,
+        "result_nnz": 5845499,
+        "parity": true,
+        "values_max_abs_error": 5.7220458984375e-06,
+        "cpu_median_ms": 18.754207994788885,
+        "cpu_min_ms": 18.427250033710152,
+        "mps_median_ms": 1.9121250370517373,
+        "mps_min_ms": 1.8616250017657876,
+        "speedup_median": 9.808044783360808,
+        "speedup_min": 9.8984758027162,
+        "mps_enqueue_median_ms": 1.3878750032745302,
+        "mps_enqueue_min_ms": 1.3313645031303167,
+        "dense_product_MB": 16.0,
+        "estimated_peak_MB": 121.19523620605469
+      }
+    ]
+  },
+  "caller": {
+    "module": "Propagation: torch.sspaddmm(bias, adjacency, weight)",
+    "shape": [
+      512,
+      64
+    ],
+    "nnz": [
+      35898,
+      35898
+    ],
+    "indices_equal": true,
+    "values_max_abs_error": 1.9073486328125e-06,
+    "cpu_median_ms": 0.14704099157825112,
+    "cpu_min_ms": 0.1366250216960907,
+    "mps_median_ms": 0.38704200414940715,
+    "mps_min_ms": 0.34554197918623686,
+    "speedup_median": 0.37990964805331545
+  },
+  "limits": [
+    "MPS has no float64 tensors, so the float64 signature cannot be served; the CPU kernel serves it",
+    "the CPU kernel rejects float16/bfloat16 (\"sspmm\" not implemented) while this overlay serves them from the native SparseMPS mm; values are float16/bfloat16 arithmetic, the structure is identical",
+    "bool raises on both backends",
+    "invalid-input errors are RuntimeError like the CPU kernel but the shape messages are the CPU kernel's; dtype-mismatch and out-dtype messages are this overlay's",
+    "a hybrid sparse self (sparse_dim other than 2) is rejected as Argument #1; the CPU kernel instead fails inside an internal size comparison",
+    "the output nnz is data dependent, so the occupied-row count is read back to the host once per call; torch.unique_consecutive blocks for that count, which is the only synchronization, and its cost is a host round trip rather than a function of the operand size (see `sync`)",
+    "that readback dominates small products, so the MPS call can be slower than the CPU kernel there; `caller` is such a case",
+    "the product is computed by the native sparse mm, which allocates a dense m x n intermediate before the occupied rows are gathered; memory is therefore O(m*n) in addition to the COO result",
+    "float64/complex128 feed neither MPS tensors nor this overlay; complex64 is served"
+  ],
+  "failures": []
+}

@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "metal-kernelops"
-version = "0.1.0"
-description = "Native Metal kernels for PyTorch on Apple Silicon: selective scan for state-space models"
+version = "0.3.0"
+description = "Metal kernels, aten overlays, and tree-external CV operators for PyTorch on Apple Silicon"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [{name = "mps-kernelops contributors"}]
 keywords = [
@@ -18,6 +18,11 @@ keywords = [
     "apple-silicon",
     "pytorch",
     "state-space-model",
+    "mamba2",
+    "vmamba",
+    "sparse-attention",
+    "operator-fusion",
+    "dispatch-key",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",

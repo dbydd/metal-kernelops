@@ -1,0 +1,884 @@
+{
+ "torch": "2.14.1",
+ "device": "mps",
+ "module": "metal_kernelops.cv.causal_conv1d",
+ "op": "causal_conv1d_fn / causal_conv1d_update (Dao-AILab/causal-conv1d semantics)",
+ "api": {
+  "causal_conv1d_fn": "x (B, C, L); weight (C, 1, K) or (C, K); bias (C,) or None; activation None|'silu'|'swish'; initial_state (B, C, K-1) or None; return_final_state -> out (B, C, L) [, final_state (B, C, K-1)]",
+  "causal_conv1d_update": "x (B, C) or (B, C, q); state (B, C, s >= K-1) updated in place; weight (C, 1, K) or (C, K); bias (C,) or None; activation None|'silu'|'swish' -> out with the rank of x",
+  "causal_conv1d_ref": "same contract as causal_conv1d_fn; explicit taps, no convolution, differentiable, any device and dtype"
+ },
+ "timing": {
+  "clock": "time.perf_counter",
+  "warmup": 5,
+  "iterations": 30,
+  "rounds": 9,
+  "sync": "torch.mps.synchronize() after warmup and after each round",
+  "statistic": "best round per call, rounds interleaved across the two functions",
+  "baseline": "conv1d with an explicit causal pad (aten_forward / aten_update in the benchmark), which is what causal_conv1d_fn lowers to without the kernels",
+  "traffic": {
+   "forward": "read x, write out (2 tensors); the final state rides along",
+   "backward": "read dout, read x, write dx (3 tensors), one fused pass for dx and dweight, with the pre-activation recomputed from x",
+   "dweight_finalize": "the per-threadgroup partials of every batch row, folded",
+   "floor": "a float4 copy moving the same byte count in the same batch"
+  },
+  "note": "shared machine, about 25 concurrent MPS jobs: each row is a minimum over interleaved rounds inside its own batch, so rows from different batches are not directly comparable and a busy batch inflates every number in it. The profile compares each stage with of_floor, a copy of the same traffic measured in the same batch, which survives the load."
+ },
+ "lease": {
+  "acquired": true,
+  "id": "mps-kernelops-t1-1792825048050-7641"
+ },
+ "forward_cases": [
+  {
+   "name": "decode-1x2048",
+   "dtype": "float32",
+   "shape": [
+    1,
+    2048,
+    1
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": true,
+   "out_rel_error": 6.813990526817168e-08,
+   "final_state_rel_error": 0.0,
+   "kernel_ms": 0.013281932721535364,
+   "aten_ms": 0.03845416746723155,
+   "speedup": 2.8952237805633403
+  },
+  {
+   "name": "decode-8x2048",
+   "dtype": "float32",
+   "shape": [
+    8,
+    2048,
+    1
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": true,
+   "out_rel_error": 6.691904899070337e-08,
+   "final_state_rel_error": 0.0,
+   "kernel_ms": 0.012783333659172058,
+   "aten_ms": 0.04246390114227931,
+   "speedup": 3.3218174753509158
+  },
+  {
+   "name": "decode-1x768",
+   "dtype": "float32",
+   "shape": [
+    1,
+    768,
+    1
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": true,
+   "out_rel_error": 7.22425657423658e-08,
+   "final_state_rel_error": 0.0,
+   "kernel_ms": 0.012030532040322822,
+   "aten_ms": 0.035926398898785315,
+   "speedup": 2.9862685023713453
+  },
+  {
+   "name": "decode-16x1536-fp16",
+   "dtype": "float16",
+   "shape": [
+    16,
+    1536,
+    1
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": true,
+   "out_rel_error": 0.00020672487878224587,
+   "final_state_rel_error": 0.0,
+   "kernel_ms": 0.013322233765696486,
+   "aten_ms": 0.04529443297845622,
+   "speedup": 3.399912790532559
+  },
+  {
+   "name": "short-2x256x16",
+   "dtype": "float32",
+   "shape": [
+    2,
+    256,
+    16
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": false,
+   "out_rel_error": 6.37011529109468e-08,
+   "final_state_rel_error": 0.0,
+   "kernel_ms": 0.012680568033829331,
+   "aten_ms": 0.03168056524979571,
+   "speedup": 2.4983553706173116
+  },
+  {
+   "name": "prefill-1x768x4096",
+   "dtype": "float32",
+   "shape": [
+    1,
+    768,
+    4096
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": true,
+   "out_rel_error": 6.70378899317696e-08,
+   "final_state_rel_error": 0.0,
+   "kernel_ms": 0.03890553295301894,
+   "aten_ms": 0.14778610008458296,
+   "speedup": 3.7985882435550917
+  },
+  {
+   "name": "prefill-8x512x2048",
+   "dtype": "float32",
+   "shape": [
+    8,
+    512,
+    2048
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": false,
+   "out_rel_error": 6.701886603224693e-08,
+   "final_state_rel_error": 0.0,
+   "kernel_ms": 0.12720416804465157,
+   "aten_ms": 0.28375136704804993,
+   "speedup": 2.230676646919673
+  },
+  {
+   "name": "prefill-16x768x1024-fp16",
+   "dtype": "float16",
+   "shape": [
+    16,
+    768,
+    1024
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": true,
+   "out_rel_error": 0.00020810764906221854,
+   "final_state_rel_error": 0.0,
+   "kernel_ms": 0.08955556744088729,
+   "aten_ms": 0.4480819664119432,
+   "speedup": 5.003395983255954
+  },
+  {
+   "name": "narrow-4x128x200-k8",
+   "dtype": "float32",
+   "shape": [
+    4,
+    128,
+    200
+   ],
+   "taps": 8,
+   "activation": null,
+   "initial_state": false,
+   "out_rel_error": 5.919768363910076e-08,
+   "final_state_rel_error": 0.0,
+   "kernel_ms": 0.015120833025624354,
+   "aten_ms": 0.030308333225548267,
+   "speedup": 2.004408961740837
+  },
+  {
+   "name": "k1-2x64x33",
+   "dtype": "float32",
+   "shape": [
+    2,
+    64,
+    33
+   ],
+   "taps": 1,
+   "activation": null,
+   "initial_state": true,
+   "out_rel_error": 2.622941494810352e-08,
+   "final_state_rel_error": 0.0,
+   "kernel_ms": 0.01275000007202228,
+   "aten_ms": 0.032608333276584744,
+   "speedup": 2.557516320971497
+  }
+ ],
+ "gradient_cases": [
+  {
+   "name": "decode-1x2048",
+   "dtype": "float32",
+   "shape": [
+    1,
+    2048,
+    1
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": true,
+   "grad_rel_error": {
+    "x": 3.0453713336381526e-08,
+    "weight": 6.500043082515996e-08,
+    "bias": 5.672262360164938e-08,
+    "initial_state": 3.521075470938121e-08
+   },
+   "kernel_ms": 0.07023470049413541,
+   "aten_ms": 0.38324443351787824,
+   "speedup": 5.456625155678981
+  },
+  {
+   "name": "decode-8x2048",
+   "dtype": "float32",
+   "shape": [
+    8,
+    2048,
+    1
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": true,
+   "grad_rel_error": {
+    "x": 3.254491191611515e-08,
+    "weight": 8.347286795525165e-08,
+    "bias": 8.20155402353675e-08,
+    "initial_state": 3.559724623116128e-08
+   },
+   "kernel_ms": 0.12123750057071447,
+   "aten_ms": 0.42654863209463656,
+   "speedup": 3.5182895563393983
+  },
+  {
+   "name": "decode-1x768",
+   "dtype": "float32",
+   "shape": [
+    1,
+    768,
+    1
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": true,
+   "grad_rel_error": {
+    "x": 2.8905887375761644e-08,
+    "weight": 6.063060397404059e-08,
+    "bias": 5.450224386804436e-08,
+    "initial_state": 3.632812685591372e-08
+   },
+   "kernel_ms": 0.06333333440124989,
+   "aten_ms": 0.23839583154767752,
+   "speedup": 3.764144645177134
+  },
+  {
+   "name": "decode-16x1536-fp16",
+   "dtype": "float16",
+   "shape": [
+    16,
+    1536,
+    1
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": true,
+   "grad_rel_error": {
+    "x": 0.0002190499448482094,
+    "weight": 0.0002082233217442994,
+    "bias": 0.00020951753809897794,
+    "initial_state": 0.00022201361517178424
+   },
+   "kernel_ms": 0.15094166543955606,
+   "aten_ms": 0.3255069333439072,
+   "speedup": 2.1565081609242944
+  },
+  {
+   "name": "short-2x256x16",
+   "dtype": "float32",
+   "shape": [
+    2,
+    256,
+    16
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": false,
+   "grad_rel_error": {
+    "x": 7.490634590285789e-08,
+    "weight": 9.245622698247482e-08,
+    "bias": 9.127802830900752e-08
+   },
+   "kernel_ms": 0.06326526830283305,
+   "aten_ms": 0.2074180345516652,
+   "speedup": 3.2785450866787347
+  },
+  {
+   "name": "prefill-1x768x4096",
+   "dtype": "float32",
+   "shape": [
+    1,
+    768,
+    4096
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": true,
+   "grad_rel_error": {
+    "x": 7.345930349338491e-08,
+    "weight": 1.1509823350814154e-07,
+    "bias": 1.2281415775376768e-07,
+    "initial_state": 6.449015425830188e-08
+   },
+   "kernel_ms": 0.13507083252382776,
+   "aten_ms": 0.5904500004059325,
+   "speedup": 4.371410091825499
+  },
+  {
+   "name": "prefill-8x512x2048",
+   "dtype": "float32",
+   "shape": [
+    8,
+    512,
+    2048
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": false,
+   "grad_rel_error": {
+    "x": 7.318549595185865e-08,
+    "weight": 1.3769891998856632e-07,
+    "bias": 1.2809455707196566e-07
+   },
+   "kernel_ms": 0.37604166621652746,
+   "aten_ms": 1.6239750004994373,
+   "speedup": 4.318603884614055
+  },
+  {
+   "name": "prefill-16x768x1024-fp16",
+   "dtype": "float16",
+   "shape": [
+    16,
+    768,
+    1024
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": true,
+   "grad_rel_error": {
+    "x": 0.00020746073714998796,
+    "weight": 0.00021070182305161895,
+    "bias": 0.00022553997475100945,
+    "initial_state": 0.0002080886143824678
+   },
+   "kernel_ms": 0.3511291676356147,
+   "aten_ms": 1.9380305331045142,
+   "speedup": 5.519423368199679
+  },
+  {
+   "name": "narrow-4x128x200-k8",
+   "dtype": "float32",
+   "shape": [
+    4,
+    128,
+    200
+   ],
+   "taps": 8,
+   "activation": null,
+   "initial_state": false,
+   "grad_rel_error": {
+    "x": 5.399739596862709e-08,
+    "weight": 9.108425465618581e-08,
+    "bias": 8.156903961861015e-08
+   },
+   "kernel_ms": 0.07982220073851445,
+   "aten_ms": 0.197106966516003,
+   "speedup": 2.4693251337644253
+  },
+  {
+   "name": "k1-2x64x33",
+   "dtype": "float32",
+   "shape": [
+    2,
+    64,
+    33
+   ],
+   "taps": 1,
+   "activation": null,
+   "initial_state": true,
+   "grad_rel_error": {
+    "x": 2.5322303591402355e-08,
+    "weight": 7.188117499488275e-08,
+    "bias": 6.836086922294079e-08,
+    "initial_state": 0.0
+   },
+   "kernel_ms": 0.04994583432562649,
+   "aten_ms": 0.15073473332449794,
+   "speedup": 3.017964067669165
+  }
+ ],
+ "update_cases": [
+  {
+   "name": "update-1x2048x1",
+   "dtype": "float32",
+   "shape": [
+    1,
+    2048,
+    1
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "state_columns": 3,
+   "out_rel_error": 7.305582610589363e-08,
+   "state_rel_error": 0.0,
+   "kernel_ms": 0.011547231891502936,
+   "aten_ms": 0.043158334059019886,
+   "speedup": 3.737548051735072
+  },
+  {
+   "name": "update-8x2048x1",
+   "dtype": "float32",
+   "shape": [
+    8,
+    2048,
+    1
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "state_columns": 3,
+   "out_rel_error": 7.359606014418267e-08,
+   "state_rel_error": 0.0,
+   "kernel_ms": 0.011487499189873537,
+   "aten_ms": 0.0474263991539677,
+   "speedup": 4.128522524360657
+  },
+  {
+   "name": "update-64x2048x1",
+   "dtype": "float32",
+   "shape": [
+    64,
+    2048,
+    1
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "state_columns": 3,
+   "out_rel_error": 7.321190330967e-08,
+   "state_rel_error": 0.0,
+   "kernel_ms": 0.015004165470600128,
+   "aten_ms": 0.25599446574536466,
+   "speedup": 17.061559754654287
+  },
+  {
+   "name": "update-1x768x1",
+   "dtype": "float32",
+   "shape": [
+    1,
+    768,
+    1
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "state_columns": 3,
+   "out_rel_error": 6.486882224503772e-08,
+   "state_rel_error": 0.0,
+   "kernel_ms": 0.011306966189295053,
+   "aten_ms": 0.04150140060422321,
+   "speedup": 3.6704275850329275
+  },
+  {
+   "name": "update-1x2048x4",
+   "dtype": "float32",
+   "shape": [
+    1,
+    2048,
+    4
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "state_columns": 3,
+   "out_rel_error": 7.162209323057992e-08,
+   "state_rel_error": 0.0,
+   "kernel_ms": 0.011823601865520079,
+   "aten_ms": 0.04166943447974821,
+   "speedup": 3.5242589317274273
+  },
+  {
+   "name": "update-8x2048x1-wide",
+   "dtype": "float32",
+   "shape": [
+    8,
+    2048,
+    1
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "state_columns": 8,
+   "out_rel_error": 7.492988036700452e-08,
+   "state_rel_error": 0.0,
+   "kernel_ms": 0.01208749987805883,
+   "aten_ms": 0.06589583354070783,
+   "speedup": 5.451568496833793
+  },
+  {
+   "name": "update-16x1536x1-fp16",
+   "dtype": "float16",
+   "shape": [
+    16,
+    1536,
+    1
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "state_columns": 3,
+   "out_rel_error": 0.0003752576617573658,
+   "state_rel_error": 0.0,
+   "kernel_ms": 0.01132640172727406,
+   "aten_ms": 0.05197359908682604,
+   "speedup": 4.588712314668587
+  }
+ ],
+ "profile": [
+  {
+   "name": "prefill-1x768x4096",
+   "dtype": "float32",
+   "shape": [
+    1,
+    768,
+    4096
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": true,
+   "vector": 4,
+   "backward_vector": 4,
+   "blocks_per_row": 1024,
+   "groups_per_row": 8,
+   "floor_gbs": 825.9746672283621,
+   "stages": [
+    {
+     "stage": "forward",
+     "bytes": 25165824,
+     "ms": 0.03784863317074875,
+     "gbs": 664.9070756787424,
+     "of_floor": 0.8049969352085609
+    },
+    {
+     "stage": "forward_kernel",
+     "bytes": 25165824,
+     "ms": 0.03299719925659398,
+     "gbs": 762.6654554619813,
+     "of_floor": 0.9233521144433873
+    },
+    {
+     "stage": "backward_kernel",
+     "bytes": 37748736,
+     "ms": 0.055158334240938224,
+     "gbs": 684.3704857929355,
+     "of_floor": 0.8285611084047007
+    },
+    {
+     "stage": "dweight_finalize",
+     "bytes": 135168,
+     "ms": 0.007737501679609219,
+     "gbs": 17.469204608538018,
+     "of_floor": 0.021149806769688983
+    },
+    {
+     "stage": "forward_backward",
+     "bytes": 62914560,
+     "ms": 0.1228180325900515,
+     "gbs": 512.258327814121,
+     "of_floor": 0.6201864877200814
+    },
+    {
+     "stage": "stream_copy",
+     "bytes": 25165824,
+     "ms": 0.03046803370428582,
+     "gbs": 825.9746672283621,
+     "of_floor": 1.0
+    }
+   ]
+  },
+  {
+   "name": "prefill-8x512x2048",
+   "dtype": "float32",
+   "shape": [
+    8,
+    512,
+    2048
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": false,
+   "vector": 4,
+   "backward_vector": 4,
+   "blocks_per_row": 512,
+   "groups_per_row": 2,
+   "floor_gbs": 551.9577560348404,
+   "stages": [
+    {
+     "stage": "forward",
+     "bytes": 67108864,
+     "ms": 0.1280625001527369,
+     "gbs": 524.0321243139948,
+     "of_floor": 0.9494062155744346
+    },
+    {
+     "stage": "forward_kernel",
+     "bytes": 67108864,
+     "ms": 0.12643610049660006,
+     "gbs": 530.7729654459297,
+     "of_floor": 0.9616188189090806
+    },
+    {
+     "stage": "backward_kernel",
+     "bytes": 100663296,
+     "ms": 0.20267223396028083,
+     "gbs": 496.6802508316345,
+     "of_floor": 0.8998519277991327
+    },
+    {
+     "stage": "dweight_finalize",
+     "bytes": 172032,
+     "ms": 0.009024998871609569,
+     "gbs": 19.061719834799145,
+     "of_floor": 0.03453474405674615
+    },
+    {
+     "stage": "forward_backward",
+     "bytes": 167772160,
+     "ms": 0.36577776772901416,
+     "gbs": 458.67238198110965,
+     "of_floor": 0.8309918231353879
+    },
+    {
+     "stage": "stream_copy",
+     "bytes": 67108864,
+     "ms": 0.12158333362701038,
+     "gbs": 551.9577560348404,
+     "of_floor": 1.0
+    }
+   ]
+  },
+  {
+   "name": "prefill-16x768x1024-fp16",
+   "dtype": "float16",
+   "shape": [
+    16,
+    768,
+    1024
+   ],
+   "taps": 4,
+   "activation": "silu",
+   "initial_state": true,
+   "vector": 8,
+   "backward_vector": 4,
+   "blocks_per_row": 256,
+   "groups_per_row": 1,
+   "floor_gbs": 705.5426299876307,
+   "stages": [
+    {
+     "stage": "forward",
+     "bytes": 50331648,
+     "ms": 0.08802360001330574,
+     "gbs": 571.7971997554271,
+     "of_floor": 0.8104360749476635
+    },
+    {
+     "stage": "forward_kernel",
+     "bytes": 50331648,
+     "ms": 0.08335000020451844,
+     "gbs": 603.8590027174529,
+     "of_floor": 0.8558788329034626
+    },
+    {
+     "stage": "backward_kernel",
+     "bytes": 75497472,
+     "ms": 0.22765833418816328,
+     "gbs": 331.6262164055023,
+     "of_floor": 0.47003001988882837
+    },
+    {
+     "stage": "dweight_finalize",
+     "bytes": 251904,
+     "ms": 0.009547234124814471,
+     "gbs": 26.385023841121647,
+     "of_floor": 0.03739678188061325
+    },
+    {
+     "stage": "forward_backward",
+     "bytes": 125829120,
+     "ms": 0.3341944655403495,
+     "gbs": 376.5146732653112,
+     "of_floor": 0.5336526203553599
+    },
+    {
+     "stage": "stream_copy",
+     "bytes": 50331648,
+     "ms": 0.0713375008975466,
+     "gbs": 705.5426299876307,
+     "of_floor": 1.0
+    }
+   ]
+  }
+ ],
+ "semantics": [
+  {
+   "check": "empty_sequence",
+   "passed": true,
+   "detail": "out (2, 8, 0), final == state"
+  },
+  {
+   "check": "empty_update",
+   "passed": true,
+   "detail": "state unchanged"
+  },
+  {
+   "check": "length_one_takes_last_tap",
+   "passed": true,
+   "detail": "0.00e+00"
+  },
+  {
+   "check": "k1_scaled_copy",
+   "passed": true,
+   "detail": "0.00e+00, final (2, 4, 0)"
+  },
+  {
+   "check": "non_contiguous_input",
+   "passed": true,
+   "detail": "stride (640, 1, 16) err 6.86e-08"
+  },
+  {
+   "check": "strided_input",
+   "passed": true,
+   "detail": "stride (1024, 64, 2) err 3.73e-08"
+  },
+  {
+   "check": "weight_layout",
+   "passed": true,
+   "detail": "(C,1,K) == (C,K)"
+  },
+  {
+   "check": "cache_slice_state",
+   "passed": true,
+   "detail": "err 0.00e+00, view torch.Size([2, 16, 3]) stride (144, 9, 1)"
+  },
+  {
+   "check": "no_convolution_on_kernel_path",
+   "passed": true,
+   "detail": "2 aten ops, devices ['mps']"
+  },
+  {
+   "check": "baseline_uses_convolution",
+   "passed": true,
+   "detail": "5 aten ops"
+  },
+  {
+   "check": "update_rejects_grad",
+   "passed": true,
+   "detail": "requires_grad x raises"
+  },
+  {
+   "check": "bfloat16_fallback",
+   "passed": true,
+   "detail": "dtype torch.bfloat16, err 2.74e-03"
+  },
+  {
+   "check": "mixed_dtype",
+   "passed": true,
+   "detail": "out torch.float16, grads torch.float16/torch.float32, err 2.12e-04"
+  },
+  {
+   "check": "cpu_autograd",
+   "passed": true,
+   "detail": "grad norm 4.219e+01"
+  }
+ ],
+ "step_parity": [
+  {
+   "check": "step_vs_full_float32_2x64x9",
+   "passed": true,
+   "detail": "out 0.00e+00, state 0.00e+00"
+  },
+  {
+   "check": "chunked_vs_full_float32_2x64x9",
+   "passed": true,
+   "detail": "out 0.00e+00, state 0.00e+00"
+  },
+  {
+   "check": "step_vs_full_float32_1x256x17",
+   "passed": true,
+   "detail": "out 0.00e+00, state 0.00e+00"
+  },
+  {
+   "check": "chunked_vs_full_float32_1x256x17",
+   "passed": true,
+   "detail": "out 0.00e+00, state 0.00e+00"
+  },
+  {
+   "check": "step_vs_full_float32_3x32x4",
+   "passed": true,
+   "detail": "out 0.00e+00, state 0.00e+00"
+  },
+  {
+   "check": "chunked_vs_full_float32_3x32x4",
+   "passed": true,
+   "detail": "out 0.00e+00, state 0.00e+00"
+  },
+  {
+   "check": "step_vs_full_float16_2x64x9",
+   "passed": true,
+   "detail": "out 0.00e+00, state 0.00e+00"
+  },
+  {
+   "check": "chunked_vs_full_float16_2x64x9",
+   "passed": true,
+   "detail": "out 0.00e+00, state 0.00e+00"
+  },
+  {
+   "check": "step_vs_full_float16_1x256x17",
+   "passed": true,
+   "detail": "out 0.00e+00, state 0.00e+00"
+  },
+  {
+   "check": "chunked_vs_full_float16_1x256x17",
+   "passed": true,
+   "detail": "out 0.00e+00, state 0.00e+00"
+  },
+  {
+   "check": "step_vs_full_float16_3x32x4",
+   "passed": true,
+   "detail": "out 0.00e+00, state 0.00e+00"
+  },
+  {
+   "check": "chunked_vs_full_float16_3x32x4",
+   "passed": true,
+   "detail": "out 0.00e+00, state 0.00e+00"
+  }
+ ],
+ "finite_difference": [
+  {
+   "input": "x",
+   "rel_error": 3.3056862309432337e-10,
+   "passed": true
+  },
+  {
+   "input": "weight",
+   "rel_error": 2.381409206290688e-10,
+   "passed": true
+  },
+  {
+   "input": "bias",
+   "rel_error": 2.754252783954716e-10,
+   "passed": true
+  },
+  {
+   "input": "initial_state",
+   "rel_error": 4.0292237715436406e-10,
+   "passed": true
+  }
+ ],
+ "verdict": "pass",
+ "limits": [
+  "float32 and float16 use the Metal kernels; float64, bfloat16 and every non-MPS device run the conv1d composition, which is exact but not the fast path.",
+  "causal_conv1d_update is the decode path and carries no autograd; it raises when x, weight or state requires grad.",
+  "the state of causal_conv1d_update must have stride 1 in its last dimension: a slice of a larger cache is fine because the kernel reads the strides, a transpose is not, because the buffer is written in place.",
+  "seq_idx (sequence-boundary masks for packed batches) is not implemented.",
+  "the tap count is a compile-time constant in the Metal sources, so a new K compiles one shader the first time it is used.",
+  "a row length that is not a multiple of four (eight for the fp16 forward) drops to one element per thread: correct, and slower by the loads it then issues one at a time.",
+  "fp16 accumulates the taps and the bias in float32 and rounds once; values agree with the float64 reference to about 2e-4 relative, not bit-exactly."
+ ]
+}

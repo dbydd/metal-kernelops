@@ -1,0 +1,2192 @@
+{
+  "operator": [
+    "aten::mode",
+    "aten::mode.values"
+  ],
+  "overlay": "src/metal_kernelops/mode_ops.py",
+  "torch": "2.14.1",
+  "machine": "arm64",
+  "device": "mps",
+  "generated": "2026-10-24T07:04:41Z",
+  "method": "one Metal kernel, one dispatch, for rows up to 256 elements: a register-resident thread per row for rows up to 64 (and for every tall block, which needs the thread count), a 64-lane threadgroup per row above that (and for short blocks of 17-64 elements, which need the parallelism); otherwise stable sort + run length in MPS aten ops. No CPU fallback, no per-element Python and no data-dependent host read: float rows always run the NaN-segment double argsort, integer rows a single stable sort",
+  "contract": {
+    "cases": 455,
+    "index_not_pointing_at_value": [],
+    "index_not_last_occurrence": [],
+    "value_mismatches_where_cpu_is_reproducible": [],
+    "index_mismatches_where_cpu_is_reproducible": [],
+    "convention": "most frequent value, ties to the smallest value, reported at the last occurrence of that value in the row; NaN-free rows only for the last-occurrence clause",
+    "passed": true
+  },
+  "cpu_parity": {
+    "values": {
+      "divergences_inside_cpu_reproducibility": [],
+      "divergences_beyond_cpu_reproducibility": [
+        {
+          "case": "nan-torch.float32-n24-0",
+          "values": 8,
+          "row_length": 24,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float32-n24-1",
+          "values": 13,
+          "row_length": 24,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float32-n64-0",
+          "values": 17,
+          "row_length": 64,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float32-n64-1",
+          "values": 17,
+          "row_length": 64,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float32-n128-0",
+          "values": 19,
+          "row_length": 128,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float32-n128-1",
+          "values": 19,
+          "row_length": 128,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float32-n256-0",
+          "values": 23,
+          "row_length": 256,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float32-n256-1",
+          "values": 18,
+          "row_length": 256,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float32-n257-0",
+          "values": 17,
+          "row_length": 257,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float32-n257-1",
+          "values": 17,
+          "row_length": 257,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float16-n24-0",
+          "values": 12,
+          "row_length": 24,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float16-n24-1",
+          "values": 13,
+          "row_length": 24,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float16-n64-0",
+          "values": 19,
+          "row_length": 64,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float16-n64-1",
+          "values": 19,
+          "row_length": 64,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float16-n128-0",
+          "values": 20,
+          "row_length": 128,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float16-n128-1",
+          "values": 20,
+          "row_length": 128,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float16-n256-0",
+          "values": 19,
+          "row_length": 256,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float16-n256-1",
+          "values": 14,
+          "row_length": 256,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float16-n257-0",
+          "values": 23,
+          "row_length": 257,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.float16-n257-1",
+          "values": 15,
+          "row_length": 257,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.bfloat16-n24-0",
+          "values": 13,
+          "row_length": 24,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.bfloat16-n24-1",
+          "values": 9,
+          "row_length": 24,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.bfloat16-n64-0",
+          "values": 14,
+          "row_length": 64,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.bfloat16-n64-1",
+          "values": 20,
+          "row_length": 64,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.bfloat16-n128-0",
+          "values": 17,
+          "row_length": 128,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.bfloat16-n128-1",
+          "values": 18,
+          "row_length": 128,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.bfloat16-n256-0",
+          "values": 24,
+          "row_length": 256,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.bfloat16-n256-1",
+          "values": 24,
+          "row_length": 256,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.bfloat16-n257-0",
+          "values": 17,
+          "row_length": 257,
+          "input_has_nan": true
+        },
+        {
+          "case": "nan-torch.bfloat16-n257-1",
+          "values": 25,
+          "row_length": 257,
+          "input_has_nan": true
+        }
+      ],
+      "matched_everywhere_cpu_is_reproducible": true,
+      "matched_everywhere": false
+    },
+    "indices": {
+      "divergences_inside_cpu_reproducibility": [],
+      "divergences_beyond_cpu_reproducibility": [
+        {
+          "case": "wide-torch.float32-0",
+          "indices": 3,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.float32-0",
+          "indices": 226,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.float32-0",
+          "indices": 3687,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.float32-0",
+          "indices": 127,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.float32-0",
+          "indices": 2007,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.float32-1",
+          "indices": 3,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.float32-1",
+          "indices": 226,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.float32-1",
+          "indices": 3644,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.float32-1",
+          "indices": 126,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.float32-1",
+          "indices": 2025,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.float32-2",
+          "indices": 2,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.float32-2",
+          "indices": 223,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.float32-2",
+          "indices": 3691,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.float32-2",
+          "indices": 128,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.float32-2",
+          "indices": 2008,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.float16-0",
+          "indices": 2,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.float16-0",
+          "indices": 223,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.float16-0",
+          "indices": 3706,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.float16-0",
+          "indices": 126,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.float16-0",
+          "indices": 2001,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.float16-1",
+          "indices": 3,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.float16-1",
+          "indices": 220,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.float16-1",
+          "indices": 3674,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.float16-1",
+          "indices": 125,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.float16-1",
+          "indices": 2008,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.float16-2",
+          "indices": 3,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.float16-2",
+          "indices": 234,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.float16-2",
+          "indices": 3688,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.float16-2",
+          "indices": 127,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.float16-2",
+          "indices": 2011,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.bfloat16-0",
+          "indices": 2,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.bfloat16-0",
+          "indices": 228,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.bfloat16-0",
+          "indices": 3657,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.bfloat16-0",
+          "indices": 125,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.bfloat16-0",
+          "indices": 2010,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.bfloat16-1",
+          "indices": 3,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.bfloat16-1",
+          "indices": 232,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.bfloat16-1",
+          "indices": 3663,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.bfloat16-1",
+          "indices": 125,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.bfloat16-1",
+          "indices": 2011,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.bfloat16-2",
+          "indices": 2,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.bfloat16-2",
+          "indices": 236,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.bfloat16-2",
+          "indices": 3673,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.bfloat16-2",
+          "indices": 127,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.bfloat16-2",
+          "indices": 2017,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.int8-0",
+          "indices": 3,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.int8-0",
+          "indices": 228,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.int8-0",
+          "indices": 3673,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.int8-0",
+          "indices": 128,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.int8-0",
+          "indices": 2012,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.int8-1",
+          "indices": 3,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.int8-1",
+          "indices": 235,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.int8-1",
+          "indices": 3731,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.int8-1",
+          "indices": 127,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.int8-1",
+          "indices": 2022,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.int8-2",
+          "indices": 3,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.int8-2",
+          "indices": 239,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.int8-2",
+          "indices": 3686,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.int8-2",
+          "indices": 127,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.int8-2",
+          "indices": 2013,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.int16-0",
+          "indices": 2,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.int16-0",
+          "indices": 231,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.int16-0",
+          "indices": 3679,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.int16-0",
+          "indices": 127,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.int16-0",
+          "indices": 2001,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.int16-1",
+          "indices": 2,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.int16-1",
+          "indices": 234,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.int16-1",
+          "indices": 3691,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.int16-1",
+          "indices": 128,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.int16-1",
+          "indices": 2019,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.int16-2",
+          "indices": 3,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.int16-2",
+          "indices": 236,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.int16-2",
+          "indices": 3691,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.int16-2",
+          "indices": 122,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.int16-2",
+          "indices": 2019,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.int32-0",
+          "indices": 3,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.int32-0",
+          "indices": 234,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.int32-0",
+          "indices": 3679,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.int32-0",
+          "indices": 128,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.int32-0",
+          "indices": 1997,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.int32-1",
+          "indices": 2,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.int32-1",
+          "indices": 232,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.int32-1",
+          "indices": 3677,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.int32-1",
+          "indices": 125,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.int32-1",
+          "indices": 2012,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.int32-2",
+          "indices": 3,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.int32-2",
+          "indices": 226,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.int32-2",
+          "indices": 3660,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.int32-2",
+          "indices": 129,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.int32-2",
+          "indices": 2013,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.int64-0",
+          "indices": 3,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.int64-0",
+          "indices": 229,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.int64-0",
+          "indices": 3676,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.int64-0",
+          "indices": 128,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.int64-0",
+          "indices": 2008,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.int64-1",
+          "indices": 3,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.int64-1",
+          "indices": 233,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.int64-1",
+          "indices": 3695,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.int64-1",
+          "indices": 128,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.int64-1",
+          "indices": 2005,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.int64-2",
+          "indices": 2,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.int64-2",
+          "indices": 223,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.int64-2",
+          "indices": 3682,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.int64-2",
+          "indices": 125,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.int64-2",
+          "indices": 2009,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.uint8-0",
+          "indices": 3,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.uint8-0",
+          "indices": 233,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.uint8-0",
+          "indices": 3681,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.uint8-0",
+          "indices": 123,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.uint8-0",
+          "indices": 2013,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.uint8-1",
+          "indices": 3,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.uint8-1",
+          "indices": 229,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.uint8-1",
+          "indices": 3665,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.uint8-1",
+          "indices": 126,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.uint8-1",
+          "indices": 2003,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.uint8-2",
+          "indices": 3,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.uint8-2",
+          "indices": 233,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.uint8-2",
+          "indices": 3677,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.uint8-2",
+          "indices": 122,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.uint8-2",
+          "indices": 2009,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.bool-0",
+          "indices": 2,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.bool-0",
+          "indices": 255,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.bool-0",
+          "indices": 4062,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.bool-0",
+          "indices": 129,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.bool-0",
+          "indices": 2048,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.bool-1",
+          "indices": 3,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.bool-1",
+          "indices": 256,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.bool-1",
+          "indices": 4068,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.bool-1",
+          "indices": 129,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.bool-1",
+          "indices": 2048,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "wide-torch.bool-2",
+          "indices": 3,
+          "of": 3,
+          "row_length": 129,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-torch.bool-2",
+          "indices": 256,
+          "of": 257,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n64-tall-torch.bool-2",
+          "indices": 4073,
+          "of": 4096,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-torch.bool-2",
+          "indices": 129,
+          "of": 129,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "n256-tall-torch.bool-2",
+          "indices": 2048,
+          "of": 2048,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float32-n24-0",
+          "indices": 16,
+          "of": 32,
+          "row_length": 24,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float32-n24-0",
+          "indices": 43,
+          "of": 64,
+          "row_length": 24,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float32-n24-1",
+          "indices": 20,
+          "of": 32,
+          "row_length": 24,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float32-n24-1",
+          "indices": 39,
+          "of": 64,
+          "row_length": 24,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float32-n64-0",
+          "indices": 25,
+          "of": 32,
+          "row_length": 64,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float32-n64-0",
+          "indices": 54,
+          "of": 64,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float32-n64-1",
+          "indices": 25,
+          "of": 32,
+          "row_length": 64,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float32-n64-1",
+          "indices": 52,
+          "of": 64,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float32-n128-0",
+          "indices": 29,
+          "of": 32,
+          "row_length": 128,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float32-n128-0",
+          "indices": 54,
+          "of": 64,
+          "row_length": 128,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float32-n128-1",
+          "indices": 31,
+          "of": 32,
+          "row_length": 128,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float32-n128-1",
+          "indices": 49,
+          "of": 64,
+          "row_length": 128,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float32-n256-0",
+          "indices": 32,
+          "of": 32,
+          "row_length": 256,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float32-n256-0",
+          "indices": 51,
+          "of": 64,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float32-n256-1",
+          "indices": 31,
+          "of": 32,
+          "row_length": 256,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float32-n256-1",
+          "indices": 47,
+          "of": 64,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float32-n257-0",
+          "indices": 31,
+          "of": 32,
+          "row_length": 257,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float32-n257-0",
+          "indices": 50,
+          "of": 64,
+          "row_length": 257,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float32-n257-1",
+          "indices": 32,
+          "of": 32,
+          "row_length": 257,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float32-n257-1",
+          "indices": 56,
+          "of": 64,
+          "row_length": 257,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float16-n24-0",
+          "indices": 15,
+          "of": 32,
+          "row_length": 24,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float16-n24-0",
+          "indices": 42,
+          "of": 64,
+          "row_length": 24,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float16-n24-1",
+          "indices": 20,
+          "of": 32,
+          "row_length": 24,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float16-n24-1",
+          "indices": 39,
+          "of": 64,
+          "row_length": 24,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float16-n64-0",
+          "indices": 27,
+          "of": 32,
+          "row_length": 64,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float16-n64-0",
+          "indices": 53,
+          "of": 64,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float16-n64-1",
+          "indices": 25,
+          "of": 32,
+          "row_length": 64,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float16-n64-1",
+          "indices": 51,
+          "of": 64,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float16-n128-0",
+          "indices": 31,
+          "of": 32,
+          "row_length": 128,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float16-n128-0",
+          "indices": 57,
+          "of": 64,
+          "row_length": 128,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float16-n128-1",
+          "indices": 30,
+          "of": 32,
+          "row_length": 128,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float16-n128-1",
+          "indices": 55,
+          "of": 64,
+          "row_length": 128,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float16-n256-0",
+          "indices": 32,
+          "of": 32,
+          "row_length": 256,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float16-n256-0",
+          "indices": 56,
+          "of": 64,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float16-n256-1",
+          "indices": 32,
+          "of": 32,
+          "row_length": 256,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float16-n256-1",
+          "indices": 57,
+          "of": 64,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float16-n257-0",
+          "indices": 32,
+          "of": 32,
+          "row_length": 257,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float16-n257-0",
+          "indices": 53,
+          "of": 64,
+          "row_length": 257,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.float16-n257-1",
+          "indices": 32,
+          "of": 32,
+          "row_length": 257,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.float16-n257-1",
+          "indices": 60,
+          "of": 64,
+          "row_length": 257,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.bfloat16-n24-0",
+          "indices": 18,
+          "of": 32,
+          "row_length": 24,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.bfloat16-n24-0",
+          "indices": 33,
+          "of": 64,
+          "row_length": 24,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.bfloat16-n24-1",
+          "indices": 15,
+          "of": 32,
+          "row_length": 24,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.bfloat16-n24-1",
+          "indices": 31,
+          "of": 64,
+          "row_length": 24,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.bfloat16-n64-0",
+          "indices": 29,
+          "of": 32,
+          "row_length": 64,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.bfloat16-n64-0",
+          "indices": 43,
+          "of": 64,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.bfloat16-n64-1",
+          "indices": 26,
+          "of": 32,
+          "row_length": 64,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.bfloat16-n64-1",
+          "indices": 57,
+          "of": 64,
+          "row_length": 64,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.bfloat16-n128-0",
+          "indices": 28,
+          "of": 32,
+          "row_length": 128,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.bfloat16-n128-0",
+          "indices": 54,
+          "of": 64,
+          "row_length": 128,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.bfloat16-n128-1",
+          "indices": 31,
+          "of": 32,
+          "row_length": 128,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.bfloat16-n128-1",
+          "indices": 53,
+          "of": 64,
+          "row_length": 128,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.bfloat16-n256-0",
+          "indices": 32,
+          "of": 32,
+          "row_length": 256,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.bfloat16-n256-0",
+          "indices": 57,
+          "of": 64,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.bfloat16-n256-1",
+          "indices": 31,
+          "of": 32,
+          "row_length": 256,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.bfloat16-n256-1",
+          "indices": 55,
+          "of": 64,
+          "row_length": 256,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.bfloat16-n257-0",
+          "indices": 32,
+          "of": 32,
+          "row_length": 257,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.bfloat16-n257-0",
+          "indices": 53,
+          "of": 64,
+          "row_length": 257,
+          "input_has_nan": false
+        },
+        {
+          "case": "nan-torch.bfloat16-n257-1",
+          "indices": 32,
+          "of": 32,
+          "row_length": 257,
+          "input_has_nan": true
+        },
+        {
+          "case": "index-parity-torch.bfloat16-n257-1",
+          "indices": 48,
+          "of": 64,
+          "row_length": 257,
+          "input_has_nan": false
+        }
+      ],
+      "mismatched_indices_total": 167028,
+      "matched_everywhere_cpu_is_reproducible": true,
+      "matched_everywhere": false
+    },
+    "cpu_reproducible_row_length_max": 23,
+    "measured": [
+      {
+        "row_length": 3,
+        "cases": 12,
+        "indices": 576,
+        "index_mismatches_vs_cpu": 0
+      },
+      {
+        "row_length": 5,
+        "cases": 12,
+        "indices": 576,
+        "index_mismatches_vs_cpu": 0
+      },
+      {
+        "row_length": 9,
+        "cases": 12,
+        "indices": 576,
+        "index_mismatches_vs_cpu": 0
+      },
+      {
+        "row_length": 17,
+        "cases": 12,
+        "indices": 576,
+        "index_mismatches_vs_cpu": 0
+      },
+      {
+        "row_length": 23,
+        "cases": 12,
+        "indices": 576,
+        "index_mismatches_vs_cpu": 0
+      },
+      {
+        "row_length": 24,
+        "cases": 12,
+        "indices": 576,
+        "index_mismatches_vs_cpu": 331
+      },
+      {
+        "row_length": 64,
+        "cases": 12,
+        "indices": 576,
+        "index_mismatches_vs_cpu": 467
+      },
+      {
+        "row_length": 128,
+        "cases": 12,
+        "indices": 576,
+        "index_mismatches_vs_cpu": 502
+      },
+      {
+        "row_length": 256,
+        "cases": 12,
+        "indices": 576,
+        "index_mismatches_vs_cpu": 513
+      },
+      {
+        "row_length": 257,
+        "cases": 12,
+        "indices": 576,
+        "index_mismatches_vs_cpu": 511
+      }
+    ],
+    "note": "the CPU kernel reproduces its own output only up to this row length on this machine; above it its std::sort reorders equal keys and its NaN placement depends on an introsort partition that compares values only, so both the reported index and, on NaN rows, the reported value are unspecified.  The overlay's defined result is the one in ``contract``; every place it departs from what CPU happened to print is listed under ``cpu_parity`` and none of them is folded into a pass flag."
+  },
+  "gradient": {
+    "method": "torch.mode(values).backward(random grad) on a leaf, compared with the CPU leaf",
+    "cases": [
+      {
+        "shape": [
+          6,
+          9
+        ],
+        "dim": 1,
+        "gradient_equal_to_cpu": true,
+        "nonzero_gradient_entries": 6
+      },
+      {
+        "shape": [
+          4,
+          5,
+          7
+        ],
+        "dim": 2,
+        "gradient_equal_to_cpu": true,
+        "nonzero_gradient_entries": 20
+      },
+      {
+        "shape": [
+          4,
+          5,
+          7
+        ],
+        "dim": 0,
+        "gradient_equal_to_cpu": true,
+        "nonzero_gradient_entries": 35
+      },
+      {
+        "shape": [
+          9
+        ],
+        "dim": 0,
+        "gradient_equal_to_cpu": true,
+        "nonzero_gradient_entries": 1
+      },
+      {
+        "shape": [
+          8,
+          30
+        ],
+        "dim": -1,
+        "gradient_equal_to_cpu": true,
+        "nonzero_gradient_entries": 8
+      },
+      {
+        "shape": [
+          3,
+          4,
+          5
+        ],
+        "dim": 1,
+        "gradient_equal_to_cpu": true,
+        "nonzero_gradient_entries": 15
+      }
+    ]
+  },
+  "timings": {
+    "method": "median and min of 25 reps after 5 warmups, torch.mps.synchronize() around each MPS rep, best of three passes, speedups from min; the machine was shared with other agents, so trust the relative order more than the absolute numbers",
+    "burst_method": "min of 15 rounds of 10 calls between two torch.mps.synchronize() calls, after 3 warmup rounds; this is the per-call dispatch and GPU cost, with the ~60 us submit-and-wait round trip that dominates a single short call divided out",
+    "dispatch_floor": {
+      "what": "tiny.add(1) on 8 elements: one dispatch plus one synchronize, no work worth measuring",
+      "single_call_us": 111.4,
+      "amortized_us": 13.7
+    },
+    "rows": [
+      {
+        "shape": [
+          1024,
+          1024
+        ],
+        "dim": 1,
+        "dtype": "float32",
+        "nan_fraction": 0.0,
+        "path": "sort",
+        "cpu": {
+          "median_ms": 3.6019,
+          "min_ms": 3.4825
+        },
+        "mps": {
+          "median_ms": 1.7657,
+          "min_ms": 0.9852
+        },
+        "mps_burst_ms": 0.73,
+        "cpu_to_mps_roundtrip": {
+          "median_ms": 4.5625,
+          "min_ms": 3.9893
+        },
+        "speedup_cpu_over_mps": 3.535,
+        "speedup_roundtrip_over_mps": 4.049,
+        "single_pass_gbs": null
+      },
+      {
+        "shape": [
+          1024,
+          1024
+        ],
+        "dim": 0,
+        "dtype": "float32",
+        "nan_fraction": 0.0,
+        "path": "sort",
+        "cpu": {
+          "median_ms": 3.7122,
+          "min_ms": 3.639
+        },
+        "mps": {
+          "median_ms": 2.0464,
+          "min_ms": 1.329
+        },
+        "mps_burst_ms": 1.143,
+        "cpu_to_mps_roundtrip": {
+          "median_ms": 4.7451,
+          "min_ms": 4.0497
+        },
+        "speedup_cpu_over_mps": 2.738,
+        "speedup_roundtrip_over_mps": 3.047,
+        "single_pass_gbs": null
+      },
+      {
+        "shape": [
+          1024,
+          1024
+        ],
+        "dim": 1,
+        "dtype": "float32",
+        "nan_fraction": 0.3,
+        "path": "sort",
+        "cpu": {
+          "median_ms": 2.1722,
+          "min_ms": 2.0694
+        },
+        "mps": {
+          "median_ms": 1.5783,
+          "min_ms": 0.9392
+        },
+        "mps_burst_ms": 0.7539,
+        "cpu_to_mps_roundtrip": {
+          "median_ms": 3.1195,
+          "min_ms": 2.525
+        },
+        "speedup_cpu_over_mps": 2.203,
+        "speedup_roundtrip_over_mps": 2.688,
+        "single_pass_gbs": null
+      },
+      {
+        "shape": [
+          4096,
+          128
+        ],
+        "dim": 1,
+        "dtype": "float32",
+        "nan_fraction": 0.0,
+        "path": "sort",
+        "cpu": {
+          "median_ms": 1.6778,
+          "min_ms": 1.6492
+        },
+        "mps": {
+          "median_ms": 0.972,
+          "min_ms": 0.5376
+        },
+        "mps_burst_ms": 0.3854,
+        "cpu_to_mps_roundtrip": {
+          "median_ms": 2.0798,
+          "min_ms": 1.992
+        },
+        "speedup_cpu_over_mps": 3.068,
+        "speedup_roundtrip_over_mps": 3.705,
+        "single_pass_gbs": null
+      },
+      {
+        "shape": [
+          128,
+          4096
+        ],
+        "dim": 1,
+        "dtype": "float32",
+        "nan_fraction": 0.0,
+        "path": "sort",
+        "cpu": {
+          "median_ms": 1.7224,
+          "min_ms": 1.6991
+        },
+        "mps": {
+          "median_ms": 1.2354,
+          "min_ms": 0.6125
+        },
+        "mps_burst_ms": 0.4743,
+        "cpu_to_mps_roundtrip": {
+          "median_ms": 2.4845,
+          "min_ms": 2.074
+        },
+        "speedup_cpu_over_mps": 2.774,
+        "speedup_roundtrip_over_mps": 3.386,
+        "single_pass_gbs": null
+      },
+      {
+        "shape": [
+          64,
+          64,
+          64
+        ],
+        "dim": 2,
+        "dtype": "float32",
+        "nan_fraction": 0.0,
+        "path": "reg/64",
+        "cpu": {
+          "median_ms": 0.7093,
+          "min_ms": 0.6915
+        },
+        "mps": {
+          "median_ms": 0.1811,
+          "min_ms": 0.1543
+        },
+        "mps_burst_ms": 0.0384,
+        "cpu_to_mps_roundtrip": {
+          "median_ms": 1.0474,
+          "min_ms": 0.9953
+        },
+        "speedup_cpu_over_mps": 4.482,
+        "speedup_roundtrip_over_mps": 6.45,
+        "single_pass_gbs": 27.31
+      },
+      {
+        "shape": [
+          4,
+          8192
+        ],
+        "dim": 1,
+        "dtype": "float32",
+        "nan_fraction": 0.0,
+        "path": "sort",
+        "cpu": {
+          "median_ms": 0.1223,
+          "min_ms": 0.0623
+        },
+        "mps": {
+          "median_ms": 0.3494,
+          "min_ms": 0.3386
+        },
+        "mps_burst_ms": 0.1793,
+        "cpu_to_mps_roundtrip": {
+          "median_ms": 0.4159,
+          "min_ms": 0.3444
+        },
+        "speedup_cpu_over_mps": 0.184,
+        "speedup_roundtrip_over_mps": 1.017,
+        "single_pass_gbs": null
+      },
+      {
+        "shape": [
+          1000,
+          10
+        ],
+        "dim": 1,
+        "dtype": "float32",
+        "nan_fraction": 0.0,
+        "path": "reg16/64",
+        "cpu": {
+          "median_ms": 0.028,
+          "min_ms": 0.0216
+        },
+        "mps": {
+          "median_ms": 0.122,
+          "min_ms": 0.0987
+        },
+        "mps_burst_ms": 0.0162,
+        "cpu_to_mps_roundtrip": {
+          "median_ms": 0.3074,
+          "min_ms": 0.2567
+        },
+        "speedup_cpu_over_mps": 0.219,
+        "speedup_roundtrip_over_mps": 2.601,
+        "single_pass_gbs": 2.47
+      },
+      {
+        "shape": [
+          16384,
+          8
+        ],
+        "dim": 1,
+        "dtype": "float32",
+        "nan_fraction": 0.0,
+        "path": "reg16/64",
+        "cpu": {
+          "median_ms": 0.1125,
+          "min_ms": 0.0717
+        },
+        "mps": {
+          "median_ms": 0.136,
+          "min_ms": 0.12
+        },
+        "mps_burst_ms": 0.0175,
+        "cpu_to_mps_roundtrip": {
+          "median_ms": 0.3931,
+          "min_ms": 0.3354
+        },
+        "speedup_cpu_over_mps": 0.598,
+        "speedup_roundtrip_over_mps": 2.795,
+        "single_pass_gbs": 29.96
+      },
+      {
+        "shape": [
+          8192,
+          32
+        ],
+        "dim": 1,
+        "dtype": "float32",
+        "nan_fraction": 0.0,
+        "path": "reg/64",
+        "cpu": {
+          "median_ms": 0.5351,
+          "min_ms": 0.4901
+        },
+        "mps": {
+          "median_ms": 0.1712,
+          "min_ms": 0.1365
+        },
+        "mps_burst_ms": 0.0354,
+        "cpu_to_mps_roundtrip": {
+          "median_ms": 0.8694,
+          "min_ms": 0.8083
+        },
+        "speedup_cpu_over_mps": 3.59,
+        "speedup_roundtrip_over_mps": 5.922,
+        "single_pass_gbs": 29.62
+      },
+      {
+        "shape": [
+          8192,
+          64
+        ],
+        "dim": 1,
+        "dtype": "float32",
+        "nan_fraction": 0.0,
+        "path": "reg/64",
+        "cpu": {
+          "median_ms": 1.4152,
+          "min_ms": 1.3728
+        },
+        "mps": {
+          "median_ms": 0.2238,
+          "min_ms": 0.1932
+        },
+        "mps_burst_ms": 0.0461,
+        "cpu_to_mps_roundtrip": {
+          "median_ms": 1.8006,
+          "min_ms": 1.6988
+        },
+        "speedup_cpu_over_mps": 7.106,
+        "speedup_roundtrip_over_mps": 8.793,
+        "single_pass_gbs": 45.49
+      },
+      {
+        "shape": [
+          512,
+          128
+        ],
+        "dim": 1,
+        "dtype": "float32",
+        "nan_fraction": 0.0,
+        "path": "lane/64",
+        "cpu": {
+          "median_ms": 0.1658,
+          "min_ms": 0.1074
+        },
+        "mps": {
+          "median_ms": 0.172,
+          "min_ms": 0.123
+        },
+        "mps_burst_ms": 0.0367,
+        "cpu_to_mps_roundtrip": {
+          "median_ms": 0.4945,
+          "min_ms": 0.405
+        },
+        "speedup_cpu_over_mps": 0.873,
+        "speedup_roundtrip_over_mps": 3.293,
+        "single_pass_gbs": 7.14
+      },
+      {
+        "shape": [
+          256,
+          256
+        ],
+        "dim": 1,
+        "dtype": "float32",
+        "nan_fraction": 0.0,
+        "path": "lane/64",
+        "cpu": {
+          "median_ms": 0.1657,
+          "min_ms": 0.0852
+        },
+        "mps": {
+          "median_ms": 0.1932,
+          "min_ms": 0.1735
+        },
+        "mps_burst_ms": 0.0554,
+        "cpu_to_mps_roundtrip": {
+          "median_ms": 0.4523,
+          "min_ms": 0.3976
+        },
+        "speedup_cpu_over_mps": 0.491,
+        "speedup_roundtrip_over_mps": 2.292,
+        "single_pass_gbs": 4.73
+      },
+      {
+        "shape": [
+          1024,
+          256
+        ],
+        "dim": 1,
+        "dtype": "float32",
+        "nan_fraction": 0.0,
+        "path": "sort",
+        "cpu": {
+          "median_ms": 0.901,
+          "min_ms": 0.8595
+        },
+        "mps": {
+          "median_ms": 0.4749,
+          "min_ms": 0.4229
+        },
+        "mps_burst_ms": 0.2453,
+        "cpu_to_mps_roundtrip": {
+          "median_ms": 1.2581,
+          "min_ms": 1.1907
+        },
+        "speedup_cpu_over_mps": 2.032,
+        "speedup_roundtrip_over_mps": 2.816,
+        "single_pass_gbs": null
+      },
+      {
+        "shape": [
+          4096,
+          256
+        ],
+        "dim": 1,
+        "dtype": "float32",
+        "nan_fraction": 0.0,
+        "path": "sort",
+        "cpu": {
+          "median_ms": 3.6656,
+          "min_ms": 3.5784
+        },
+        "mps": {
+          "median_ms": 1.3747,
+          "min_ms": 0.9235
+        },
+        "mps_burst_ms": 0.7005,
+        "cpu_to_mps_roundtrip": {
+          "median_ms": 4.2043,
+          "min_ms": 3.9869
+        },
+        "speedup_cpu_over_mps": 3.875,
+        "speedup_roundtrip_over_mps": 4.317,
+        "single_pass_gbs": null
+      },
+      {
+        "shape": [
+          1024,
+          1024
+        ],
+        "dim": 1,
+        "dtype": "float16",
+        "nan_fraction": 0.0,
+        "path": "sort",
+        "cpu": {
+          "median_ms": 3.5918,
+          "min_ms": 3.4689
+        },
+        "mps": {
+          "median_ms": 1.5969,
+          "min_ms": 0.9309
+        },
+        "mps_burst_ms": 0.7222,
+        "cpu_to_mps_roundtrip": {
+          "median_ms": 4.3212,
+          "min_ms": 3.8821
+        },
+        "speedup_cpu_over_mps": 3.726,
+        "speedup_roundtrip_over_mps": 4.17,
+        "single_pass_gbs": null
+      },
+      {
+        "shape": [
+          512,
+          512
+        ],
+        "dim": 1,
+        "dtype": "int32",
+        "nan_fraction": 0.0,
+        "path": "sort",
+        "cpu": {
+          "median_ms": 0.7542,
+          "min_ms": 0.7118
+        },
+        "mps": {
+          "median_ms": 0.29,
+          "min_ms": 0.229
+        },
+        "mps_burst_ms": 0.1059,
+        "cpu_to_mps_roundtrip": {
+          "median_ms": 1.0857,
+          "min_ms": 1.0105
+        },
+        "speedup_cpu_over_mps": 3.108,
+        "speedup_roundtrip_over_mps": 4.413,
+        "single_pass_gbs": null
+      },
+      {
+        "shape": [
+          1000,
+          3
+        ],
+        "dim": 1,
+        "dtype": "int64",
+        "nan_fraction": 0.0,
+        "path": "reg16/64",
+        "cpu": {
+          "median_ms": 0.023,
+          "min_ms": 0.0196
+        },
+        "mps": {
+          "median_ms": 0.1184,
+          "min_ms": 0.1013
+        },
+        "mps_burst_ms": 0.0141,
+        "cpu_to_mps_roundtrip": {
+          "median_ms": 0.2813,
+          "min_ms": 0.2498
+        },
+        "speedup_cpu_over_mps": 0.193,
+        "speedup_roundtrip_over_mps": 2.466,
+        "single_pass_gbs": 1.7
+      }
+    ]
+  },
+  "result": {
+    "contract_passed": true,
+    "cpu_parity_complete": false
+  }
+}

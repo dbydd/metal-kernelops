@@ -1,0 +1,590 @@
+{
+  "torch": "2.14.1",
+  "generated": "2026-10-24",
+  "op": "aten::special_legendre_polynomial_p",
+  "device": "mps",
+  "upstream": {
+    "source": "aten/src/ATen/native/Math.h",
+    "function": "legendre_polynomial_p_forward",
+    "license": "BSD-3-Clause, PyTorch contributors"
+  },
+  "overlays": [
+    "special_legendre_polynomial_p",
+    "special_legendre_polynomial_p.out",
+    "special_legendre_polynomial_p.x_scalar",
+    "special_legendre_polynomial_p.x_scalar_out",
+    "special_legendre_polynomial_p.n_scalar",
+    "special_legendre_polynomial_p.n_scalar_out"
+  ],
+  "checks": {
+    "total": 82,
+    "failed": 0,
+    "cases": [
+      {
+        "case": "Tensor",
+        "elements": 6,
+        "bit_exact": true
+      },
+      {
+        "case": "out",
+        "elements": 6,
+        "bit_exact": true
+      },
+      {
+        "case": "x_scalar",
+        "elements": 3,
+        "bit_exact": true
+      },
+      {
+        "case": "n_scalar",
+        "elements": 6,
+        "bit_exact": true
+      },
+      {
+        "case": "x_scalar_out",
+        "elements": 3,
+        "bit_exact": true
+      },
+      {
+        "case": "n_scalar_out",
+        "elements": 6,
+        "bit_exact": true
+      },
+      {
+        "case": "integer degree",
+        "elements": 6,
+        "bit_exact": true
+      },
+      {
+        "case": "integer input scalar",
+        "elements": 3,
+        "bit_exact": true
+      },
+      {
+        "case": "bool input scalar",
+        "elements": 3,
+        "bit_exact": true
+      },
+      {
+        "case": "degree 0 on [-1, 1]",
+        "elements": 50000,
+        "bit_exact": true
+      },
+      {
+        "case": "degree 1 on [-1, 1]",
+        "elements": 50000,
+        "bit_exact": true
+      },
+      {
+        "case": "degree 2 on [-1, 1]",
+        "elements": 50000,
+        "bit_exact": true
+      },
+      {
+        "case": "degree 3 on [-1, 1]",
+        "elements": 50000,
+        "bit_exact": true
+      },
+      {
+        "case": "degree 5 on [-1, 1]",
+        "elements": 50000,
+        "bit_exact": true
+      },
+      {
+        "case": "degree 8 on [-1, 1]",
+        "elements": 50000,
+        "bit_exact": true
+      },
+      {
+        "case": "degree 17 on [-1, 1]",
+        "elements": 50000,
+        "bit_exact": true
+      },
+      {
+        "case": "degree 33 on [-1, 1]",
+        "elements": 50000,
+        "bit_exact": true
+      },
+      {
+        "case": "degree 64 on [-1, 1]",
+        "elements": 50000,
+        "bit_exact": true
+      },
+      {
+        "case": "degree 100 on [-1, 1]",
+        "elements": 50000,
+        "bit_exact": true
+      },
+      {
+        "case": "degree 2 on [-3, 3]",
+        "elements": 20000,
+        "bit_exact": true
+      },
+      {
+        "case": "degree 5 on [-3, 3]",
+        "elements": 20000,
+        "bit_exact": true
+      },
+      {
+        "case": "degree 12 on [-3, 3]",
+        "elements": 20000,
+        "bit_exact": true
+      },
+      {
+        "case": "mixed degrees in one call",
+        "elements": 40000,
+        "bit_exact": true
+      },
+      {
+        "case": "non-integer degree 0.5",
+        "elements": 49,
+        "bit_exact": true
+      },
+      {
+        "case": "non-integer degree 1.5",
+        "elements": 49,
+        "bit_exact": true
+      },
+      {
+        "case": "non-integer degree 2.7",
+        "elements": 49,
+        "bit_exact": true
+      },
+      {
+        "case": "non-integer degree -0.5",
+        "elements": 49,
+        "bit_exact": true
+      },
+      {
+        "case": "non-integer degree -3.0",
+        "elements": 49,
+        "bit_exact": true
+      },
+      {
+        "case": "non-integer degree 6.999",
+        "elements": 49,
+        "bit_exact": true
+      },
+      {
+        "case": "|x| == 1 every 1 at degree 3.0",
+        "elements": 64,
+        "bit_exact": true
+      },
+      {
+        "case": "|x| == 1 every 1 at degree 8.0",
+        "elements": 64,
+        "bit_exact": true
+      },
+      {
+        "case": "|x| == 1 every 1 at degree 33.0",
+        "elements": 64,
+        "bit_exact": true
+      },
+      {
+        "case": "|x| == 1 every 3 at degree 3.0",
+        "elements": 64,
+        "bit_exact": true
+      },
+      {
+        "case": "|x| == 1 every 3 at degree 8.0",
+        "elements": 64,
+        "bit_exact": true
+      },
+      {
+        "case": "|x| == 1 every 3 at degree 33.0",
+        "elements": 64,
+        "bit_exact": true
+      },
+      {
+        "case": "|x| == 1 every 8 at degree 3.0",
+        "elements": 64,
+        "bit_exact": true
+      },
+      {
+        "case": "|x| == 1 every 8 at degree 8.0",
+        "elements": 64,
+        "bit_exact": true
+      },
+      {
+        "case": "|x| == 1 every 8 at degree 33.0",
+        "elements": 64,
+        "bit_exact": true
+      },
+      {
+        "case": "one degree change per group",
+        "elements": 56,
+        "bit_exact": true
+      },
+      {
+        "case": "1 elements, partial group",
+        "elements": 1,
+        "bit_exact": true
+      },
+      {
+        "case": "7 elements, partial group",
+        "elements": 7,
+        "bit_exact": true
+      },
+      {
+        "case": "8 elements, partial group",
+        "elements": 8,
+        "bit_exact": true
+      },
+      {
+        "case": "9 elements, partial group",
+        "elements": 9,
+        "bit_exact": true
+      },
+      {
+        "case": "15 elements, partial group",
+        "elements": 15,
+        "bit_exact": true
+      },
+      {
+        "case": "17 elements, partial group",
+        "elements": 17,
+        "bit_exact": true
+      },
+      {
+        "case": "31 elements, partial group",
+        "elements": 31,
+        "bit_exact": true
+      },
+      {
+        "case": "33 elements, partial group",
+        "elements": 33,
+        "bit_exact": true
+      },
+      {
+        "case": "special values at degree -4.0",
+        "elements": 11,
+        "bit_exact": true
+      },
+      {
+        "case": "special values at degree -1.0",
+        "elements": 11,
+        "bit_exact": true
+      },
+      {
+        "case": "special values at degree -0.5",
+        "elements": 11,
+        "bit_exact": true
+      },
+      {
+        "case": "special values at degree 0.0",
+        "elements": 11,
+        "bit_exact": true
+      },
+      {
+        "case": "special values at degree 1.0",
+        "elements": 11,
+        "bit_exact": true
+      },
+      {
+        "case": "special values at degree 2.0",
+        "elements": 11,
+        "bit_exact": true
+      },
+      {
+        "case": "special values at degree 3.0",
+        "elements": 11,
+        "bit_exact": true
+      },
+      {
+        "case": "NaN degree",
+        "elements": 2,
+        "bit_exact": true
+      },
+      {
+        "case": "-inf degree",
+        "elements": 2,
+        "bit_exact": true
+      },
+      {
+        "case": "torch.int64 inputs",
+        "elements": 5,
+        "bit_exact": true
+      },
+      {
+        "case": "torch.int32 inputs",
+        "elements": 5,
+        "bit_exact": true
+      },
+      {
+        "case": "torch.int8 inputs",
+        "elements": 5,
+        "bit_exact": true
+      },
+      {
+        "case": "torch.bool inputs",
+        "elements": 5,
+        "bit_exact": true
+      },
+      {
+        "case": "int64 degree",
+        "elements": 5,
+        "bit_exact": true
+      },
+      {
+        "case": "torch.float16 rejected like cpu",
+        "elements": null,
+        "bit_exact": true
+      },
+      {
+        "case": "torch.bfloat16 rejected like cpu",
+        "elements": null,
+        "bit_exact": true
+      },
+      {
+        "case": "complex inputs rejected like cpu",
+        "elements": null,
+        "bit_exact": true
+      },
+      {
+        "case": "complex scalar rejected like cpu",
+        "elements": null,
+        "bit_exact": true
+      },
+      {
+        "case": "empty",
+        "elements": 0,
+        "bit_exact": true
+      },
+      {
+        "case": "2x0",
+        "elements": 0,
+        "bit_exact": true
+      },
+      {
+        "case": "0-dim",
+        "elements": 1,
+        "bit_exact": true
+      },
+      {
+        "case": "3-D",
+        "elements": 32768,
+        "bit_exact": true
+      },
+      {
+        "case": "broadcast x against n",
+        "elements": 60,
+        "bit_exact": true
+      },
+      {
+        "case": "non-contiguous x",
+        "elements": 24,
+        "bit_exact": true
+      },
+      {
+        "case": "x starting at a 4-byte offset",
+        "elements": 1024,
+        "bit_exact": true
+      },
+      {
+        "case": "both operands offset",
+        "elements": 1024,
+        "bit_exact": true
+      },
+      {
+        "case": "strided out",
+        "elements": 6,
+        "bit_exact": true
+      },
+      {
+        "case": "out resized to the broadcast shape",
+        "elements": 6,
+        "bit_exact": true
+      },
+      {
+        "case": "float16 out",
+        "elements": 6,
+        "bit_exact": true
+      },
+      {
+        "case": "complex64 out",
+        "elements": 6,
+        "bit_exact": true
+      },
+      {
+        "case": "unsafe cast to torch.int64 rejected like cpu",
+        "elements": null,
+        "bit_exact": true
+      },
+      {
+        "case": "unsafe cast to torch.int32 rejected like cpu",
+        "elements": null,
+        "bit_exact": true
+      },
+      {
+        "case": "unsafe cast to torch.bool rejected like cpu",
+        "elements": null,
+        "bit_exact": true
+      },
+      {
+        "case": "out aliasing the input",
+        "elements": 4,
+        "bit_exact": true
+      },
+      {
+        "case": "requires_grad matches cpu",
+        "elements": null,
+        "bit_exact": true
+      }
+    ]
+  },
+  "timing": {
+    "method": "least-contended of 15 trials of 10 queued calls after 3 warmup calls, one torch.mps.synchronize per trial, device-resident tensors so transfers are excluded; measured while other work shared the GPU",
+    "rows": [
+      {
+        "shape": [
+          65536
+        ],
+        "elements": 65536,
+        "degree": 4,
+        "cpu_ms": 0.0664,
+        "mps_ms": 0.016,
+        "speedup": 4.14,
+        "mps_mul_ms": 0.0141
+      },
+      {
+        "shape": [
+          1048576
+        ],
+        "elements": 1048576,
+        "degree": 4,
+        "cpu_ms": 0.3163,
+        "mps_ms": 0.0592,
+        "speedup": 5.34,
+        "mps_mul_ms": 0.0176
+      },
+      {
+        "shape": [
+          4194304
+        ],
+        "elements": 4194304,
+        "degree": 4,
+        "cpu_ms": 1.3435,
+        "mps_ms": 0.1021,
+        "speedup": 13.16,
+        "mps_mul_ms": 0.0464
+      },
+      {
+        "shape": [
+          1024,
+          4096
+        ],
+        "elements": 4194304,
+        "degree": 4,
+        "cpu_ms": 1.2862,
+        "mps_ms": 0.0811,
+        "speedup": 15.86,
+        "mps_mul_ms": 0.0465
+      },
+      {
+        "shape": [
+          65536
+        ],
+        "elements": 65536,
+        "degree": 32,
+        "cpu_ms": 0.7827,
+        "mps_ms": 0.0308,
+        "speedup": 25.43,
+        "mps_mul_ms": 0.015
+      },
+      {
+        "shape": [
+          1048576
+        ],
+        "elements": 1048576,
+        "degree": 32,
+        "cpu_ms": 4.5523,
+        "mps_ms": 0.1318,
+        "speedup": 34.54,
+        "mps_mul_ms": 0.0164
+      },
+      {
+        "shape": [
+          4194304
+        ],
+        "elements": 4194304,
+        "degree": 32,
+        "cpu_ms": 18.1872,
+        "mps_ms": 0.4533,
+        "speedup": 40.12,
+        "mps_mul_ms": 0.0469
+      },
+      {
+        "shape": [
+          1024,
+          4096
+        ],
+        "elements": 4194304,
+        "degree": 32,
+        "cpu_ms": 18.0278,
+        "mps_ms": 0.4552,
+        "speedup": 39.61,
+        "mps_mul_ms": 0.0467
+      }
+    ],
+    "bandwidth": [
+      {
+        "elements": 1048576,
+        "degree": 4,
+        "mps_ms": 0.0415,
+        "gb_per_s": 202.4,
+        "copy_ms": 0.0164,
+        "copy_gb_per_s": 510.3
+      },
+      {
+        "elements": 4194304,
+        "degree": 4,
+        "mps_ms": 0.08,
+        "gb_per_s": 419.3,
+        "copy_ms": 0.0447,
+        "copy_gb_per_s": 750.1
+      },
+      {
+        "elements": 1048576,
+        "degree": 32,
+        "mps_ms": 0.1292,
+        "gb_per_s": 64.9,
+        "copy_ms": 0.0162,
+        "copy_gb_per_s": 518.2
+      },
+      {
+        "elements": 4194304,
+        "degree": 32,
+        "mps_ms": 0.4536,
+        "gb_per_s": 74.0,
+        "copy_ms": 0.0452,
+        "copy_gb_per_s": 742.2
+      }
+    ],
+    "overload_us": {
+      "tensor_tensor": 6.38,
+      "out": 6.49,
+      "x_scalar": 5.66,
+      "x_scalar_out": 5.91,
+      "n_scalar": 5.89,
+      "n_scalar_out": 5.81,
+      "elementwise_multiply": 3.02
+    },
+    "launch_floor": {
+      "shape": [
+        4096
+      ],
+      "elements": 4096,
+      "degree": 4,
+      "cpu_us": 7.26,
+      "mps_us": 8.06,
+      "mps_mul_us": 4.63
+    }
+  },
+  "boundaries": [
+    "float32 only; float16 and bfloat16 raise, as the CPU kernel does; float64 cannot exist on MPS; complex inputs and complex scalar operands raise the same NotImplementedError",
+    "a degree at or above about 1e12, and +inf, do not terminate: the recurrence runs once per degree and |x| <= 1 never turns NaN, exactly as upstream",
+    "a 4096-element call is dispatch-bound, not kernel-bound: compare it with the elementwise-multiply floor in launch_floor",
+    "a copy of the same length is the floor for this kernel's traffic; the bandwidth rows report the ratio, and a row near the copy is at the memory roofline",
+    "timing rows carry an elementwise multiply on the same mps shape as a floor reference, because other agents were sharing the GPU during the run; a single row can be several times the uncontended time"
+  ]
+}

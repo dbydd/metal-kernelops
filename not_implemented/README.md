@@ -1,55 +1,90 @@
-# not_implemented/ — MPS 没有原生内核的算子目录
+# not_implemented: MPS operator gap catalog
 
-统计环境：torch 2.14.1（git `5c488690`），macOS，`mps_available=True`。
+Measured on torch 2.14.1 (git `5c488690`), macOS, `mps_available=True`.
 
-## 计数口径
+## Counting rule
 
-只统计真正注册 MPS 内核的 overload，PyTorch 用 Composite 组合拼出来的实现不算已实现。判定用
-`torch._C._dispatch_has_kernel_for_dispatch_key(op, "MPS")`。
+A kernel counts as present only when it is registered for the MPS dispatch key. A Composite implementation that reaches MPS through other operators counts as missing. The check is:
 
-| 口径 | overload | 基础算子名 |
-|---|---|---|
-| aten 全量 | 3113 | 1589 |
-| MPS 有内核 | 914 | 533 |
-| MPS 缺内核 | 2199 | 1230（1056 完全缺 + 174 部分缺） |
-| CPU 有内核、MPS 完全没有 | 186 | 126 |
+```python
+torch._C._dispatch_has_kernel_for_dispatch_key(operator, "MPS")
+```
 
-## 去重后的数字
+| Measure | overloads | base names |
+|---|---:|---:|
+| aten total | 3113 | 1589 |
+| registered for MPS | 914 | 533 |
+| missing for MPS | 2199 | 1230 |
+| missing while CPU has a kernel | 186 | 133 |
 
-126 个基础算子名按下面三条规则合并，结果是 **118**：
+The 126 base names that are entirely missing from MPS merge to 118 after in-place variants, private aliases, and test entry points are folded back. Fifty-four are CPU-only by nature: quantization, oneDNN, nested and sparse-layout conversions, and RNG helpers. The remaining 60 are Metal candidates. Four private aliases, `_adaptive_avg_pool3d`, `_adaptive_avg_pool3d_backward`, `_linalg_eigvals`, and `native_channel_shuffle`, are covered through their public counterparts and therefore appear in neither list.
 
-1. 并地（in-place）变体并回函数版本：`_add_relu_` 并入 `_add_relu`，`heaviside_` 并入 `heaviside` 等；
-2. 纯测试入口剔除：`_foobar`、`_test_*`；
-3. 私有别名并回公开名：`_adaptive_avg_pool3d` 并入 `adaptive_avg_pool3d`，`_linalg_eigvals` 并入 `linalg_eigvals`，`_adaptive_avg_pool3d_backward` 并入 `adaptive_avg_pool3d_backward`。
+## Correct probe
 
-118 再按「这个算子是不是只对 CPU 后端有意义」筛一遍，剔除 54 个永远不会在 Apple GPU 上有意义的入口：量化栈（`quantize_per_tensor`、`quantized_lstm`、`fake_quantize_*`、`_dyn_quant_*`）、oneDNN（`mkldnn_rnn_layer`、`to_mkldnn`）、嵌套张量与稀疏格式转换、`_philox_*` 随机数辅助、`*_for_cpu` 变体。剩下的 **60** 个是真正可以写 Metal 内核的候选。
+The first version of this catalog called public functions that were not the target operator. It used `F.relu` for `_add_relu`, `linalg.qr` for `ormqr`, `matrix_exp` for `linalg_matrix_sqrth`, `linalg.solve` for LDL, dense `addmm` for `sspaddmm`, and `bicubic` for Lanczos. A result from those calls says nothing about the missing operator.
 
-## 候选里有多少是真的跑不了
+`probe_status.py` now:
 
-「没有专用内核」和「调用就报错」是两件事。用公开 API 逐个调用实测（`probe_status.py`，结果存 `mps_status.json`），39 个候选里：
+- reads all 60 names from `portable_candidates.txt` and fails if the call table does not cover them exactly;
+- resolves each name to its exact aten overload, including `_add_relu.Tensor`, `_slow_conv2d_backward.output_mask`, `adaptive_avg_pool3d_backward.grad_input`, and `frexp.Tensor`;
+- creates sparse inputs as sparse tensors on MPS and never substitutes a dense tensor;
+- creates every tensor on MPS with small, schema-valid shapes;
+- reports `runs` or the first error line under the candidate name.
 
-- **25 个直接抛 `NotImplementedError`**：`take`、`put`、`channel_shuffle`、`mode`、`logspace`、`heaviside`、`frexp`、`masked_softmax`、`pdist`、`segment_reduce`、`adaptive_max_pool3d`、`adaptive_avg_pool3d`、`fractional_max_pool2d`、`batch_norm_update_stats`、`rrelu_with_noise`、`multi_margin_loss`、`multilabel_margin_loss`、`_transform_bias_rescale_qkv`、`linalg_eig`、`linalg_eigvals`、`special_airy_ai`、`special_ndtri`、`special_log_ndtr`、`special_laguerre_polynomial_l`、`special_legendre_polynomial_p`。
-- **13 个能跑**：`logit`、`narrow_copy`、`aminmax`、`add_relu`、`addmm_activation`、`sspaddmm`、`ormqr`、`linalg_ldl_solve`、`matrix_sqrth`、`slow_conv_transpose2d`、`slow_conv_dilated2d`、`upsample_lanczos2d_aa`、`glu_jvp`。
-- 1 个探针自身写法不对：`_spdiags` 的 schema 没对上，尚未定性。
+```bash
+uv run python not_implemented/probe_status.py --accelerator disabled > not_implemented/mps_status.json
+uv run python not_implemented/probe_status.py --accelerator enabled
+uv run python not_implemented/probe_status.py --accelerator enabled --compatibility
+```
 
-这决定了优先级：直接报错的那批属于「能不能跑」，写一个 aten 组合实现就能解决（`metal_kernelops/accelerator.py` 已经这样做掉 `take`、`channel_shuffle`、`put_`）；能跑的那批才属于「跑得快不快」，值得写 Metal 内核。
+`disabled` is the baseline. `enabled` inserts this checkout's `src` first and calls `metal_kernelops.accelerator.install()`.
 
-## 文件
+## Baseline and accelerator
 
-| 文件 | 内容 | 行数 |
-|---|---|---|
-| `portable_candidates.txt` | 可以移植的候选算子，按字母序 | 60 |
-| `backend_specific.txt` | 只对 CPU 后端有意义的入口，排除理由见上 | 54 |
-| `cpu_only_base_names.txt` | 去重后的完整名单（上两者之和） | 118 |
-| `probe_status.py` | 逐个调用候选、记录能不能在 MPS 上跑 | 工具 |
-| `mps_status.json` | 上面工具的实测输出（torch 2.14.1） | 39 条 |
+Baseline results, recorded in `mps_status.json`: 57 of 60 raise `NotImplementedError` or a related runtime error. Three run without an overlay:
 
-## 怎么用
+- `linalg__powsum` through CompositeExplicitAutograd;
+- `logit`, which has a native MPS kernel;
+- `narrow_copy`, whose default overload reaches a composite.
 
-先看 `portable_candidates.txt`。挑一个之前，先确认三件事：
+With `accelerator.install()`, 58 of 60 run. The two exceptions are `linalg_ldl_factor_ex` and `linalg_ldl_solve`, whose exact Bunch-Kaufman factor is sequential and measured hundreds of times slower than a CPU call. They are available only through:
 
-1. 该算子在 MPS 上是不是通过 Composite 走了别的路径、实际能跑（跑得慢不等于不能用）；
-2. 目标模型里有没有真实调用（没有调用就不值得写内核）；
-3. `vendor/` 下的社区实现有没有已经覆盖（重复实现没有意义）。
+```python
+from metal_kernelops import accelerator
+accelerator.install(compatibility=True)
+```
 
-移植完成一个，就从 `portable_candidates.txt` 删掉，并在 `measured/` 写对账读数。
+With that table, all 60 candidates run.
+
+## Files
+
+| File | Content |
+|---|---|
+| `portable_candidates.txt` | the 60 candidates, kept as the historical baseline so both probe runs remain comparable |
+| `backend_specific.txt` | 54 entries that have no meaning on the Apple GPU, with the exclusion rule above |
+| `cpu_only_base_names.txt` | all 118 merged base names |
+| `probe_status.py` | exact-schema probe with optional accelerator install |
+| `mps_status.json` | baseline output for the current torch version |
+
+## Disposition
+
+Implemented in `src/metal_kernelops/`:
+
+- indexing: `take`, `put`, `channel_shuffle`, `narrow_copy.out`
+- pooling: fractional 2D and 3D, adaptive 3D average and max
+- resampling: `_upsample_lanczos2d_aa` and backward
+- reductions: `mode`, `segment_reduce`, `_segment_reduce_backward`, `_pdist_forward`, `_pdist_backward`
+- losses: both margin loss families and their backward passes
+- attention: `_masked_softmax` and backward, packed QKV, native MHA, encoder layer, SDPA choice
+- special functions: Airy Ai, Laguerre L, Legendre P, `log_ndtr`, `ndtri`, `frexp`
+- arithmetic: `heaviside`, `logspace`, `_add_relu`, `_addmm_activation`, `_aminmax`, `rrelu_with_noise`
+- derivatives and statistics: `glu_jvp`, `glu_backward_jvp`, `batch_norm_update_stats`
+- convolution: slow 3D, dilated 2D and 3D, transposed 2D and 3D, slow 2D backward
+- linear algebra: `ormqr`, `linalg_householder_product`, `linalg_matrix_sqrth`, `linalg_eig`, eigenvalue-only variants
+- sparse: `_spdiags`, `sspaddmm`
+
+Already native or composed, left unchanged: `logit`, `narrow_copy`, `linalg__powsum`.
+
+Opt-in exact but slow: `linalg_ldl_factor_ex`, `linalg_ldl_solve`.
+
+No candidate is silently dropped.

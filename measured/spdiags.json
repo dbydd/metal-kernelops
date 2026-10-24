@@ -1,0 +1,559 @@
+{
+  "schema": 1,
+  "module": "metal_kernelops/spdiags_ops.py",
+  "torch": "2.14.1",
+  "platform": "macOS-27.0.1-arm64-arm-64bit arm64",
+  "device": "mps",
+  "operators": [
+    "aten::_spdiags",
+    "aten::_spdiags.out"
+  ],
+  "overlays": [
+    {
+      "aten": "aten::_spdiags",
+      "replaced_existing_kernel": false,
+      "kernel": "metal_kernelops.spdiags_ops.spdiags"
+    },
+    {
+      "aten": "aten::_spdiags.out",
+      "replaced_existing_kernel": false,
+      "kernel": "metal_kernelops.spdiags_ops.spdiags_out"
+    }
+  ],
+  "autograd": {
+    "overlay": null,
+    "reason": "no derivative is registered for aten::_spdiags in 2.14.1; forward succeeds and backward raises the same 'derivative for aten::_spdiags is not implemented' on MPS as on CPU"
+  },
+  "synchronizations": {
+    "offsets_cpu": {
+      "synchronizations": 0,
+      "mps_aten_results": 8,
+      "h2d_copies": 1
+    },
+    "offsets_mps": {
+      "synchronizations": 1,
+      "mps_aten_results": 8,
+      "h2d_copies": 1
+    }
+  },
+  "synchronizations_method": "a TorchDispatchMode counts device-to-host aten._to_copy calls sourced on MPS and aten._local_scalar_dense calls on MPS tensors while the overlay body runs; the offsets read is one bulk copy, not one read per diagonal. The compiled Metal kernel is not an aten op, so the counted MPS results are the aten ops around it",
+  "correctness": {
+    "checks": 74,
+    "failed": 0,
+    "rows": [
+      {
+        "check": "MPS had no _spdiags kernel before registration",
+        "ok": true
+      },
+      {
+        "check": "MPS kernel present after registration",
+        "ok": true
+      },
+      {
+        "check": "parity: square_main_up_down",
+        "ok": true
+      },
+      {
+        "check": "parity: square_unsorted",
+        "ok": true
+      },
+      {
+        "check": "parity: single_up_edge",
+        "ok": true
+      },
+      {
+        "check": "parity: single_down_edge",
+        "ok": true
+      },
+      {
+        "check": "parity: silent_out_of_range",
+        "ok": true
+      },
+      {
+        "check": "parity: tall_rect_4x3",
+        "ok": true
+      },
+      {
+        "check": "parity: wide_rect_3x5",
+        "ok": true
+      },
+      {
+        "check": "parity: overshoot_rows",
+        "ok": true
+      },
+      {
+        "check": "parity: overshoot_cols",
+        "ok": true
+      },
+      {
+        "check": "parity: doc_partial",
+        "ok": true
+      },
+      {
+        "check": "parity: long_diag_trimmed",
+        "ok": true
+      },
+      {
+        "check": "parity: noncontig_2d",
+        "ok": true
+      },
+      {
+        "check": "parity: noncontig_1d",
+        "ok": true
+      },
+      {
+        "check": "parity: one_d_scalar0",
+        "ok": true
+      },
+      {
+        "check": "parity: one_d_scalar_neg2",
+        "ok": true
+      },
+      {
+        "check": "parity: one_d_scalar_pos1",
+        "ok": true
+      },
+      {
+        "check": "parity: empty_offsets",
+        "ok": true
+      },
+      {
+        "check": "parity: empty_diag_cols",
+        "ok": true
+      },
+      {
+        "check": "parity: one_d_empty",
+        "ok": true
+      },
+      {
+        "check": "parity: zero_rows",
+        "ok": true
+      },
+      {
+        "check": "parity: zero_rows_negative_offset",
+        "ok": true
+      },
+      {
+        "check": "parity: zero_cols",
+        "ok": true
+      },
+      {
+        "check": "parity: zero_cols_positive_offset",
+        "ok": true
+      },
+      {
+        "check": "parity: many_diags",
+        "ok": true
+      },
+      {
+        "check": "parity: dtype_float16",
+        "ok": true
+      },
+      {
+        "check": "parity: dtype_bfloat16",
+        "ok": true
+      },
+      {
+        "check": "parity: dtype_int32",
+        "ok": true
+      },
+      {
+        "check": "parity: dtype_int64",
+        "ok": true
+      },
+      {
+        "check": "parity: dtype_bool",
+        "ok": true
+      },
+      {
+        "check": "parity: dtype_complex64",
+        "ok": true
+      },
+      {
+        "check": "parity: overshoot_mixed",
+        "ok": true
+      },
+      {
+        "check": "error parity: duplicate_offsets",
+        "ok": true
+      },
+      {
+        "check": "error parity: duplicate_offsets_unsorted",
+        "ok": true
+      },
+      {
+        "check": "error parity: diagonal_count_mismatch",
+        "ok": true
+      },
+      {
+        "check": "error parity: diagonals_3d",
+        "ok": true
+      },
+      {
+        "check": "error parity: offsets_2d",
+        "ok": true
+      },
+      {
+        "check": "error parity: shape_1d",
+        "ok": true
+      },
+      {
+        "check": "error parity: shape_3d",
+        "ok": true
+      },
+      {
+        "check": "error parity: layout_strided",
+        "ok": true
+      },
+      {
+        "check": "error parity: layout_bsr",
+        "ok": true
+      },
+      {
+        "check": "error parity: offsets_int32",
+        "ok": true
+      },
+      {
+        "check": "error parity: offsets_float32",
+        "ok": true
+      },
+      {
+        "check": "error parity: negative_total",
+        "ok": true
+      },
+      {
+        "check": "error parity: negative_total_negative_offset",
+        "ok": true
+      },
+      {
+        "check": "error parity: empty_diag_positive_offset",
+        "ok": true
+      },
+      {
+        "check": "error parity: negative_rows",
+        "ok": true
+      },
+      {
+        "check": "error parity: negative_cols",
+        "ok": true
+      },
+      {
+        "check": "fuzz: 80 random cases match the CPU kernel",
+        "ok": true,
+        "detail": {
+          "mismatches": [],
+          "rejected_undefined": 9
+        }
+      },
+      {
+        "check": "divergence: CPU builds CSR and CSC",
+        "ok": true,
+        "detail": {
+          "csr": "torch.sparse_csr",
+          "csc": "torch.sparse_csc"
+        }
+      },
+      {
+        "check": "divergence: csr raises NotImplementedError on MPS",
+        "ok": true,
+        "detail": {
+          "type": "NotImplementedError"
+        }
+      },
+      {
+        "check": "divergence: csc raises NotImplementedError on MPS",
+        "ok": true,
+        "detail": {
+          "type": "NotImplementedError"
+        }
+      },
+      {
+        "check": "divergence: negative per-diagonal count rejected on MPS",
+        "ok": true,
+        "detail": {
+          "cpu_nnz": 2,
+          "mps": "spdiags: offset 4 gives a negative diagonal length (-1) for shape [3, 3] with 3 diagonal columns; the CPU kernel writes out of bounds on this input, so the MPS overlay rejects it. Trim the diagonals row to the longest diagonal that fits, or drop the offset."
+        }
+      },
+      {
+        "check": "offsets on the device give the same structure",
+        "ok": true
+      },
+      {
+        "check": "0-dim offsets on the device",
+        "ok": true
+      },
+      {
+        "check": "empty offsets on the device",
+        "ok": true
+      },
+      {
+        "check": "offsets on MPS with CPU diagonals is rejected explicitly",
+        "ok": true,
+        "detail": {
+          "type": "NotImplementedError",
+          "message": "the MPS overlay for aten::_spdiags needs diagonals on the MPS device, got cpu"
+        }
+      },
+      {
+        "check": "out: same-shape COO out matches CPU and is returned",
+        "ok": true
+      },
+      {
+        "check": "out: existing nnz is replaced",
+        "ok": true
+      },
+      {
+        "check": "out: wrong-shape sparse out fails as on CPU",
+        "ok": true,
+        "detail": {
+          "cpu": "NotImplementedError",
+          "mps": "NotImplementedError"
+        }
+      },
+      {
+        "check": "out: dense out fails as on CPU",
+        "ok": true
+      },
+      {
+        "check": "out: nnz <= 1 is marked coalesced",
+        "ok": true,
+        "detail": {
+          "cpu": true,
+          "mps": true
+        }
+      },
+      {
+        "check": "out: dtype mismatch message matches CPU",
+        "ok": true,
+        "detail": {
+          "cpu": "Expected out tensor to have dtype float, but got c10::Half instead",
+          "mps": "Expected out tensor to have dtype float, but got c10::Half instead"
+        }
+      },
+      {
+        "check": "torch.sparse.spdiags reaches the overlay",
+        "ok": true
+      },
+      {
+        "check": "CPU dispatch is untouched by the MPS registration",
+        "ok": true
+      },
+      {
+        "check": "doc: lower diagonals",
+        "ok": true
+      },
+      {
+        "check": "doc: partial diagonals",
+        "ok": true
+      },
+      {
+        "check": "doc: positive offsets",
+        "ok": true
+      },
+      {
+        "check": "to_dense equals the CPU dense result",
+        "ok": true
+      },
+      {
+        "check": "sparse mm consumes the result",
+        "ok": true
+      },
+      {
+        "check": "autograd: same unsupported-derivative error as CPU",
+        "ok": true,
+        "detail": {
+          "cpu": "derivative for aten::_spdiags is not implemented",
+          "mps": "derivative for aten::_spdiags is not implemented"
+        }
+      },
+      {
+        "check": "host offsets: no device-to-host read",
+        "ok": true,
+        "detail": {
+          "d2h": 0,
+          "scalar_reads": 0
+        }
+      },
+      {
+        "check": "device offsets: exactly one device-to-host read",
+        "ok": true,
+        "detail": {
+          "d2h": 1,
+          "scalar_reads": 0
+        }
+      }
+    ]
+  },
+  "divergences": [
+    "CPU builds dense-free CSR and CSC for the same call; MPS 2.14.1 cannot construct sparse compressed tensors (new_compressed_tensor has no MPS kernel), so layout=sparse_csr/sparse_csc raises NotImplementedError instead of returning a COO tensor under another layout name",
+    "when one diagonal's count is negative but the total is not, the CPU kernel allocates sum(counts) entries and writes the negative block out of bounds; the MPS overlay rejects that input, so the two differ only on an input whose CPU result is undefined"
+  ],
+  "timings_us": {
+    "1024x1024_band3": {
+      "mps_overlay_offsets_cpu": {
+        "median": 199.8,
+        "min": 191.8
+      },
+      "mps_overlay_offsets_mps": {
+        "median": 343.4,
+        "min": 314.3
+      },
+      "offsets_to_host": {
+        "median": 143.4,
+        "min": 131.6
+      },
+      "cpu_kernel": {
+        "median": 8.8,
+        "min": 7.9
+      },
+      "nnz": 3070,
+      "shape": [
+        1024,
+        1024
+      ],
+      "diagonals": 3,
+      "speedup_overlay_vs_cpu": 0.04
+    },
+    "4096x4096_band5": {
+      "mps_overlay_offsets_cpu": {
+        "median": 168.6,
+        "min": 167.3
+      },
+      "mps_overlay_offsets_mps": {
+        "median": 300.6,
+        "min": 279.7
+      },
+      "offsets_to_host": {
+        "median": 129.1,
+        "min": 127.7
+      },
+      "cpu_kernel": {
+        "median": 16.2,
+        "min": 15.6
+      },
+      "nnz": 20474,
+      "shape": [
+        4096,
+        4096
+      ],
+      "diagonals": 5,
+      "speedup_overlay_vs_cpu": 0.09
+    },
+    "16384x16384_band5": {
+      "mps_overlay_offsets_cpu": {
+        "median": 170.7,
+        "min": 162.8
+      },
+      "mps_overlay_offsets_mps": {
+        "median": 308.0,
+        "min": 284.1
+      },
+      "offsets_to_host": {
+        "median": 128.4,
+        "min": 126.1
+      },
+      "cpu_kernel": {
+        "median": 42.0,
+        "min": 41.5
+      },
+      "nnz": 81914,
+      "shape": [
+        16384,
+        16384
+      ],
+      "diagonals": 5,
+      "speedup_overlay_vs_cpu": 0.25
+    },
+    "1024x1024_band129": {
+      "mps_overlay_offsets_cpu": {
+        "median": 180.1,
+        "min": 171.8
+      },
+      "mps_overlay_offsets_mps": {
+        "median": 308.1,
+        "min": 296.4
+      },
+      "offsets_to_host": {
+        "median": 133.8,
+        "min": 115.1
+      },
+      "cpu_kernel": {
+        "median": 63.5,
+        "min": 62.8
+      },
+      "nnz": 127936,
+      "shape": [
+        1024,
+        1024
+      ],
+      "diagonals": 129,
+      "speedup_overlay_vs_cpu": 0.37
+    },
+    "256x256_band511": {
+      "mps_overlay_offsets_cpu": {
+        "median": 201.3,
+        "min": 190.4
+      },
+      "mps_overlay_offsets_mps": {
+        "median": 322.6,
+        "min": 302.6
+      },
+      "offsets_to_host": {
+        "median": 131.5,
+        "min": 119.3
+      },
+      "cpu_kernel": {
+        "median": 40.2,
+        "min": 38.0
+      },
+      "nnz": 65536,
+      "shape": [
+        256,
+        256
+      ],
+      "diagonals": 511,
+      "speedup_overlay_vs_cpu": 0.2
+    },
+    "4096x4096_band1025": {
+      "mps_overlay_offsets_cpu": {
+        "median": 815.2,
+        "min": 697.2
+      },
+      "mps_overlay_offsets_mps": {
+        "median": 755.3,
+        "min": 712.3
+      },
+      "offsets_to_host": {
+        "median": 140.6,
+        "min": 123.9
+      },
+      "cpu_kernel": {
+        "median": 1843.6,
+        "min": 1832.6
+      },
+      "nnz": 3935744,
+      "shape": [
+        4096,
+        4096
+      ],
+      "diagonals": 1025,
+      "speedup_overlay_vs_cpu": 2.63
+    }
+  },
+  "timings_method": "each variant runs 3 or 10 calls per round with one torch.mps.synchronize at the end; variants are interleaved round by round, so a load spike hits all of them; median and min over 5 or 9 rounds are recorded. speedup_overlay_vs_cpu is cpu_kernel.min / mps_overlay_offsets_cpu.min: below 1 means the overlay is slower, and the offsets_to_host entry measures the synchronization the device-offsets path adds",
+  "timings_load_average": [
+    7.49,
+    7.49
+  ],
+  "notes": [
+    "the structure (indices in construction order, values, nnz, coalesced flag, dtype, shape) is byte-identical to the CPU kernel on every parity case; the COO result is deliberately not coalesced when nnz > 1, matching the CPU kernel",
+    "offsets on MPS cost one bulk device-to-host read because nnz and the duplicate check are data-dependent; offsets on the host cost none. Index construction is one Metal kernel and the values are one index_select, both on the GPU",
+    "out-of-range offsets that still give a non-negative count add nothing, as on CPU; a diagonal row longer than the matrix produces the same out-of-bounds row indices as the CPU kernel on rectangular shapes",
+    "values keep the diagonals dtype; the MPS backend has no float64, so float64 diagonals fail on the device before this overlay is reached",
+    "of the layouts the operator accepts, only sparse COO can exist on MPS in 2.14.1; CSR and CSC raise NotImplementedError",
+    "timing includes the Python dispatch frame and one sparse constructor call; the CPU kernel number is a scale reference for the same build, not a cross-device speed claim",
+    "the overlay's per-call cost is dominated by dispatch, one Metal kernel, one index_select and the sparse constructor rather than by nnz, so it beats the CPU kernel only once nnz is large; before this overlay the operator had no MPS implementation at all",
+    "the host is shared with other builds, so a round's median is inflated by contention; the minimum is the closer estimate and the interleaved ratios are the stable part of these numbers"
+  ]
+}

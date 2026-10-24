@@ -1,0 +1,118 @@
+{
+  "torch": "2.14.1",
+  "torchvision": "0.29.1",
+  "checks": [
+    "aligned=False ratio=-1",
+    "aligned=False ratio=0",
+    "aligned=False ratio=1",
+    "aligned=False ratio=2",
+    "aligned=False ratio=3",
+    "aligned=True ratio=-1",
+    "aligned=True ratio=0",
+    "aligned=True ratio=1",
+    "aligned=True ratio=2",
+    "aligned=True ratio=3",
+    "wide boxes aligned=False ratio=-1",
+    "wide boxes aligned=False ratio=2",
+    "wide boxes aligned=False ratio=3",
+    "wide boxes aligned=True ratio=-1",
+    "wide boxes aligned=True ratio=2",
+    "wide boxes aligned=True ratio=3",
+    "input gradient",
+    "deterministic backward",
+    "list boxes",
+    "empty boxes",
+    "error contracts"
+  ],
+  "baseline": {
+    "shape": [
+      8,
+      256,
+      56,
+      56
+    ],
+    "boxes": 512,
+    "output_size": [
+      7,
+      7
+    ],
+    "sampling_ratio": 2,
+    "composed_ms": 56.8,
+    "note": "recorded before this work on an idle machine; see measurement"
+  },
+  "measurement": "one interleaved batch per shape: every column runs once per round, warmup 2, 7 rounds, per-column minimum; the GPU is shared with other leases, so only these same-batch minima are comparable. The same-batch ratios overstate the idle-machine ratio because contention costs the composed path, which moves ~40x the bytes, far more than the kernel.",
+  "floor_note": "fill_ms writes the output size with no reads; copy_ms reads and writes it. Both are measured in the same batch as the kernel column.",
+  "timings": [
+    {
+      "shape": [
+        8,
+        256,
+        56,
+        56
+      ],
+      "boxes": 512,
+      "boxes_per_image": 64.0,
+      "output_mb": 25.69,
+      "parity_over_peak": 5.388546834375193e-07,
+      "composed_ms": 403.84166699368507,
+      "composed_backward_ms": 358.9764579664916,
+      "metal_ms": 0.37712499033659697,
+      "metal_backward_ms": 1.8627080135047436,
+      "cpu_ms": 27.49833295820281,
+      "speedup_same_batch": 1070.8430290796762,
+      "speedup_backward_same_batch": 192.71751415889713,
+      "metal_gb_s": 68.12094838125337,
+      "fill_ms": 0.1848330139182508,
+      "copy_ms": 0.22070796694606543,
+      "input_mb": 25.69
+    },
+    {
+      "shape": [
+        4,
+        128,
+        112,
+        112
+      ],
+      "boxes": 256,
+      "boxes_per_image": 64.0,
+      "output_mb": 6.42,
+      "parity_over_peak": 4.439886233000967e-07,
+      "composed_ms": 102.2523749852553,
+      "composed_backward_ms": 91.81329200509936,
+      "metal_ms": 0.24120800662785769,
+      "metal_backward_ms": 1.0145410196855664,
+      "cpu_ms": 8.896959014236927,
+      "speedup_same_batch": 423.9178309823399,
+      "speedup_backward_same_batch": 90.49736799558363,
+      "metal_gb_s": 26.62651248517157,
+      "fill_ms": 0.1432499848306179,
+      "copy_ms": 0.13091700384393334,
+      "input_mb": 25.69
+    },
+    {
+      "shape": [
+        32,
+        64,
+        28,
+        28
+      ],
+      "boxes": 1024,
+      "boxes_per_image": 32.0,
+      "output_mb": 12.85,
+      "parity_over_peak": 1.1988973173473627e-06,
+      "composed_ms": 202.9843750060536,
+      "composed_backward_ms": 180.64795900136232,
+      "metal_ms": 0.3259590012021363,
+      "metal_backward_ms": 1.439583022147417,
+      "cpu_ms": 10.334916994906962,
+      "speedup_same_batch": 622.7297735526479,
+      "speedup_backward_same_batch": 125.48630834218292,
+      "metal_gb_s": 39.406968215718706,
+      "fill_ms": 0.15195895684882998,
+      "copy_ms": 0.17374998424202204,
+      "input_mb": 6.42
+    }
+  ],
+  "note": "torchvision has no RoIAlign MPS kernel; the CPU column is torchvision's native kernel. The composed column is the same operator in plain torch ops, which is what the Metal path replaces; its backward is autograd through those ops, the only backward the drafted kernel path had.",
+  "status": "pass"
+}

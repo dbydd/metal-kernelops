@@ -1,0 +1,617 @@
+{
+ "torch": "2.14.1",
+ "device": "mps",
+ "operator": "aten::special_airy_ai",
+ "python": "3.11.17",
+ "before_overlay": {
+  "mps_public_api": "NotImplementedError: The operator 'aten::special_airy_ai.out' is not currently implemented for the MPS device. If you want this op to be considered for addition please comment on https://github.com/pytorch/pytorch/issues/141287 and mention use-case, that resulted in missing op as well as commit hash 5c4886908584029761b579af026dcfb627c84070. As a temporary fix, you can set the environment variable `PYTORCH_ENABLE_MPS_FALLBACK=1` to use the CPU as a fallback for this op. WARNING: this will be slower than running natively on MPS."
+ },
+ "overlays": {
+  "aten::special_airy_ai.out": {
+   "kernel": "_special_airy_ai_out",
+   "replaced_existing": false
+  }
+ },
+ "registration_scope": "only the .out overload is registered: aten::special_airy_ai has a CompositeExplicitAutogradNonFunctional kernel that allocates the result with the meta function and redispatches to .out, so registering the functional kernel would duplicate that allocation and dtype promotion",
+ "upstream": {
+  "source": "ATen native/Math.h airy_ai_forward<float>, torch 2.14.1",
+  "algorithm_origin": "scipy/special/cephes/airy.c",
+  "license": "Cephes Math Library, 3-clause BSD, Copyright (c) 2018 Steven Moshier; SciPy, 3-clause BSD, Copyright (c) 2001-2002 Enthought, Inc., 2003-2019 SciPy Developers (both reproduced in PyTorch's NOTICE)",
+  "regimes": [
+   "x >= 26.5 -> +0.0f (dead-tail shortcut; CPU float32 denominator overflows at 25.77)",
+   "+-inf -> NaN, NaN propagates",
+   "x < -2.09: AFN/AFD/AGN/AGD asymptotic oscillatory expansion",
+   "2.09 <= x <= 103.892: AN/AD asymptotic decaying expansion",
+   "-2.09 <= x < 2.09: ascending power series in f and g, epsilon FLT_EPSILON"
+  ],
+  "deviation": "the ascending series is not evaluated when the AN/AD branch already determines the result; upstream evaluates and discards it",
+  "precision": "Metal sin/cos/exp are not host libm; results are not bit-identical",
+  "vendor_coverage": "none: no ATen special function in any of the seven vendor/ submodules"
+ },
+ "parity": [
+  {
+   "name": "linear [-30, 30], 200001",
+   "numel": 200001,
+   "max_abs": 5.960464477539063e-08,
+   "max_rel_against_1e-3_floor": 1.7171258832604508e-06,
+   "bit_exact_elements": 139127,
+   "max_ulp": 14,
+   "mean_ulp": 0.35435132600888136,
+   "ulp_compared_elements": 113046,
+   "elements_over_4_ulp": 15,
+   "nan_matches": true,
+   "within_tolerance": true
+  },
+  {
+   "name": "linear [-104, 104], 200001",
+   "numel": 200001,
+   "max_abs": 5.960464477539063e-08,
+   "max_rel_against_1e-3_floor": 1.688022052803717e-06,
+   "bit_exact_elements": 156916,
+   "max_ulp": 15,
+   "mean_ulp": 0.38561605470032645,
+   "ulp_compared_elements": 103546,
+   "elements_over_4_ulp": 7,
+   "nan_matches": true,
+   "within_tolerance": true
+  },
+  {
+   "name": "uniform [-104, 104], 1M",
+   "numel": 1048576,
+   "max_abs": 5.960464477539063e-08,
+   "max_rel_against_1e-3_floor": 1.688022052803717e-06,
+   "bit_exact_elements": 822636,
+   "max_ulp": 15,
+   "mean_ulp": 0.38621882865386953,
+   "ulp_compared_elements": 542726,
+   "elements_over_4_ulp": 19,
+   "nan_matches": true,
+   "within_tolerance": true
+  },
+  {
+   "name": "normal 1M",
+   "numel": 1048576,
+   "max_abs": 5.960464477539063e-08,
+   "max_rel_against_1e-3_floor": 2.5611368528188905e-06,
+   "bit_exact_elements": 1035246,
+   "max_ulp": 22,
+   "mean_ulp": 0.017161213159378103,
+   "ulp_compared_elements": 1048469,
+   "elements_over_4_ulp": 101,
+   "nan_matches": true,
+   "within_tolerance": true
+  },
+  {
+   "name": "series only [-2.09, 2.09], 200001",
+   "numel": 200001,
+   "max_abs": 0.0,
+   "max_rel_against_1e-3_floor": 0.0,
+   "bit_exact_elements": 200001,
+   "max_ulp": 0,
+   "mean_ulp": 0.0,
+   "ulp_compared_elements": 200001,
+   "elements_over_4_ulp": 0,
+   "nan_matches": true,
+   "within_tolerance": true
+  },
+  {
+   "name": "decay only [2.09, 8.3203353], 20001",
+   "numel": 20001,
+   "max_abs": 5.587935447692871e-09,
+   "max_rel_against_1e-3_floor": 2.3543773863821116e-07,
+   "bit_exact_elements": 13869,
+   "max_ulp": 3,
+   "mean_ulp": 0.39478031053848694,
+   "ulp_compared_elements": 6054,
+   "elements_over_4_ulp": 0,
+   "nan_matches": true,
+   "within_tolerance": true
+  },
+  {
+   "name": "tail [8.3203353, 103.892], 20001",
+   "numel": 20001,
+   "max_abs": 1.7763568394002505e-15,
+   "max_rel_against_1e-3_floor": 1.7763567309800332e-12,
+   "bit_exact_elements": 18721,
+   "max_ulp": 0,
+   "mean_ulp": 0.0,
+   "ulp_compared_elements": 0,
+   "elements_over_4_ulp": 0,
+   "nan_matches": true,
+   "within_tolerance": true
+  },
+  {
+   "name": "linear [-20, 20], 8M",
+   "numel": 8388608,
+   "max_abs": 8.940696716308594e-08,
+   "max_rel_against_1e-3_floor": 2.5611368528188905e-06,
+   "bit_exact_elements": 5865993,
+   "max_ulp": 22,
+   "mean_ulp": 0.3254839616973877,
+   "ulp_compared_elements": 5020232,
+   "elements_over_4_ulp": 822,
+   "nan_matches": true,
+   "within_tolerance": true
+  }
+ ],
+ "endpoints": {
+  "name": "branch endpoints",
+  "numel": 24,
+  "max_abs": 1.4901161193847656e-08,
+  "max_rel_against_1e-3_floor": 8.76263186455617e-08,
+  "bit_exact_elements": 21,
+  "max_ulp": 1,
+  "mean_ulp": 0.14285714285714285,
+  "ulp_compared_elements": 14,
+  "elements_over_4_ulp": 0,
+  "nan_matches": true,
+  "within_tolerance": true,
+  "points": [
+   {
+    "x": -Infinity,
+    "cpu": NaN,
+    "mps": NaN
+   },
+   {
+    "x": Infinity,
+    "cpu": NaN,
+    "mps": NaN
+   },
+   {
+    "x": NaN,
+    "cpu": NaN,
+    "mps": NaN
+   },
+   {
+    "x": -10000000000.0,
+    "cpu": 0.0014745231019333005,
+    "mps": 0.0014745229855179787
+   },
+   {
+    "x": -103.89209747314453,
+    "cpu": 0.0192446019500494,
+    "mps": 0.0192446019500494
+   },
+   {
+    "x": -103.89199829101562,
+    "cpu": 0.019426867365837097,
+    "mps": 0.019426867365837097
+   },
+   {
+    "x": -8.320335388183594,
+    "cpu": -0.29185372591018677,
+    "mps": -0.29185372591018677
+   },
+   {
+    "x": -2.0900001525878906,
+    "cpu": 0.17005348205566406,
+    "mps": 0.17005346715450287
+   },
+   {
+    "x": -2.0899999141693115,
+    "cpu": 0.17005063593387604,
+    "mps": 0.17005063593387604
+   },
+   {
+    "x": -2.0899999141693115,
+    "cpu": 0.17005063593387604,
+    "mps": 0.17005063593387604
+   },
+   {
+    "x": -9.99999993922529e-09,
+    "cpu": 0.35502806305885315,
+    "mps": 0.35502806305885315
+   },
+   {
+    "x": -0.0,
+    "cpu": 0.35502806305885315,
+    "mps": 0.35502806305885315
+   },
+   {
+    "x": 0.0,
+    "cpu": 0.35502806305885315,
+    "mps": 0.35502806305885315
+   },
+   {
+    "x": 9.99999993922529e-09,
+    "cpu": 0.35502806305885315,
+    "mps": 0.35502806305885315
+   },
+   {
+    "x": 2.0899999141693115,
+    "cpu": 0.030420320108532906,
+    "mps": 0.030420320108532906
+   },
+   {
+    "x": 2.0899999141693115,
+    "cpu": 0.030420320108532906,
+    "mps": 0.030420320108532906
+   },
+   {
+    "x": 2.0900001525878906,
+    "cpu": 0.030420320108532906,
+    "mps": 0.030420320108532906
+   },
+   {
+    "x": 8.320335388183594,
+    "cpu": 1.86130986179478e-08,
+    "mps": 1.86130986179478e-08
+   },
+   {
+    "x": 8.32033634185791,
+    "cpu": 1.861306131445417e-08,
+    "mps": 1.8613059538097332e-08
+   },
+   {
+    "x": 38.0,
+    "cpu": 0.0,
+    "mps": 0.0
+   },
+   {
+    "x": 103.89099884033203,
+    "cpu": 0.0,
+    "mps": 0.0
+   },
+   {
+    "x": 103.89199829101562,
+    "cpu": 0.0,
+    "mps": 0.0
+   },
+   {
+    "x": 103.89299774169922,
+    "cpu": 0.0,
+    "mps": 0.0
+   },
+   {
+    "x": 10000000000.0,
+    "cpu": 0.0,
+    "mps": 0.0
+   }
+  ]
+ },
+ "branch_mix": {
+  "uniform_wide_1M": {
+   "numel": 1048576,
+   "oscillatory_pct": 48.98,
+   "series_pct": 2.01,
+   "decay_live_pct": 11.7,
+   "decay_dead_pct": 37.32,
+   "divergent_warps_pct": 100.0
+  },
+  "normal_1M": {
+   "numel": 1048576,
+   "oscillatory_pct": 1.83,
+   "series_pct": 96.36,
+   "decay_live_pct": 1.81,
+   "decay_dead_pct": 0.0,
+   "divergent_warps_pct": 69.35
+  },
+  "linear_sorted_8M": {
+   "numel": 8388608,
+   "oscillatory_pct": 44.77,
+   "series_pct": 10.45,
+   "decay_live_pct": 44.77,
+   "decay_dead_pct": 0.0,
+   "divergent_warps_pct": 0.0
+  }
+ },
+ "accuracy": {
+  "reference": "scipy.special.airy (double)",
+  "grid": "linear [-30, 30], 20001",
+  "cpu_float32": {
+   "max_abs": 3.318777424592134e-06,
+   "max_rel_where_abs_gt_1e-6": 0.009628136061016741
+  },
+  "mps_float32": {
+   "max_abs": 3.318777424592134e-06,
+   "max_rel_where_abs_gt_1e-6": 0.009628277069272542
+  }
+ },
+ "semantics": {
+  "shape": [
+   3,
+   4
+  ],
+  "dtype": "torch.float32",
+  "out_resize": {
+   "asked_from": [
+    2
+   ],
+   "result_shape": [
+    3,
+    4
+   ],
+   "note": "CPU resizes with a deprecation warning; the overlay resizes silently"
+  },
+  "out_strided": {
+   "matches_logical_order": true,
+   "gaps_untouched": true
+  },
+  "strided_input": {
+   "name": "strided input",
+   "numel": 12,
+   "max_abs": 2.9802322387695312e-08,
+   "max_rel_against_1e-3_floor": 1.6024564786221163e-07,
+   "bit_exact_elements": 9,
+   "max_ulp": 2,
+   "mean_ulp": 0.3333333333333333,
+   "ulp_compared_elements": 12,
+   "elements_over_4_ulp": 0,
+   "nan_matches": true,
+   "within_tolerance": true
+  },
+  "0-dim": {
+   "name": "0-dim input",
+   "numel": 1,
+   "max_abs": 0.0,
+   "max_rel_against_1e-3_floor": 0.0,
+   "bit_exact_elements": 1,
+   "max_ulp": 0,
+   "mean_ulp": 0.0,
+   "ulp_compared_elements": 1,
+   "elements_over_4_ulp": 0,
+   "nan_matches": true,
+   "within_tolerance": true
+  },
+  "empty": {
+   "name": "empty input",
+   "numel": 0,
+   "max_abs": 0.0,
+   "max_rel_against_1e-3_floor": 0.0,
+   "bit_exact_elements": 0,
+   "max_ulp": 0,
+   "mean_ulp": 0.0,
+   "ulp_compared_elements": 0,
+   "elements_over_4_ulp": 0,
+   "nan_matches": true,
+   "within_tolerance": true
+  },
+  "large 1-D": {
+   "name": "large 1-D input",
+   "numel": 1048576,
+   "max_abs": 8.940696716308594e-08,
+   "max_rel_against_1e-3_floor": 2.5611368528188905e-06,
+   "bit_exact_elements": 732776,
+   "max_ulp": 15,
+   "mean_ulp": 0.3252131372205313,
+   "ulp_compared_elements": 627530,
+   "elements_over_4_ulp": 111,
+   "nan_matches": true,
+   "within_tolerance": true
+  },
+  "unsupported_dtypes": {
+   "Half": "\"airy_ai_mps\" not implemented for 'Half'",
+   "BFloat16": "\"airy_ai_mps\" not implemented for 'BFloat16'",
+   "ComplexFloat": "\"airy_ai_mps\" not implemented for 'ComplexFloat'"
+  },
+  "integer_out": {
+   "Long": "result type Float can't be cast to the desired output type Long",
+   "Int": "result type Float can't be cast to the desired output type Int",
+   "Bool": "result type Float can't be cast to the desired output type Bool"
+  },
+  "half_out": {
+   "result_dtype": "torch.float16",
+   "matches_cpu_half_out": true
+  },
+  "autograd": {
+   "mps_grad_fn": "None",
+   "mps_requires_grad": false,
+   "cpu_grad_fn": "None",
+   "cpu_requires_grad": false
+  },
+  "out_requires_grad": {
+   "mps_requires_grad": true,
+   "mps_grad_fn": "None",
+   "cpu_requires_grad": true,
+   "cpu_grad_fn": "None"
+  },
+  "mixed_device_out": "Passed CPU tensor to MPS op"
+ },
+ "dtypes": {
+  "Long": {
+   "result_dtype": "torch.float32",
+   "name": "Long input",
+   "numel": 3,
+   "max_abs": 0.0,
+   "max_rel_against_1e-3_floor": 0.0,
+   "bit_exact_elements": 3,
+   "max_ulp": 0,
+   "mean_ulp": 0.0,
+   "ulp_compared_elements": 3,
+   "elements_over_4_ulp": 0,
+   "nan_matches": true,
+   "within_tolerance": true
+  },
+  "Int": {
+   "result_dtype": "torch.float32",
+   "name": "Int input",
+   "numel": 3,
+   "max_abs": 0.0,
+   "max_rel_against_1e-3_floor": 0.0,
+   "bit_exact_elements": 3,
+   "max_ulp": 0,
+   "mean_ulp": 0.0,
+   "ulp_compared_elements": 3,
+   "elements_over_4_ulp": 0,
+   "nan_matches": true,
+   "within_tolerance": true
+  },
+  "Bool": {
+   "result_dtype": "torch.float32",
+   "name": "Bool input",
+   "numel": 3,
+   "max_abs": 0.0,
+   "max_rel_against_1e-3_floor": 0.0,
+   "bit_exact_elements": 3,
+   "max_ulp": 0,
+   "mean_ulp": 0.0,
+   "ulp_compared_elements": 3,
+   "elements_over_4_ulp": 0,
+   "nan_matches": true,
+   "within_tolerance": true
+  }
+ },
+ "compile": {
+  "compiled_on": "first MPS call",
+  "state_after_import": "no shader, no registration",
+  "compile_shader_ms": 0.2210829989053309,
+  "compile_and_first_call_ms": 0.8215829730033875,
+  "note": "measured in-process after dropping the module cache; the Metal driver may reuse its on-disk shader cache, so a first-ever run can be slower"
+ },
+ "timing": {
+  "method": "median and minimum per call; MPS synchronized before and after each sample; warmup 3. The host can run other GPU work meanwhile, so the minimum is the least-contended sample and the median is the honest loaded number",
+  "sizes": [
+   {
+    "numel": 65536,
+    "cpu": {
+     "median_ms": 0.403213627578225,
+     "min_ms": 0.3908125072484836,
+     "reps": 60,
+     "batch": 4,
+     "synchronized": false
+    },
+    "mps": {
+     "median_ms": 0.04561449895845726,
+     "min_ms": 0.03233324969187379,
+     "reps": 60,
+     "batch": 4,
+     "synchronized": true
+    },
+    "mps_out_reused": {
+     "median_ms": 0.04133337642997503,
+     "min_ms": 0.03518749144859612,
+     "reps": 60,
+     "batch": 4,
+     "synchronized": true
+    },
+    "cpu_over_mps": 8.839593479815397,
+    "cpu_over_mps_min": 12.087016027550897,
+    "out_reuse_gain": 1.1035754370498887
+   },
+   {
+    "numel": 1048576,
+    "cpu": {
+     "median_ms": 3.310603991849348,
+     "min_ms": 3.2897710043471307,
+     "reps": 30,
+     "batch": 2,
+     "synchronized": false
+    },
+    "mps": {
+     "median_ms": 0.2158957504434511,
+     "min_ms": 0.10983349056914449,
+     "reps": 30,
+     "batch": 2,
+     "synchronized": true
+    },
+    "mps_out_reused": {
+     "median_ms": 0.34084376238752156,
+     "min_ms": 0.07937499321997166,
+     "reps": 30,
+     "batch": 2,
+     "synchronized": true
+    },
+    "cpu_over_mps": 15.334271216776376,
+    "cpu_over_mps_min": 29.95234866250646,
+    "out_reuse_gain": 0.6334155829379354
+   },
+   {
+    "numel": 8388608,
+    "cpu": {
+     "median_ms": 26.298187498468906,
+     "min_ms": 26.2662919703871,
+     "reps": 10,
+     "batch": 1,
+     "synchronized": false
+    },
+    "mps": {
+     "median_ms": 0.5425619892776012,
+     "min_ms": 0.35025004763156176,
+     "reps": 10,
+     "batch": 1,
+     "synchronized": true
+    },
+    "mps_out_reused": {
+     "median_ms": 0.3942290204577148,
+     "min_ms": 0.3504999913275242,
+     "reps": 10,
+     "batch": 1,
+     "synchronized": true
+    },
+    "cpu_over_mps": 48.47038314181178,
+    "cpu_over_mps_min": 74.99297187253313,
+    "out_reuse_gain": 1.3762609070424756
+   }
+  ],
+  "copy_floor_8m": {
+   "median_ms": 0.269521027803421,
+   "min_ms": 0.24470803327858448,
+   "reps": 10,
+   "batch": 1,
+   "synchronized": true
+  },
+  "distribution_comparisons_1m": [
+   {
+    "distribution": "uniform [-104, 104]",
+    "cpu": {
+     "median_ms": 3.0465627496596426,
+     "min_ms": 2.998416486661881,
+     "reps": 30,
+     "batch": 2,
+     "synchronized": false
+    },
+    "mps": {
+     "median_ms": 0.17238524742424488,
+     "min_ms": 0.15520848683081567,
+     "reps": 30,
+     "batch": 2,
+     "synchronized": true
+    },
+    "cpu_over_mps": 17.672989975539885,
+    "cpu_over_mps_min": 19.318637452669016
+   },
+   {
+    "distribution": "normal",
+    "cpu": {
+     "median_ms": 4.234302003169432,
+     "min_ms": 4.043771012220532,
+     "reps": 30,
+     "batch": 2,
+     "synchronized": false
+    },
+    "mps": {
+     "median_ms": 0.49631224828772247,
+     "min_ms": 0.1871665008366108,
+     "reps": 30,
+     "batch": 2,
+     "synchronized": true
+    },
+    "cpu_over_mps": 8.531528322699625,
+    "cpu_over_mps_min": 21.605207097132137
+   },
+   {
+    "distribution": "shuffled [-20, 20]",
+    "cpu": {
+     "median_ms": 4.278573003830388,
+     "min_ms": 4.211646009935066,
+     "reps": 30,
+     "batch": 2,
+     "synchronized": false
+    },
+    "mps": {
+     "median_ms": 0.198614492546767,
+     "min_ms": 0.17987500177696347,
+     "reps": 30,
+     "batch": 2,
+     "synchronized": true
+    },
+    "cpu_over_mps": 21.54209871076215,
+    "cpu_over_mps_min": 23.41429308313397
+   }
+  ]
+ },
+ "checks": {
+  "total": 40,
+  "failed": []
+ }
+}

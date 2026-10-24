@@ -1,0 +1,185 @@
+{
+  "torch": "2.14.1",
+  "python": "3.11.17",
+  "machine": "arm64",
+  "date": "2026-10-24",
+  "overlays": [
+    "frexp.Tensor",
+    "frexp.Tensor_out"
+  ],
+  "baseline": "torch.frexp on an MPS tensor raises NotImplementedError without the overlay",
+  "notes": [
+    "The Metal kernel matches the CPU kernel bit for bit on every exponent field of the three dtypes, signed zeros included.",
+    "float16/bfloat16 NaN outputs are NaNs on both devices; the CPU kernel canonicalises their payload through float32 while the Metal kernel preserves the input bits.",
+    "Gradients come from the generated FrexpBackward0 rule (grad / 2**exponent), which is exact except where Metal's flush-to-zero meets exp2(127) or exp2(-127): exponent 127 gives 0 instead of the subnormal 2**-127, and exponent <= -127 gives inf. That needs |x| >= 2**126 or a subnormal input smaller than 2**-126.",
+    "The kernel moves 12 bytes per element for float32 and 8 for the 16-bit dtypes (input read, mantissa write, int32 exponent write), so mps_gbps is measured against that traffic, not against the input size alone. memcpy_gbps is torch.Tensor.copy_ on a buffer of the same shape, timed interleaved with the kernel in the same run; it is the rate the kernel has to reach to be at the physical floor. pct_of_memcpy is the per-window ratio of the two, so a sleepy GPU cancels out; 100% means the kernel is running at the memcpy rate. At 16M elements pct_of_memcpy lands between 85% and 100% across runs: the operator is bandwidth-bound and the remaining headroom is small, not a factor of 1.5. At 1M both frexp and copy_ are dominated by launch latency rather than bandwidth, so their ratio says little.",
+    "The shader issues its accesses four elements at a time. A contiguous tensor whose storage starts at an address the vector access cannot name (for example torch.empty(8, device='mps')[1:5]) falls back to a one-element-per-thread kernel with the same output.",
+    "Timings are per call, amortised over batches of 5 back-to-back calls around a single synchronize. speedup and mps_gbps use the best of 40 batches; the median of the same 40 is reported next to it as mps_ms / mps_gbps_median. They run under a shared tier-1 lease, so a median can be inflated several-fold by a concurrent probe while the best sample is the least contended one."
+  ],
+  "checks": {
+    "import_compiled_shaders": 0,
+    "import_leaves_dispatch_alone": true,
+    "forward_float32": true,
+    "forward_float32_nan_payload_differences": 0,
+    "forward_float16": true,
+    "forward_float16_nan_payload_differences": 4,
+    "forward_bfloat16": true,
+    "forward_bfloat16_nan_payload_differences": 15,
+    "forward_noncontiguous_input": true,
+    "forward_scalar": true,
+    "forward_empty": true,
+    "forward_inference_mode": true,
+    "out_contiguous": true,
+    "out_noncontiguous": true,
+    "out_resized": true,
+    "error_non_float_input": true,
+    "error_mantissa_dtype": true,
+    "error_exponent_dtype": true,
+    "error_mixed_device": true,
+    "gradient_float32": true,
+    "gradient_float32_flush_boundary": true,
+    "gradient_float32_flush_boundary_values": 22,
+    "gradient_float16": true,
+    "gradient_bfloat16": true,
+    "gradient_bfloat16_flush_boundary": true,
+    "gradient_bfloat16_flush_boundary_values": 20,
+    "gradient_incoming_scale": true,
+    "gradient_noncontiguous_input": true
+  },
+  "forward": [
+    {
+      "dtype": "float32",
+      "elements": 1048576,
+      "cpu_ms": 0.1859,
+      "mps_ms": 0.0534,
+      "cpu_min_ms": 0.1706,
+      "mps_min_ms": 0.046,
+      "speedup": 3.71,
+      "mps_gbps": 273.6,
+      "mps_gbps_median": 235.6,
+      "memcpy_gbps": 266.9,
+      "pct_of_memcpy": 113.1
+    },
+    {
+      "dtype": "float32",
+      "elements": 16777216,
+      "cpu_ms": 2.8417,
+      "mps_ms": 0.5647,
+      "cpu_min_ms": 2.6777,
+      "mps_min_ms": 0.4275,
+      "speedup": 6.26,
+      "mps_gbps": 470.9,
+      "mps_gbps_median": 356.5,
+      "memcpy_gbps": 471.0,
+      "pct_of_memcpy": 98.8
+    },
+    {
+      "dtype": "float16",
+      "elements": 1048576,
+      "cpu_ms": 0.2541,
+      "mps_ms": 0.0333,
+      "cpu_min_ms": 0.1897,
+      "mps_min_ms": 0.0274,
+      "speedup": 6.93,
+      "mps_gbps": 306.4,
+      "mps_gbps_median": 251.8,
+      "memcpy_gbps": 226.7,
+      "pct_of_memcpy": 175.4
+    },
+    {
+      "dtype": "float16",
+      "elements": 16777216,
+      "cpu_ms": 2.8947,
+      "mps_ms": 0.3209,
+      "cpu_min_ms": 2.7466,
+      "mps_min_ms": 0.3099,
+      "speedup": 8.86,
+      "mps_gbps": 433.1,
+      "mps_gbps_median": 418.3,
+      "memcpy_gbps": 457.8,
+      "pct_of_memcpy": 97.5
+    },
+    {
+      "dtype": "bfloat16",
+      "elements": 1048576,
+      "cpu_ms": 0.1975,
+      "mps_ms": 0.0408,
+      "cpu_min_ms": 0.1875,
+      "mps_min_ms": 0.0343,
+      "speedup": 5.46,
+      "mps_gbps": 244.4,
+      "mps_gbps_median": 205.8,
+      "memcpy_gbps": 156.4,
+      "pct_of_memcpy": 157.7
+    },
+    {
+      "dtype": "bfloat16",
+      "elements": 16777216,
+      "cpu_ms": 3.3492,
+      "mps_ms": 0.3162,
+      "cpu_min_ms": 3.1349,
+      "mps_min_ms": 0.3049,
+      "speedup": 10.28,
+      "mps_gbps": 440.2,
+      "mps_gbps_median": 424.4,
+      "memcpy_gbps": 452.7,
+      "pct_of_memcpy": 100.8
+    }
+  ],
+  "forward_backward": [
+    {
+      "dtype": "float32",
+      "elements": 1048576,
+      "cpu_ms": 0.3953,
+      "mps_ms": 0.0925,
+      "cpu_min_ms": 0.3824,
+      "mps_min_ms": 0.0819,
+      "speedup": 4.67
+    },
+    {
+      "dtype": "float32",
+      "elements": 16777216,
+      "cpu_ms": 6.0243,
+      "mps_ms": 1.1288,
+      "cpu_min_ms": 5.7744,
+      "mps_min_ms": 1.0768,
+      "speedup": 5.36
+    },
+    {
+      "dtype": "float16",
+      "elements": 1048576,
+      "cpu_ms": 0.5571,
+      "mps_ms": 0.0917,
+      "cpu_min_ms": 0.489,
+      "mps_min_ms": 0.0866,
+      "speedup": 5.64
+    },
+    {
+      "dtype": "float16",
+      "elements": 16777216,
+      "cpu_ms": 7.0684,
+      "mps_ms": 1.0799,
+      "cpu_min_ms": 6.7546,
+      "mps_min_ms": 1.0535,
+      "speedup": 6.41
+    },
+    {
+      "dtype": "bfloat16",
+      "elements": 1048576,
+      "cpu_ms": 0.4846,
+      "mps_ms": 0.0921,
+      "cpu_min_ms": 0.4721,
+      "mps_min_ms": 0.0892,
+      "speedup": 5.29
+    },
+    {
+      "dtype": "bfloat16",
+      "elements": 16777216,
+      "cpu_ms": 7.6226,
+      "mps_ms": 2.9735,
+      "cpu_min_ms": 7.2408,
+      "mps_min_ms": 1.1229,
+      "speedup": 6.45
+    }
+  ]
+}

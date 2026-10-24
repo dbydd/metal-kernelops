@@ -1,0 +1,16 @@
+{
+  "torch": "2.14.1",
+  "overlays": 110,
+  "cpu_loss": -0.782470703125,
+  "mps_loss": -0.7824706435203552,
+  "gradient_parameters": [
+    "conv.weight",
+    "conv.bias",
+    "head.weight",
+    "head.bias"
+  ],
+  "gradient_norm_relative_error": 5.1455885036781023e-08,
+  "all_parameters_moved": true,
+  "mps_step_ms": 2.0283000078052282,
+  "status": "pass"
+}
